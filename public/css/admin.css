@@ -1,0 +1,1309 @@
+/* ==========================================================
+   URBANTIQ ADMIN PANEL — Global Stylesheet
+   admin/admin.css
+   Scoped under .admin-wrapper to prevent CSS leakage
+   ========================================================== */
+
+/* ── 1. ADMIN-SCOPED BASE RESET ── */
+/* Only applies inside admin pages — does NOT affect user pages */
+.admin-wrapper *,
+.admin-wrapper *::before,
+.admin-wrapper *::after {
+    box-sizing: border-box;
+}
+
+.admin-wrapper {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    color: #1A1A2E;
+}
+
+.admin-wrapper a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.admin-wrapper ul {
+    list-style: none;
+}
+
+.admin-wrapper img {
+    max-width: 100%;
+    display: block;
+}
+
+/* ── 2. LAYOUT WRAPPER ── */
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: clip;
+    /* clip ≠ hidden — does NOT create a scroll container,
+                           so position:sticky on sidebar works correctly.
+                           overflow-x:hidden was silently breaking sticky. */
+    background-color: #F2F4F7;
+}
+
+/* ── 3. SIDEBAR ── */
+.admin-sidebar {
+    width: 260px;
+    /* Standardize pro width */
+    min-width: 260px;
+    background-color: #111827;
+    color: #CBD5E1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #374151 transparent;
+    flex-shrink: 0;
+    z-index: 1000;
+    border-right: 1px solid #1F2937;
+}
+
+.admin-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+}
+
+/* ── 3a. Sidebar Brand ── */
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 20px;
+    border-bottom: 1px solid #1F2937;
+    flex-shrink: 0;
+    min-height: 80px;
+    /* Ensure consistent height to prevent clipping */
+}
+
+.sidebar-brand-icon {
+    width: 36px;
+    height: 36px;
+    background: #fff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 6px;
+    overflow: visible;
+    /* Prevent SVG clipping */
+}
+
+.sidebar-brand-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: #111827;
+    display: block;
+}
+
+.sidebar-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    overflow: hidden;
+    min-width: 0;
+    /* prevents flex from crushing this child */
+    flex: 1;
+}
+
+.sidebar-brand-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #F9FAFB;
+    white-space: nowrap;
+}
+
+.sidebar-brand-sub {
+    font-size: 10px;
+    color: #6B7280;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+/* ── 3b. Sidebar Navigation ── */
+.sidebar-nav {
+    flex: 1;
+    padding: 12px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sidebar-section-label {
+    padding: 14px 18px 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #6B7280;
+    text-transform: uppercase;
+}
+
+.sidebar-nav-item {
+    padding: 1px 10px;
+}
+
+.sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #9CA3AF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.sidebar-nav-link svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.sidebar-nav-link:hover {
+    background: #1F2937;
+    color: #F9FAFB;
+}
+
+.sidebar-nav-link.active {
+    background: #1F2937;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+.sidebar-nav-sublink {
+    display: block;
+    padding: 6px 10px 6px 36px;
+    font-size: 12.5px;
+    color: #6B7280;
+    border-radius: 6px;
+    margin: 1px 0;
+    transition: color 0.15s, background 0.15s;
+}
+
+.sidebar-nav-sublink:hover {
+    color: #F9FAFB;
+    background: #1F2937;
+}
+
+.sidebar-nav-sublink.active {
+    color: #F9FAFB;
+    font-weight: 600;
+}
+
+/* ── 3c. Sidebar Footer ── */
+.sidebar-footer {
+    padding: 14px 18px;
+    border-top: 1px solid #1F2937;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-user-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #374151;
+    color: #F9FAFB;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sidebar-user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #F9FAFB;
+    line-height: 1.2;
+}
+
+.sidebar-user-role {
+    font-size: 11px;
+    color: #6B7280;
+}
+
+/* ── 4. MAIN CONTENT AREA ── */
+.admin-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: #F2F4F7;
+}
+
+/* ── 5. TOP BAR ── */
+.admin-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    height: 70px;
+    /* Fixed height for consistency */
+    background: #FFFFFF;
+    border-bottom: 1px solid #E5E7EB;
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    gap: 16px;
+}
+
+.topbar-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.topbar-breadcrumb {
+    font-size: 11.5px;
+    color: #9CA3AF;
+    font-weight: 500;
+}
+
+.topbar-breadcrumb span {
+    margin: 0 4px;
+    color: #D1D5DB;
+}
+
+.topbar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.2px;
+    line-height: 1.2;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.topbar-icon-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #E5E7EB;
+    background: transparent;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s;
+    color: #6B7280;
+}
+
+.topbar-icon-btn:hover {
+    background: #F9FAFB;
+    color: #111827;
+}
+
+.topbar-icon-btn svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.topbar-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 16px;
+    height: 16px;
+    background: #EF4444;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.topbar-divider {
+    width: 1px;
+    height: 22px;
+    background: #E5E7EB;
+    margin: 0 4px;
+}
+
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.topbar-user-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #111827;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topbar-user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* ── 6. PAGE CONTENT AREA ── */
+.admin-content {
+    padding: 28px;
+    flex: 1;
+}
+
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.page-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.3px;
+}
+
+.page-subtitle {
+    font-size: 12.5px;
+    color: #9CA3AF;
+    margin-top: 2px;
+}
+
+.page-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mb-section {
+    margin-bottom: 24px;
+}
+
+/* ── 7. STAT CARDS ── */
+.stat-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.stat-card-label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #9CA3AF;
+    margin-bottom: 8px;
+}
+
+.stat-card-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stat-card-sub {
+    font-size: 11.5px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+/* ── 8. ADMIN CARDS ── */
+.admin-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.admin-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #F3F4F6;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.admin-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+}
+
+/* ── 9. ADMIN TABLES ── */
+.admin-table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+.admin-table thead tr {
+    background: #F9FAFB;
+}
+
+.admin-table th {
+    padding: 11px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #6B7280;
+    text-align: left;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.admin-table td {
+    padding: 13px 20px;
+    font-size: 13px;
+    color: #374151;
+    border-bottom: 1px solid #F3F4F6;
+    vertical-align: middle;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+    background: #F9FAFB;
+}
+
+.td-secondary {
+    color: #9CA3AF;
+    font-size: 12.5px;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.fs-13 {
+    font-size: 13px;
+}
+
+/* ── 10. STATUS BADGES ── */
+.status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.badge-active {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.badge-pending {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.badge-processing {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.badge-delivered {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.badge-cancelled {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.badge-low-stock {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.badge-out-of-stock {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+/* ── 11. ADMIN ACTION BUTTONS ── */
+.action-btns {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-admin-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 18px;
+    background: #111827;
+    color: #FFFFFF;
+    border: 1px solid #111827;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.btn-admin-primary:hover {
+    background: #1F2937;
+    color: #FFFFFF;
+}
+
+.btn-admin-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: transparent;
+    color: #374151;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.btn-admin-outline:hover {
+    background: #F9FAFB;
+    border-color: #9CA3AF;
+    color: #111827;
+}
+
+.btn-admin-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: transparent;
+    color: #EF4444;
+    border: 1px solid #FECACA;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+
+.btn-admin-danger:hover {
+    background: #FEE2E2;
+}
+
+.btn-admin-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-admin-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 7px;
+}
+
+.btn-admin-icon svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+}
+
+/* ── 12. SEARCH BAR ── */
+.table-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.search-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 0 12px;
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-input-wrapper svg {
+    width: 14px;
+    height: 14px;
+    color: #9CA3AF;
+    flex-shrink: 0;
+    display: block;
+}
+
+.search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
+    color: #374151;
+    padding: 8px 0;
+    width: 100%;
+}
+
+.search-input::placeholder {
+    color: #9CA3AF;
+}
+
+/* ── 13. ADMIN FORM STYLES ── */
+.admin-form-section {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.admin-form-section-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #F3F4F6;
+    background: #F9FAFB;
+}
+
+.admin-form-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.admin-form-section-body {
+    padding: 22px;
+}
+
+.form-group-admin {
+    margin-bottom: 16px;
+}
+
+.form-label-admin {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.form-control-admin {
+    display: block;
+    width: 100%;
+    padding: 9px 13px;
+    font-size: 13px;
+    color: #111827;
+    background: #FFFFFF;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+}
+
+.form-control-admin:focus {
+    border-color: #6B7280;
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
+}
+
+.form-control-admin:disabled {
+    background: #F9FAFB;
+    color: #6B7280;
+}
+
+.form-control-admin::placeholder {
+    color: #9CA3AF;
+}
+
+.form-select-admin {
+    display: block;
+    width: 100%;
+    padding: 9px 13px;
+    font-size: 13px;
+    color: #111827;
+    background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 13px center;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+}
+
+.form-select-admin:focus {
+    border-color: #6B7280;
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
+}
+
+.form-row-admin {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.form-row-2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.form-row-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.section-divider {
+    height: 1px;
+    background: #F3F4F6;
+    margin: 16px 0;
+}
+
+/* ── 14. ADMIN TEXT UTILITIES ── */
+/* These are scoped to avoid overriding Bootstrap globally */
+.admin-wrapper .text-success {
+    color: #10B981 !important;
+}
+
+.admin-wrapper .text-danger {
+    color: #EF4444 !important;
+}
+
+.admin-wrapper .text-warning {
+    color: #F59E0B !important;
+}
+
+.admin-wrapper .text-secondary {
+    color: #6B7280 !important;
+}
+
+/* ── 15. RESPONSIVE ── */
+
+/* ─ Tablet (768px and below) — icon-only collapsed sidebar ─ */
+/* NOTE: intentionally NOT firing at 991px — 1024px laptops need full sidebar */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        width: 64px;
+        min-width: 64px;
+    }
+
+    /* Hide text — only at true tablet/mobile, NOT on laptops */
+    .sidebar-brand-text,
+    .sidebar-user-info,
+    .sidebar-section-label,
+    .sidebar-nav-sublink,
+    .sidebar-brand-sub {
+        display: none;
+    }
+
+    .sidebar-brand-icon {
+        margin: 0 auto;
+    }
+
+    .sidebar-brand {
+        justify-content: center;
+        padding: 18px 10px;
+    }
+
+    .sidebar-nav-link {
+        justify-content: center;
+        padding: 10px;
+        gap: 0;
+    }
+
+    .sidebar-nav-link svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .sidebar-footer {
+        padding: 12px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .sidebar-user-avatar {
+        margin: 0;
+    }
+
+    .admin-content {
+        padding: 20px;
+    }
+}
+
+/* ─ Mobile (up to 767px) ─ */
+@media (max-width: 767px) {
+    .admin-wrapper {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        min-width: unset;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        flex-wrap: wrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .sidebar-brand {
+        padding: 12px 16px;
+        border-bottom: none;
+        border-right: 1px solid #1F2937;
+        flex-shrink: 0;
+    }
+
+    .sidebar-brand-text {
+        display: flex;
+    }
+
+    .sidebar-brand-sub {
+        display: none;
+    }
+
+    .sidebar-nav {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0;
+        flex-wrap: nowrap;
+        flex: 1;
+    }
+
+    .sidebar-section-label,
+    .sidebar-nav-sublink,
+    .sidebar-footer,
+    .sidebar-user-info {
+        display: none;
+    }
+
+    .sidebar-nav ul {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sidebar-nav-item {
+        padding: 0;
+        flex-shrink: 0;
+    }
+
+    .sidebar-nav-link {
+        padding: 12px 14px;
+        border-radius: 0;
+        gap: 6px;
+        font-size: 12px;
+        justify-content: flex-start;
+        flex-direction: row;
+        white-space: nowrap;
+    }
+
+    .sidebar-nav-link svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .admin-topbar {
+        padding: 12px 16px;
+    }
+
+    .topbar-title {
+        font-size: 14px;
+    }
+
+    .admin-content {
+        padding: 16px;
+    }
+
+    .form-row-2,
+    .form-row-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .page-actions {
+        flex-wrap: wrap;
+    }
+
+    .stat-card-value {
+        font-size: 20px;
+    }
+
+    .admin-table {
+        font-size: 12px;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 10px 14px;
+    }
+
+    .topbar-icon-btn {
+        display: none;
+    }
+
+    .topbar-divider {
+        display: none;
+    }
+}
+
+/* ── 16. ADMIN LOGIN PAGE ── */
+/* Standalone page — not inside admin-wrapper */
+.admin-login-page {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #111827;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-login-card {
+    max-width: 400px;
+    width: 100%;
+    padding: 3rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+   14. ANALYTICS SECTION \u2014 Premium Redesign
+\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
+
+/* \u2500\u2500 Main unified card \u2500\u2500 */
+.admin-wrapper .analytics-main-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 32px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+/* \u2500\u2500 Card header \u2500\u2500 */
+.admin-wrapper .analytics-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 28px 20px;
+    border-bottom: 1px solid #F1F5F9;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.admin-wrapper .analytics-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.admin-wrapper .analytics-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-wrapper .analytics-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0F172A;
+    letter-spacing: -0.3px;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.admin-wrapper .analytics-subtitle {
+    font-size: 12px;
+    color: #94A3B8;
+    font-weight: 400;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* \u2500\u2500 Trend badge \u2500\u2500 */
+.admin-wrapper .analytics-trend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+    transition: all 0.2s ease;
+}
+
+.admin-wrapper .analytics-trend-badge.positive {
+    background: #ECFDF5;
+    color: #059669;
+    border: 1px solid #A7F3D0;
+}
+
+.admin-wrapper .analytics-trend-badge.negative {
+    background: #FEF2F2;
+    color: #DC2626;
+    border: 1px solid #FECACA;
+}
+
+.admin-wrapper .analytics-trend-badge svg {
+    flex-shrink: 0;
+}
+
+/* \u2500\u2500 Filter pill group \u2500\u2500 */
+.admin-wrapper .analytics-header-right {
+    flex-shrink: 0;
+}
+
+.admin-wrapper .chart-filter-group {
+    display: inline-flex;
+    align-items: center;
+    background: #F1F5F9;
+    border-radius: 10px;
+    padding: 4px;
+    gap: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.admin-wrapper .chart-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748B;
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit;
+    letter-spacing: -0.1px;
+}
+
+.admin-wrapper .chart-filter-btn:hover {
+    color: #334155;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.admin-wrapper .chart-filter-btn.active {
+    background: #6366F1;
+    /* indigo — matches the line color */
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+}
+
+/* \u2500\u2500 Insight strip \u2500\u2500 */
+.admin-wrapper .analytics-insight-strip {
+    display: flex;
+    align-items: stretch;
+    padding: 0 28px;
+    background: #FAFBFF;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+.admin-wrapper .insight-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding: 16px 24px 16px 0;
+    flex: 1;
+}
+
+.admin-wrapper .insight-item:first-child {
+    padding-left: 0;
+}
+
+.admin-wrapper .insight-divider {
+    width: 1px;
+    background: #E2E8F0;
+    margin: 14px 24px 14px 0;
+    flex-shrink: 0;
+}
+
+.admin-wrapper .insight-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+
+.admin-wrapper .insight-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0F172A;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.admin-wrapper .insight-change {
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin-wrapper .insight-change.positive {
+    color: #059669;
+}
+
+.admin-wrapper .insight-change.negative {
+    color: #DC2626;
+}
+
+/* \u2500\u2500 Chart canvas area \u2500\u2500 */
+.admin-wrapper .analytics-chart-body {
+    padding: 24px 28px 20px;
+    position: relative;
+    overflow-x: auto;
+    /* horizontal scroll on very small screens */
+}
+
+.admin-wrapper .analytics-chart-body canvas {
+    width: 100% !important;
+    height: 320px !important;
+    display: block;
+    min-width: 320px;
+    /* never collapses below readable width */
+}
+
+/* \u2500\u2500 Responsive \u2014 Tablet (\u2264992px) \u2500\u2500 */
+@media (max-width: 992px) {
+    .admin-wrapper .analytics-insight-strip {
+        flex-wrap: wrap;
+        padding: 0 20px;
+    }
+
+    .admin-wrapper .insight-item {
+        min-width: 120px;
+        padding: 14px 20px 14px 0;
+    }
+
+    .admin-wrapper .analytics-header {
+        padding: 18px 20px 16px;
+    }
+}
+
+/* \u2500\u2500 Responsive \u2014 Mobile (\u2264600px) \u2500\u2500 */
+@media (max-width: 600px) {
+    .admin-wrapper .analytics-insight-strip {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 0;
+    }
+
+    .admin-wrapper .insight-item {
+        padding: 14px 16px;
+        border-bottom: 1px solid #F1F5F9;
+    }
+
+    .admin-wrapper .insight-divider {
+        display: none;
+    }
+
+    .admin-wrapper .analytics-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .admin-wrapper .chart-filter-group {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .admin-wrapper .analytics-chart-body {
+        padding: 16px 16px 14px;
+    }
+
+    .admin-wrapper .analytics-chart-body canvas {
+        height: 240px !important;
+    }
+
+    .admin-wrapper .analytics-title {
+        font-size: 15px;
+    }
+
+    .admin-wrapper .insight-value {
+        font-size: 17px;
+    }
+}

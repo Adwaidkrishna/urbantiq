@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Cancellations | URBANTIQ</title>
+    <meta name="description" content="View your cancelled orders at URBANTIQ.">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../public/css/common.css">
+    <link rel="stylesheet" href="../../public/css/account.css">
+</head>
+
+<body class="account-body">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">URBANTIQ</a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="signup.html">Signup</a></li>
+                </ul>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="search-container d-none d-lg-flex">
+                    <i class="bi bi-search text-muted me-2" style="font-size: 1rem;"></i>
+                    <input type="text" class="search-input" placeholder="Search products...">
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="wishlist.html" class="icon-btn" title="Wishlist"><i class="bi bi-heart"></i></a>
+                    <a href="cart.html" class="icon-btn" title="Cart">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-badge">0</span>
+                    </a>
+                    <a href="account.html" class="icon-btn active-nav-icon" title="Profile"><i
+                            class="bi bi-person"></i></a>
+                </div>
+                <button class="navbar-toggler border-0 p-2" type="button"><span
+                        class="navbar-toggler-icon"></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="account-page-wrap">
+        <div class="container">
+            <div class="account-container" style="max-width:860px;">
+
+                <!-- Back link -->
+                <div class="mb-4">
+                    <a href="account.html" class="text-decoration-none text-muted small fw-bold">
+                        <i class="bi bi-chevron-left me-1"></i> Back to Account
+                    </a>
+                </div>
+
+                <h1 class="profile-name mb-2">Order Cancellations</h1>
+                <p class="text-muted small mb-5">2 cancelled orders</p>
+
+                <!-- ─── Cancellation Card 1 ─── -->
+                <div class="cx-card">
+                    <div class="cx-card-header">
+                        <div class="cx-header-left">
+                            <div class="cx-order-id">#UTQ-45520</div>
+                            <div class="cx-header-meta">
+                                <span>Ordered Dec 10, 2025</span>
+                                <span class="cx-dot">·</span>
+                                <span>Cancelled Dec 15, 2025</span>
+                            </div>
+                        </div>
+                        <span class="cx-badge-cancelled">
+                            <i class="bi bi-x-circle-fill me-1" style="font-size:10px;"></i>Cancelled
+                        </span>
+                    </div>
+
+                    <div class="cx-card-body">
+                        <!-- Image -->
+                        <div class="cx-img-col">
+                            <img src="../../public/images/user/combo.jpeg" alt="Premium Poplin Shirt" class="cx-product-img">
+                        </div>
+
+                        <!-- Details -->
+                        <div class="cx-detail-col">
+                            <div class="cx-product-name">Premium Poplin Shirt</div>
+                            <div class="cx-detail-grid">
+                                <div class="cx-detail-row">
+                                    <span class="cx-detail-label">Order ID</span>
+                                    <span class="cx-detail-val">#UTQ-45520</span>
+                                </div>
+                                <div class="cx-detail-row">
+                                    <span class="cx-detail-label">Variant</span>
+                                    <span class="cx-detail-val">Mist White | Size: L</span>
+                                </div>
+                                <div class="cx-detail-row">
+                                    <span class="cx-detail-label">Quantity</span>
+                                    <span class="cx-detail-val">1</span>
+                                </div>
+                                <div class="cx-detail-row">
+                                    <span class="cx-detail-label">Payment</span>
+                                    <span class="cx-detail-val">Credit Card</span>
+                                </div>
+                                <div class="cx-detail-row cx-reason-row">
+                                    <span class="cx-detail-label">Reason</span>
+                                    <span class="cx-detail-val cx-reason-text">Changed my mind</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Price + action -->
+                        <div class="cx-action-col">
+                            <div class="cx-price">₹1,299.00</div>
+                            <div class="cx-refund-status">
+                                <i class="bi bi-check-circle-fill me-1" style="color:#34c759;"></i>
+                                Refund Completed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── Cancellation Card 2 ─── -->
+            <div class="cx-card">
+                <div class="cx-card-header">
+                    <div class="cx-header-left">
+                        <div class="cx-order-id">#UTQ-45512</div>
+                        <div class="cx-header-meta">
+                            <span>Ordered Dec 8, 2025</span>
+                            <span class="cx-dot">·</span>
+                            <span>Cancelled Dec 12, 2025</span>
+                        </div>
+                    </div>
+                    <span class="cx-badge-cancelled">
+                        <i class="bi bi-x-circle-fill me-1" style="font-size:10px;"></i>Cancelled
+                    </span>
+                </div>
+
+                <div class="cx-card-body">
+                    <!-- Image -->
+                    <div class="cx-img-col">
+                        <img src="../../public/images/user/cargo.webp" alt="Classic Slim-Fit Denim" class="cx-product-img">
+                    </div>
+
+                    <!-- Details -->
+                    <div class="cx-detail-col">
+                        <div class="cx-product-name">Classic Slim-Fit Denim</div>
+                        <div class="cx-detail-grid">
+                            <div class="cx-detail-row">
+                                <span class="cx-detail-label">Order ID</span>
+                                <span class="cx-detail-val">#UTQ-45512</span>
+                            </div>
+                            <div class="cx-detail-row">
+                                <span class="cx-detail-label">Variant</span>
+                                <span class="cx-detail-val">Indigo Blue | Size: 32</span>
+                            </div>
+                            <div class="cx-detail-row">
+                                <span class="cx-detail-label">Quantity</span>
+                                <span class="cx-detail-val">1</span>
+                            </div>
+                            <div class="cx-detail-row">
+                                <span class="cx-detail-label">Payment</span>
+                                <span class="cx-detail-val">UPI</span>
+                            </div>
+                            <div class="cx-detail-row cx-reason-row">
+                                <span class="cx-detail-label">Reason</span>
+                                <span class="cx-detail-val cx-reason-text">Incorrect size ordered</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price + action -->
+                    <div class="cx-action-col">
+                        <div class="cx-price">₹2,499.00</div>
+                        <div class="cx-refund-status">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>
+                            Refund Initiated
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-3 text-start">
+                    <a href="home.html" class="footer-logo">URBANTIQ</a>
+                    <p class="footer-desc">Premium men's fashion for the modern generation. Engineering style with
+                        clinical precision.</p>
+                    <div class="footer-social d-none d-md-flex">
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    </div>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start">
+                    <h5 class="footer-heading">Shop</h5>
+                    <ul class="footer-links">
+                        <li><a href="product.html">New Arrivals</a></li>
+                        <li><a href="product.html">Shirts</a></li>
+                        <li><a href="product.html">Jeans</a></li>
+                        <li><a href="product.html">Suits</a></li>
+                        <li><a href="product.html">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start">
+                    <h5 class="footer-heading">Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start">
+                    <h5 class="footer-heading">Account</h5>
+                    <ul class="footer-links">
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="signup.html">Signup</a></li>
+                        <li><a href="wishlist.html">Wishlist</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="account-orders.html">Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                <div class="copyright text-start">&copy; 2026 URBANTIQ. All rights reserved.</div>
+                <div class="footer-legal d-flex gap-3 mt-3 mt-md-0">
+                    <a href="#" class="text-muted small text-decoration-none">Terms</a>
+                    <a href="#" class="text-muted small text-decoration-none">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../controllers/script.js"></script>
+</body>
+
+</html>

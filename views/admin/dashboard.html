@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | URBANTIQ Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Admin CSS -->
+    <link rel="stylesheet" href="../../public/css/admin.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+    <div class="admin-wrapper">
+        <!-- SIDEBAR -->
+<aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" />
+                        <path d="M2 17L12 22L22 17" />
+                        <path d="M2 12L12 17L22 12" />
+                    </svg>
+                </div>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-title">URBANTIQ</span>
+                    <span class="sidebar-brand-sub">Management System</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="sidebar-section-label">General</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="dashboard.html" class="sidebar-nav-link ">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="order-management.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                            </svg>
+                            Order Management
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="customers.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Customers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-label">Marketing & Sales</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="coupons.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                                <line x1="7" y1="8" x2="17" y2="8"></line>
+                                <line x1="7" y1="12" x2="17" y2="12"></line>
+                                <line x1="7" y1="16" x2="12" y2="16"></line>
+                            </svg>
+                            Coupon Codes
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="categories.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="21" y2="18"></line>
+                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                            </svg>
+                            Categories
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="sales-offers.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                                </path>
+                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                            </svg>
+                            Sales & Offers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-label">Finance & Inventory</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="transactions.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            Transactions
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <div class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                </path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                            Purchase
+                        </div>
+                        <a href="purchases.html" class="sidebar-nav-sublink">Purchase List</a>
+                        <a href="add-purchase.html" class="sidebar-nav-sublink">Add Purchase</a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="batch-management.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                                <line x1="6" y1="6" x2="6" y2="6"></line>
+                                <line x1="6" y1="18" x2="6" y2="18"></line>
+                            </svg>
+                            Batch Implementation
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="suppliers.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 8v4"></path>
+                                <path d="M12 16h.01"></path>
+                            </svg>
+                            Suppliers
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <div class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z"></path>
+                                <path d="M2 17L12 22L22 17"></path>
+                                <path d="M2 12L12 17L22 12"></path>
+                            </svg>
+                            Inventory
+                        </div>
+                        <a href="inventory.html" class="sidebar-nav-sublink">Inventory Overview</a>
+                        <a href="inventory-management.html" class="sidebar-nav-sublink">Inventory Management</a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-label">Settings</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="admin-profile.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Admin Profile
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">AD</div>
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name">Adwaid S.</div>
+                        <div class="sidebar-user-role">Super Admin</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-main">
+            <!-- TOP BAR -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <div class="topbar-breadcrumb">Pages <span>/</span> Dashboard</div>
+                    <h1 class="topbar-title">Dashboard Overview</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-icon-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                    <button class="topbar-icon-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span class="topbar-badge">4</span>
+                    </button>
+                    <div class="topbar-divider"></div>
+                    <div class="topbar-user">
+                        <div class="topbar-user-avatar">AD</div>
+                        <span class="topbar-user-name">Adwaid</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+<div class="admin-content">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Welcome back, Adwaid!</h2>
+                        <p class="page-subtitle">Here's a summary of your store's performance today.</p>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn-admin-outline btn-admin-sm">Export Data</button>
+                        <button class="btn-admin-primary btn-admin-sm">Add Product</button>
+                    </div>
+                </div>
+
+                <!-- STAT CARDS -->
+                <div class="row g-4 mb-section">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-card-label">Total Sales</div>
+                            <div class="stat-card-value">$124,563</div>
+                            <div class="stat-card-sub text-success">+12.5% from last month</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-card-label">Total Orders</div>
+                            <div class="stat-card-value">1,284</div>
+                            <div class="stat-card-sub text-success">+4.2% from last month</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-card-label">Total Customers</div>
+                            <div class="stat-card-value">8,102</div>
+                            <div class="stat-card-sub text-success">+18.7% from last month</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-card-label">Total Revenue</div>
+                            <div class="stat-card-value">$42,390</div>
+                            <div class="stat-card-sub text-danger">-2.4% from last month</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── ANALYTICS SECTION ── -->
+                <div class="analytics-section mb-section">
+                    <div class="analytics-main-card">
+
+                        <!-- Card Header -->
+                        <div class="analytics-header">
+                            <div class="analytics-header-left">
+                                <div class="analytics-title-group">
+                                    <h3 class="analytics-title">Sales Analytics</h3>
+                                    <p class="analytics-subtitle">Monthly revenue performance overview</p>
+                                </div>
+                                <!-- Trend badge -->
+                                <div class="analytics-trend-badge positive" id="trend-badge">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="18 15 12 9 6 15"></polyline>
+                                    </svg>
+                                    <span id="trend-value">+8.7%</span>
+                                </div>
+                            </div>
+                            <div class="analytics-header-right">
+                                <div class="chart-filter-group">
+                                    <button class="chart-filter-btn" data-filter="today">Today</button>
+                                    <button class="chart-filter-btn" data-filter="week">Week</button>
+                                    <button class="chart-filter-btn active" data-filter="month">Month</button>
+                                    <button class="chart-filter-btn" data-filter="year">Year</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Insight Strip -->
+                        <div class="analytics-insight-strip">
+                            <div class="insight-item">
+                                <span class="insight-label">Revenue</span>
+                                <span class="insight-value" id="metric-revenue">$124,563</span>
+                                <span class="insight-change positive" id="insight-revenue-change">+8.7%</span>
+                            </div>
+                            <div class="insight-divider"></div>
+                            <div class="insight-item">
+                                <span class="insight-label">Orders</span>
+                                <span class="insight-value" id="metric-orders">3,840</span>
+                                <span class="insight-change positive" id="insight-orders-change">+4.2%</span>
+                            </div>
+                            <div class="insight-divider"></div>
+                            <div class="insight-item">
+                                <span class="insight-label">Conversion</span>
+                                <span class="insight-value" id="metric-conversion">3.9%</span>
+                                <span class="insight-change positive" id="insight-conv-change">+0.3%</span>
+                            </div>
+                            <div class="insight-divider"></div>
+                            <div class="insight-item">
+                                <span class="insight-label">Avg / Day</span>
+                                <span class="insight-value" id="metric-avg">$4,018</span>
+                                <span class="insight-change positive" id="insight-avg-change">+5.1%</span>
+                            </div>
+                        </div>
+
+                        <!-- Chart -->
+                        <div class="analytics-chart-body">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ── END ANALYTICS SECTION ── -->
+
+
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="admin-card">
+                            <div class="admin-card-header">
+                                <h3 class="admin-card-title">Recent Orders</h3>
+                                <a href="order-management.html" class="btn-admin-outline btn-admin-sm">View All</a>
+                            </div>
+                            <div class="admin-table-wrapper">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-600">#ORD-2841</td>
+                                            <td>Adwaid S.</td>
+                                            <td class="td-secondary">Oct 24, 2023</td>
+                                            <td><span class="status-badge badge-processing">Processing</span></td>
+                                            <td class="fw-600">$120.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-600">#ORD-2840</td>
+                                            <td>Sarah Cone</td>
+                                            <td class="td-secondary">Oct 24, 2023</td>
+                                            <td><span class="status-badge badge-delivered">Delivered</span></td>
+                                            <td class="fw-600">$45.50</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-600">#ORD-2839</td>
+                                            <td>Mike Jason</td>
+                                            <td class="td-secondary">Oct 23, 2023</td>
+                                            <td><span class="status-badge badge-pending">Pending</span></td>
+                                            <td class="fw-600">$210.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-600">#ORD-2838</td>
+                                            <td>Emily Davis</td>
+                                            <td class="td-secondary">Oct 23, 2023</td>
+                                            <td><span class="status-badge badge-delivered">Delivered</span></td>
+                                            <td class="fw-600">$89.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-600">#ORD-2837</td>
+                                            <td>John Doe</td>
+                                            <td class="td-secondary">Oct 22, 2023</td>
+                                            <td><span class="status-badge badge-cancelled">Cancelled</span></td>
+                                            <td class="fw-600">$54.20</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="admin-card">
+                            <div class="admin-card-header">
+                                <h3 class="admin-card-title">Low Stock</h3>
+                                <a href="inventory.html" class="btn-admin-outline btn-admin-sm">Details</a>
+                            </div>
+                            <div class="admin-table-wrapper">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Stock</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Urban Hoodie X</td>
+                                            <td><span class="status-badge badge-low-stock">3 Left</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Denim Jacket Pro</td>
+                                            <td><span class="status-badge badge-out-of-stock">0 Left</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Leather Boots</td>
+                                            <td><span class="status-badge badge-low-stock">2 Left</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Graphic Tee</td>
+                                            <td><span class="status-badge badge-low-stock">5 Left</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Admin Logic -->
+    <script src="../../controllers/admin.js"></script>
+</body>
+
+</html>

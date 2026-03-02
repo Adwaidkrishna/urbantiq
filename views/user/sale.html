@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Season Clearance Sale | URBANTIQ</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../public/css/common.css">
+    <link rel="stylesheet" href="../../public/css/sale.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">URBANTIQ</a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="signup.html">Signup</a></li>
+                </ul>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="search-container d-none d-lg-flex">
+                    <i class="bi bi-search text-muted me-2" style="font-size: 1rem;"></i>
+                    <input type="text" class="search-input" placeholder="Search products...">
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="wishlist.html" class="icon-btn" title="Wishlist">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                    <a href="cart.html" class="icon-btn" title="Cart">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-badge">0</span>
+                    </a>
+                    <a href="account.html" class="icon-btn" title="Profile">
+                        <i class="bi bi-person"></i>
+                    </a>
+                </div>
+                <button class="navbar-toggler border-0 p-2" type="button"><span
+                        class="navbar-toggler-icon"></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Sale Banner -->
+    <section class="sale-hero"
+        style="background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('images/sale-hero.png');">
+        <div class="sale-hero-content">
+            <span class="sale-badge">Limited Time · Ending Soon</span>
+            <h1 class="sale-hero-title">Season Clearance Sale</h1>
+            <p class="sale-hero-subtitle">Elevate your wardrobe with premium styles. Up to 70% Off on Selected Styles.
+            </p>
+
+            <!-- Countdown Timer -->
+            <div class="sale-countdown d-flex justify-content-center gap-4 mb-5">
+                <div class="timer-unit">
+                    <span id="days" class="timer-value">00</span>
+                    <span class="timer-label">Days</span>
+                </div>
+                <div class="timer-unit">
+                    <span id="hours" class="timer-value">00</span>
+                    <span class="timer-label">Hours</span>
+                </div>
+                <div class="timer-unit">
+                    <span id="minutes" class="timer-value">00</span>
+                    <span class="timer-label">Mins</span>
+                </div>
+                <div class="timer-unit">
+                    <span id="seconds" class="timer-value">00</span>
+                    <span class="timer-label">Secs</span>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#sale-products" class="btn btn-pill btn-light px-5 py-3 fw-bold">Shop Deals</a>
+                <a href="#coupons" class="btn btn-pill btn-outline-light px-5 py-3 fw-bold">View Coupons</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coupon Section -->
+    <section id="coupons" class="container coupon-section">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="coupon-card">
+                    <div class="coupon-info">
+                        <span class="coupon-code">SAVE20</span>
+                        <p class="coupon-desc">Get extra 20% on orders above ₹1999</p>
+                    </div>
+                    <button class="copy-btn" data-coupon-code="SAVE20">Copy</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="coupon-card">
+                    <div class="coupon-info">
+                        <span class="coupon-code">FREESHIP</span>
+                        <p class="coupon-desc">Free shipping on all sale items</p>
+                    </div>
+                    <button class="copy-btn" data-coupon-code="FREESHIP">Copy</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="coupon-card">
+                    <div class="coupon-info">
+                        <span class="coupon-code">BUY2GET1</span>
+                        <p class="coupon-desc">Buy any 2 get 1 free on selected items</p>
+                    </div>
+                    <button class="copy-btn" data-coupon-code="BUY2GET1">Copy</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sale Product Grid -->
+    <section id="sale-products" class="container py-5">
+        <h2 class="sale-grid-title">Discounted Styles</h2>
+        <div class="row g-4">
+            <!-- Product 1 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="sale-product-card">
+                    <div class="sale-img-wrap">
+                        <span class="discount-badge">40% OFF</span>
+                        <img src="../../public/images/user/phoodie.jpeg" alt="Oversized Hoodie">
+                    </div>
+                    <div class="sale-product-info">
+                        <span class="sale-cat">Hoodies</span>
+                        <a href="single-product.html" class="sale-name">Premium Oversized Hoodie</a>
+                        <div class="sale-price-row">
+                            <span class="price-new">₹539</span>
+                            <span class="price-old">₹899</span>
+                        </div>
+                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="sale-product-card">
+                    <div class="sale-img-wrap">
+                        <span class="discount-badge">50% OFF</span>
+                        <img src="../../public/images/user/pbaggy.jpeg" alt="Baggy Jeans">
+                    </div>
+                    <div class="sale-product-info">
+                        <span class="sale-cat">Jeans</span>
+                        <a href="single-product.html" class="sale-name">Relaxed Baggy Jeans</a>
+                        <div class="sale-price-row">
+                            <span class="price-new">₹99</span>
+                            <span class="price-old">₹199</span>
+                        </div>
+                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="sale-product-card">
+                    <div class="sale-img-wrap">
+                        <span class="discount-badge">30% OFF</span>
+                        <img src="../../public/images/user/pcasual.jpeg" alt="Classic Shirt">
+                    </div>
+                    <div class="sale-product-info">
+                        <span class="sale-cat">Shirts</span>
+                        <a href="single-product.html" class="sale-name">Minimalist Cotton Shirt</a>
+                        <div class="sale-price-row">
+                            <span class="price-new">₹62</span>
+                            <span class="price-old">₹89</span>
+                        </div>
+                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 4 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="sale-product-card">
+                    <div class="sale-img-wrap">
+                        <span class="discount-badge">20% OFF</span>
+                        <img src="../../public/images/user/combo.jpeg" alt="Shirt & Pant Combo">
+                    </div>
+                    <div class="sale-product-info">
+                        <span class="sale-cat">Combo</span>
+                        <a href="single-product.html" class="sale-name">Modular Style Combo</a>
+                        <div class="sale-price-row">
+                            <span class="price-new">₹103</span>
+                            <span class="price-old">₹129</span>
+                        </div>
+                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 5 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="sale-product-card">
+                    <div class="sale-img-wrap">
+                        <span class="discount-badge">60% OFF</span>
+                        <img src="../../public/images/user/oversized.jpeg" alt="Oversized Tee">
+                    </div>
+                    <div class="sale-product-info">
+                        <span class="sale-cat">Oversized</span>
+                        <a href="single-product.html" class="sale-name">Drop Shoulder Tee</a>
+                        <div class="sale-price-row">
+                            <span class="price-new">₹48</span>
+                            <span class="price-old">₹120</span>
+                        </div>
+                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 6 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="sale-product-card">
+                    <div class="sale-img-wrap">
+                        <span class="discount-badge">45% OFF</span>
+                        <img src="../../public/images/user/formals.jpeg" alt="Formal Shirt">
+                    </div>
+                    <div class="sale-product-info">
+                        <span class="sale-cat">Formals</span>
+                        <a href="single-product.html" class="sale-name">Sleek Executive Shirt</a>
+                        <div class="sale-price-row">
+                            <span class="price-new">₹137</span>
+                            <span class="price-old">₹249</span>
+                        </div>
+                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Shop the Sale? -->
+    <section class="sale-features">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                        <h3 class="feature-title">Secure Checkout</h3>
+                        <p class="feature-desc">100% encrypted payment processing for your peace of mind.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-arrow-left-right"></i></div>
+                        <h3 class="feature-title">Easy Returns</h3>
+                        <p class="feature-desc">Simple 30-day return policy, even on clearance items.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-fire"></i></div>
+                        <h3 class="feature-title">Limited Stock</h3>
+                        <p class="feature-desc">Items are selling fast. Grab your favorites before they're gone.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <a href="home.html" class="footer-logo">URBANTIQ</a>
+                    <p class="footer-desc">Premium men’s fashion for the modern generation. Engineering style with
+                        clinical precision.</p>
+                    <div class="footer-social d-none d-md-flex">
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    </div>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Shop</h5>
+                    <ul class="footer-links">
+                        <li><a href="product.html">New Arrivals</a></li>
+                        <li><a href="product.html">Shirts</a></li>
+                        <li><a href="product.html">Jeans</a></li>
+                        <li><a href="product.html">Suits</a></li>
+                        <li><a href="product.html">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Account</h5>
+                    <ul class="footer-links">
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="signup.html">Signup</a></li>
+                        <li><a href="wishlist.html">Wishlist</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="account-orders.html">Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                <div class="copyright text-start">
+                    &copy; 2026 URBANTIQ. All rights reserved.
+                </div>
+                <div class="footer-legal d-flex gap-3 mt-3 mt-md-0">
+                    <a href="#" class="text-muted small text-decoration-none">Terms</a>
+                    <a href="#" class="text-muted small text-decoration-none">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../controllers/sale.js"></script>
+
+</body>
+
+</html>

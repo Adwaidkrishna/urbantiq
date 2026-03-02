@@ -1,0 +1,278 @@
+/* ============================================
+   assets/css/info.css
+   Styles for About and Contact pages
+   URBANTIQ · Apple-minimal design language
+   ============================================ */
+
+/* ---- Common Utilities for Info Pages ---- */
+.info-section {
+    padding: 5rem 0;
+}
+
+.section-title-large {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+    color: #1d1d1f;
+}
+
+.section-title-sm {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #86868b;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* ============================================
+   ABOUT PAGE
+   ============================================ */
+
+/* Hero Section */
+.about-hero {
+    position: relative;
+    padding: 8rem 0;
+    text-align: center;
+    overflow: hidden;
+    background: #f5f5f7;
+}
+
+.about-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+    z-index: 1;
+}
+
+.about-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Story Section */
+.story-img-wrap {
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.story-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.story-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #424245;
+}
+
+.story-divider {
+    width: 60px;
+    height: 3px;
+    background: #1d1d1f;
+    margin: 2rem 0;
+    border-radius: 2px;
+}
+
+/* Values Section (Cards) */
+.value-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2.5rem;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.value-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.value-icon {
+    width: 48px;
+    height: 48px;
+    background: #f5f5f7;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #1d1d1f;
+    margin-bottom: 1.5rem;
+}
+
+.value-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1d1d1f;
+}
+
+.value-desc {
+    font-size: 0.95rem;
+    color: #6e6e73;
+    line-height: 1.6;
+}
+
+/* Why Choose Section */
+.check-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1d1d1f;
+}
+
+.check-item i {
+    color: #34c759;
+    font-size: 1.2rem;
+}
+
+/* ============================================
+   CONTACT PAGE
+   ============================================ */
+
+.contact-hero {
+    padding: 4rem 0 3rem;
+    text-align: center;
+}
+
+/* Contact Form */
+.contact-form-wrap {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+}
+
+.form-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #86868b;
+    margin-bottom: 0.6rem;
+}
+
+.form-control {
+    border-radius: 14px;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #e5e5e7;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #1d1d1f;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.03);
+}
+
+/* Contact Info Card */
+.contact-info-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+    height: 100%;
+}
+
+.info-item {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+}
+
+.info-icon {
+    width: 44px;
+    height: 44px;
+    background: #f5f5f7;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #1d1d1f;
+    flex-shrink: 0;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #86868b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.info-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    line-height: 1.5;
+}
+
+/* Map Placeholder */
+.map-container {
+    height: 400px;
+    background: #f5f5f7;
+    border-radius: 24px;
+    overflow: hidden;
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.map-placeholder {
+    color: #aeaeb2;
+    text-align: center;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .info-section {
+        padding: 3.5rem 0;
+    }
+
+    .section-title-large {
+        font-size: 2rem;
+    }
+
+    .contact-form-wrap,
+    .contact-info-card {
+        padding: 1.5rem;
+    }
+}

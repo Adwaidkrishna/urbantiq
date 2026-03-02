@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Purchase | URBANTIQ Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Admin CSS -->
+    <link rel="stylesheet" href="../../public/css/admin.css">
+</head>
+
+<body>
+
+    <div class="admin-wrapper">
+        <!-- SIDEBAR -->
+<aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" />
+                        <path d="M2 17L12 22L22 17" />
+                        <path d="M2 12L12 17L22 12" />
+                    </svg>
+                </div>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-title">URBANTIQ</span>
+                    <span class="sidebar-brand-sub">Management System</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="sidebar-section-label">General</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="dashboard.html" class="sidebar-nav-link ">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="order-management.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                            </svg>
+                            Order Management
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="customers.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Customers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-label">Marketing & Sales</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="coupons.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                                <line x1="7" y1="8" x2="17" y2="8"></line>
+                                <line x1="7" y1="12" x2="17" y2="12"></line>
+                                <line x1="7" y1="16" x2="12" y2="16"></line>
+                            </svg>
+                            Coupon Codes
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="categories.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="21" y2="18"></line>
+                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                            </svg>
+                            Categories
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="sales-offers.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                                </path>
+                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                            </svg>
+                            Sales & Offers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-label">Finance & Inventory</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="transactions.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            Transactions
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <div class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                </path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                            Purchase
+                        </div>
+                        <a href="purchases.html" class="sidebar-nav-sublink">Purchase List</a>
+                        <a href="add-purchase.html" class="sidebar-nav-sublink active">Add Purchase</a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="batch-management.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                                <line x1="6" y1="6" x2="6" y2="6"></line>
+                                <line x1="6" y1="18" x2="6" y2="18"></line>
+                            </svg>
+                            Batch Implementation
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="suppliers.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 8v4"></path>
+                                <path d="M12 16h.01"></path>
+                            </svg>
+                            Suppliers
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <div class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z"></path>
+                                <path d="M2 17L12 22L22 17"></path>
+                                <path d="M2 12L12 17L22 12"></path>
+                            </svg>
+                            Inventory
+                        </div>
+                        <a href="inventory.html" class="sidebar-nav-sublink">Inventory Overview</a>
+                        <a href="inventory-management.html" class="sidebar-nav-sublink">Inventory Management</a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-label">Settings</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="admin-profile.html" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Admin Profile
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">AD</div>
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name">Adwaid S.</div>
+                        <div class="sidebar-user-role">Super Admin</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-main">
+            <!-- TOP BAR -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <div class="topbar-breadcrumb">Pages <span>/</span> Add Purchase</div>
+                    <h1 class="topbar-title">Add Purchase</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="topbar-icon-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                    <button class="topbar-icon-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span class="topbar-badge">4</span>
+                    </button>
+                    <div class="topbar-divider"></div>
+                    <div class="topbar-user">
+                        <div class="topbar-user-avatar">AD</div>
+                        <span class="topbar-user-name">Adwaid</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+<div class="admin-content">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <section class="admin-form-section">
+                            <div class="admin-form-section-header">
+                                <h5 class="admin-form-section-title">Record Purchase Entry</h5>
+                            </div>
+                            <div class="admin-form-section-body">
+                                <form action="#">
+                                    <div class="form-row-admin form-row-2">
+                                        <div class="form-group-admin">
+                                            <label class="form-label-admin">Select Supplier</label>
+                                            <select class="form-select-admin">
+                                                <option>Global Logistics Ltd.</option>
+                                                <option>Urban Fabrics Co.</option>
+                                                <option>Premium Threads</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-admin">
+                                            <label class="form-label-admin">Purchase Date</label>
+                                            <input type="date" class="form-control-admin">
+                                        </div>
+                                    </div>
+
+                                    <div class="section-divider"></div>
+                                    <h6 class="mb-3 fw-600 fs-13">Purchase Details</h6>
+
+                                    <div class="form-row-admin"
+                                        style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr 40px; gap: 10px; align-items: flex-end;">
+                                        <div>
+                                            <label class="form-label-admin">Product Name</label>
+                                            <input type="text" class="form-control-admin"
+                                                placeholder="e.g. Slim Fit Denim">
+                                        </div>
+                                        <div>
+                                            <label class="form-label-admin">Quantity</label>
+                                            <input type="number" class="form-control-admin" placeholder="10">
+                                        </div>
+                                        <div>
+                                            <label class="form-label-admin">Unit Price ($)</label>
+                                            <input type="number" class="form-control-admin" placeholder="25.00">
+                                        </div>
+                                        <div>
+                                            <label class="form-label-admin">Total ($)</label>
+                                            <input type="number" class="form-control-admin" value="250.00" disabled
+                                                style="background-color: #f8f9fa;">
+                                        </div>
+                                        <div>
+                                            <label class="form-label-admin">Batch ID</label>
+                                            <input type="text" class="form-control-admin" placeholder="B-2024-001">
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn-admin-danger btn-admin-icon"
+                                                style="height: 38px;">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn-admin-outline btn-admin-sm mt-3">+ Add Another
+                                        Item</button>
+
+                                    <div class="form-actions mt-5">
+                                        <a href="purchases.html" class="btn-admin-outline">Cancel</a>
+                                        <button type="submit" class="btn-admin-primary">Submit Purchase Entry</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Admin Logic -->
+    <script src="../../controllers/admin.js"></script>
+</body>
+
+</html>

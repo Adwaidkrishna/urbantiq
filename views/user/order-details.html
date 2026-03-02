@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details | URBANTIQ</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../public/css/common.css">
+    <link rel="stylesheet" href="../../public/css/account.css">
+</head>
+
+<body class="account-body">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">URBANTIQ</a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="signup.html">Signup</a></li>
+                </ul>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="search-container d-none d-lg-flex">
+                    <i class="bi bi-search text-muted me-2" style="font-size: 1rem;"></i>
+                    <input type="text" class="search-input" placeholder="Search products...">
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="wishlist.html" class="icon-btn" title="Wishlist">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                    <a href="cart.html" class="icon-btn" title="Cart">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-badge">0</span>
+                    </a>
+                    <a href="account.html" class="icon-btn active-nav-icon" title="Profile">
+                        <i class="bi bi-person"></i>
+                    </a>
+                </div>
+                <button class="navbar-toggler border-0 p-2" type="button"><span
+                        class="navbar-toggler-icon"></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="account-page-wrap">
+        <div class="container">
+            <div class="account-container">
+
+                <div class="mb-4">
+                    <a href="account-orders.html" class="text-decoration-none text-muted small fw-bold">
+                        <i class="bi bi-chevron-left me-1"></i> Back to My Orders
+                    </a>
+                </div>
+
+                <!-- Header Info -->
+                <div class="d-flex justify-content-between align-items-start mb-5">
+                    <div>
+                        <div class="text-muted small fw-bold text-uppercase mb-1">Order Details</div>
+                        <h1 class="profile-name mb-1">#UTQ-91044</h1>
+                        <div class="text-muted small">Placed on Feb 27, 2026</div>
+                    </div>
+                    <span class="status-badge badge-delivered">Delivered</span>
+                </div>
+
+                <!-- Section 1: Items Ordered -->
+                <h2 class="ac-section-header">Items Ordered</h2>
+                <div class="ac-section-card p-0 overflow-hidden">
+                    <div class="px-3">
+                        <div class="item-row">
+                            <img src="../../public/images/user/pbaggy.jpeg" class="item-thumb" alt="Product">
+                            <div class="item-details">
+                                <span class="item-name">Baggy Fit Denim</span>
+                                <span class="item-meta">Size: 32 · Qty: 1 · Color: Indigo</span>
+                            </div>
+                            <span class="item-price">₹2,250.00</span>
+                        </div>
+                        <div class="item-row">
+                            <img src="../../public/images/user/pcasual.jpeg" class="item-thumb" alt="Product">
+                            <div class="item-details">
+                                <span class="item-name">Casual Linen Shirt</span>
+                                <span class="item-meta">Size: XL · Qty: 1 · Color: White</span>
+                            </div>
+                            <span class="item-price">₹2,000.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Shipping Details -->
+                <h2 class="ac-section-header">Shipping Details</h2>
+                <div class="ac-section-card">
+                    <div class="mb-3">
+                        <div class="text-muted small fw-bold mb-1">Delivery Address</div>
+                        <div class="fw-medium">Adwaid S.</div>
+                        <div class="text-muted small">123 Fashion Street, Tech Park Area<br>Kochi, Kerala, 682021</div>
+                    </div>
+                    <div>
+                        <div class="text-muted small fw-bold mb-1">Phone Number</div>
+                        <div class="fw-medium">+91 98765 43210</div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Payment Summary -->
+                <h2 class="ac-section-header">Payment Summary</h2>
+                <div class="ac-section-card">
+                    <div class="summary-line">
+                        <span class="text-muted">Subtotal</span>
+                        <span>₹4,250.00</span>
+                    </div>
+                    <div class="summary-line">
+                        <span class="text-muted">Discount</span>
+                        <span class="text-success">- ₹0.00</span>
+                    </div>
+                    <div class="summary-line">
+                        <span class="text-muted">Shipping</span>
+                        <span class="text-success">Free</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total Paid</span>
+                        <span>₹4,250.00</span>
+                    </div>
+                </div>
+
+                <!-- Section 4: Invoice (Shown if Delivered) -->
+                <h2 class="ac-section-header">Invoice</h2>
+                <div class="ac-section-card">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-file-earmark-text fs-4"></i>
+                            <div>
+                                <span class="fw-bold d-block">Invoice</span>
+                                <span class="text-muted small">UTQ-INV-91044 · Feb 27, 2026</span>
+                            </div>
+                        </div>
+                        <a href="#" class="btn-outline-black text-decoration-none text-center rounded-pill px-4 py-2"
+                            style="font-size: 0.85rem; border-width: 1px;">
+                            <i class="bi bi-download me-2"></i> Download Invoice
+                        </a>
+                    </div>
+                    <div class="mt-3 pt-3 border-top d-flex gap-4">
+                        <div>
+                            <span class="text-muted small d-block">Invoice Number</span>
+                            <span class="small fw-medium">#INV-91044812</span>
+                        </div>
+                        <div>
+                            <span class="text-muted small d-block">Payment Method</span>
+                            <span class="small fw-medium">URBANTIQ Wallet</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Actions -->
+                <div class="text-center mt-5">
+                    <!-- Shown if Processing -->
+                    <!-- <button class="btn-outline-red px-5">Cancel Order</button> -->
+
+                    <!-- Shown if Delivered -->
+                    <button class="btn-outline-black px-5">Request Return</button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <a href="home.html" class="footer-logo">URBANTIQ</a>
+                    <p class="footer-desc">Premium men’s fashion for the modern generation. Engineering style with
+                        clinical precision.</p>
+                    <div class="footer-social d-none d-md-flex">
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    </div>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Shop</h5>
+                    <ul class="footer-links">
+                        <li><a href="product.html">New Arrivals</a></li>
+                        <li><a href="product.html">Shirts</a></li>
+                        <li><a href="product.html">Jeans</a></li>
+                        <li><a href="product.html">Suits</a></li>
+                        <li><a href="product.html">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Account</h5>
+                    <ul class="footer-links">
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="signup.html">Signup</a></li>
+                        <li><a href="wishlist.html">Wishlist</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="account-orders.html">Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                <div class="copyright text-start">
+                    &copy; 2026 URBANTIQ. All rights reserved.
+                </div>
+                <div class="footer-legal d-flex gap-3 mt-3 mt-md-0">
+                    <a href="#" class="text-muted small text-decoration-none">Terms</a>
+                    <a href="#" class="text-muted small text-decoration-none">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../../controllers/script.js"></script>
+</body>
+
+</html>

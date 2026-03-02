@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout — Details | URBANTIQ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../../public/css/common.css">
+    <link rel="stylesheet" href="../../public/css/checkout.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">URBANTIQ</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="wishlist.html" class="icon-btn" title="Wishlist"><i class="bi bi-heart"></i></a>
+                <a href="cart.html" class="icon-btn" title="Cart">
+                    <i class="bi bi-cart3"></i><span class="cart-badge">3</span>
+                </a>
+                <a href="account.html" class="icon-btn" title="Profile"><i class="bi bi-person"></i></a>
+                <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PROGRESS STEPPER -->
+    <div class="ck-stepper-wrap">
+        <div class="container">
+            <div class="ck-stepper">
+                <div class="ck-step active">
+                    <div class="ck-step-circle">1</div>
+                    <span class="ck-step-label">Details</span>
+                </div>
+                <div class="ck-step-line"></div>
+                <div class="ck-step">
+                    <div class="ck-step-circle">2</div>
+                    <span class="ck-step-label">Summary</span>
+                </div>
+                <div class="ck-step-line"></div>
+                <div class="ck-step">
+                    <div class="ck-step-circle">3</div>
+                    <span class="ck-step-label">Payment</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="ck-header-wrap">
+        <div class="container">
+            <nav class="ck-breadcrumb">
+                <a href="home.html">Home</a><i class="bi bi-chevron-right"></i>
+                <a href="cart.html">Cart</a><i class="bi bi-chevron-right"></i>
+                <span>Checkout</span>
+            </nav>
+            <h1 class="ck-page-title">Delivery Details</h1>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="ck-main">
+        <div class="container">
+            <div class="ck-form-center">
+
+                <div class="ck-card">
+                    <div class="ck-card-title">Personal Information</div>
+
+                    <div class="ck-form-row">
+                        <div class="ck-form-group">
+                            <label class="ck-label" for="fullName">Full Name</label>
+                            <input type="text" id="fullName" class="ck-input" placeholder="Adwaid Kumar">
+                        </div>
+                        <div class="ck-form-group">
+                            <label class="ck-label" for="email">Email Address</label>
+                            <input type="email" id="email" class="ck-input" placeholder="you@email.com">
+                        </div>
+                    </div>
+
+                    <div class="ck-form-group">
+                        <label class="ck-label" for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="ck-input" placeholder="+91 98765 43210">
+                    </div>
+                </div>
+
+                <div class="ck-card">
+                    <div class="ck-card-title">Delivery Address</div>
+
+                    <div class="ck-form-group">
+                        <label class="ck-label" for="addr1">Address Line 1</label>
+                        <input type="text" id="addr1" class="ck-input" placeholder="House no., Street name">
+                    </div>
+
+                    <div class="ck-form-group">
+                        <label class="ck-label" for="addr2">Address Line 2 <span
+                                style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+                        <input type="text" id="addr2" class="ck-input" placeholder="Apartment, landmark">
+                    </div>
+
+                    <div class="ck-form-row">
+                        <div class="ck-form-group">
+                            <label class="ck-label" for="city">City</label>
+                            <input type="text" id="city" class="ck-input" placeholder="Kochi">
+                        </div>
+                        <div class="ck-form-group">
+                            <label class="ck-label" for="state">State</label>
+                            <input type="text" id="state" class="ck-input" placeholder="Kerala">
+                        </div>
+                    </div>
+
+                    <div class="ck-form-row">
+                        <div class="ck-form-group">
+                            <label class="ck-label" for="pincode">Pincode</label>
+                            <input type="text" id="pincode" class="ck-input" placeholder="682 001" maxlength="6">
+                        </div>
+                        <div class="ck-form-group">
+                            <label class="ck-label" for="country">Country</label>
+                            <div class="ck-select-wrap">
+                                <select id="country" class="ck-select">
+                                    <option selected>India</option>
+                                    <option>United States</option>
+                                    <option>United Kingdom</option>
+                                    <option>UAE</option>
+                                    <option>Canada</option>
+                                    <option>Australia</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ck-default-addr">
+                        <label class="ck-checkbox-container">
+                            <input type="checkbox" id="setDefault">
+                            <span class="ck-checkmark"></span>
+                            <span class="ck-checkbox-label">Set as Default Address</span>
+                        </label>
+                        <p class="ck-checkbox-desc">This address will be saved for future orders.</p>
+                    </div>
+
+                    <a href="checkout-summary.html" class="ck-action-btn">
+                        Continue to Summary <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-3 text-start">
+                    <a href="home.html" class="footer-logo">URBANTIQ</a>
+                    <p class="footer-desc">Premium men's fashion for the modern generation.</p>
+                    <div class="footer-social d-none d-md-flex">
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    </div>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start">
+                    <h5 class="footer-heading">Shop</h5>
+                    <ul class="footer-links">
+                        <li><a href="product.html">New Arrivals</a></li>
+                        <li><a href="product.html">Shirts</a></li>
+                        <li><a href="product.html">Jeans</a></li>
+                        <li><a href="product.html">Hoodies</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start">
+                    <h5 class="footer-heading">Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start">
+                    <h5 class="footer-heading">Account</h5>
+                    <ul class="footer-links">
+                        <li><a href="wishlist.html">Wishlist</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="account-orders.html">Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                <div class="copyright">&copy; 2026 URBANTIQ. All rights reserved.</div>
+                <div class="d-flex gap-3 mt-3 mt-md-0">
+                    <a href="#" class="text-muted small text-decoration-none">Terms</a>
+                    <a href="#" class="text-muted small text-decoration-none">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

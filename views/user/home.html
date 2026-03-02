@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBANTIQ | Modern Men's Fashion</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../public/css/common.css">
+    <link rel="stylesheet" href="../../public/css/home.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">URBANTIQ</a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link active" href="home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="signup.html">Signup</a></li>
+                </ul>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="search-container d-none d-lg-flex">
+                    <i class="bi bi-search text-muted me-2" style="font-size: 1rem;"></i>
+                    <input type="text" class="search-input" placeholder="Search products...">
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="wishlist.html" class="icon-btn" title="Wishlist">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                    <a href="cart.html" class="icon-btn" title="Cart">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-badge">0</span>
+                    </a>
+                    <a href="account.html" class="icon-btn" title="Profile">
+                        <i class="bi bi-person"></i>
+                    </a>
+                </div>
+                <button class="navbar-toggler border-0 p-2" type="button"><span
+                        class="navbar-toggler-icon"></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container">
+            <div class="collection-badge">
+                <i class="bi bi-stars" style="width: 16px; margin-right: 8px; color: #0066cc;"></i>
+                Spring Collection 2026
+            </div>
+            <h1 class="hero-title">Redefine Your Style</h1>
+            <p class="hero-subtitle">Discover our curated collection of premium men's fashion. Elegance meets comfort in
+                every piece.</p>
+            <div class="d-flex justify-content-center gap-3 align-items-center">
+                <a href="product.html" class="btn btn-pill btn-black">Shop Now <i class="bi bi-chevron-right"
+                        style="width: 18px; display: inline; vertical-align: middle;"></i></a>
+                <a href="sale.html" class="btn fw-600 text-decoration-none text-dark">View Deals</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Shop by Category -->
+    <section class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Shop by Category</h2>
+            <a href="product.html" class="text-primary text-decoration-none fw-600">View All <i
+                    class="bi bi-chevron-right" style="width: 16px; display: inline;"></i></a>
+        </div>
+        <div class="row g-4">
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="product.html?category=shirts" class="category-card">
+                    <img src="../../public/images/user/shirts.jpg.jpeg" alt="Shirts">
+                    <div class="category-overlay">
+                        <h3>Shirts</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="product.html?category=jeans" class="category-card">
+                    <img src="../../public/images/user/jeans.jpeg" alt="Jeans">
+                    <div class="category-overlay">
+                        <h3>Jeans</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="product.html?category=hoodies" class="category-card">
+                    <img src="../../public/images/user/hoodies.jpeg" alt="Hoodies">
+                    <div class="category-overlay">
+                        <h3>Hoodies</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="product.html?category=formals" class="category-card">
+                    <img src="../../public/images/user/formals.jpeg" alt="Formals">
+                    <div class="category-overlay">
+                        <h3>Formals</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="product.html?category=oversized" class="category-card">
+                    <img src="../../public/images/user/oversized.jpeg" alt="Oversized">
+                    <div class="category-overlay">
+                        <h3>Oversized</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="product.html?category=cargo" class="category-card">
+                    <img src="../../public/images/user/cargo.webp" alt="Cargo Pants">
+                    <div class="category-overlay">
+                        <h3>Cargo Pants</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Discover New Arrivals -->
+    <section class="container py-5">
+        <div class="mb-5 d-flex justify-content-between align-items-end">
+            <div>
+                <h2 class="section-title mb-1">Discover New Arrivals</h2>
+                <p class="text-muted m-0">Handpicked essentials for the modern man</p>
+            </div>
+            <a href="product.html" class="text-primary text-decoration-none fw-600">See All <i
+                    class="bi bi-chevron-right" style="width: 16px; display: inline;"></i></a>
+        </div>
+
+        <div class="row g-3 g-md-4">
+            <!-- Product 1 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card">
+                    <div class="product-img-wrap">
+                        <span class="product-badge badge-dark">Bestseller</span>
+                        <div class="floating-actions" style="z-index: 5;">
+                            <a href="wishlist.html" class="action-btn wishlist-btn position-relative"
+                                style="z-index: 10;"><i class="bi bi-heart"></i></a>
+                            <button type="button" class="action-btn cart-btn position-relative" style="z-index: 10;"><i
+                                    class="bi bi-cart3"></i></button>
+                        </div>
+                        <img src="../../public/images/user/phoodie.jpeg" alt="Suit">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Hoodies</div>
+                        <h4 class="product-title"><a href="single-product.html"
+                                class="text-decoration-none text-dark stretched-link">Oversized Hoodies</a></h4>
+                        <div class="product-rating">
+                            <i class="bi bi-star-fill rating-star"></i>
+                            <span>4.8</span>
+                            <span class="review-count">(234)</span>
+                        </div>
+                        <div class="product-bottom">
+                            <div class="product-price">$899</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card">
+                    <div class="product-img-wrap">
+                        <div class="floating-actions" style="z-index: 5;">
+                            <a href="wishlist.html" class="action-btn wishlist-btn position-relative"
+                                style="z-index: 10;"><i class="bi bi-heart"></i></a>
+                            <button type="button" class="action-btn cart-btn position-relative" style="z-index: 10;"><i
+                                    class="bi bi-cart3"></i></button>
+                        </div>
+                        <img src="../../public/images/user/pbaggy.jpeg" alt="Jacket">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Jeans</div>
+                        <h4 class="product-title"><a href="single-product.html"
+                                class="text-decoration-none text-dark stretched-link">Baggy Jeans</a></h4>
+                        <div class="product-rating">
+                            <i class="bi bi-star-fill rating-star"></i>
+                            <span>4.5</span>
+                            <span class="review-count">(156)</span>
+                        </div>
+                        <div class="product-bottom">
+                            <div class="product-price">$199</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card">
+                    <div class="product-img-wrap">
+                        <span class="product-badge badge-white">New</span>
+                        <div class="floating-actions" style="z-index: 5;">
+                            <a href="wishlist.html" class="action-btn wishlist-btn position-relative"
+                                style="z-index: 10;"><i class="bi bi-heart"></i></a>
+                            <button type="button" class="action-btn cart-btn position-relative" style="z-index: 10;"><i
+                                    class="bi bi-cart3"></i></button>
+                        </div>
+                        <img src="../../public/images/user/pcasual.jpeg" alt="Shirt">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Shirts</div>
+                        <h4 class="product-title"><a href="single-product.html"
+                                class="text-decoration-none text-dark stretched-link">Classic Shirt</a></h4>
+                        <div class="product-rating">
+                            <i class="bi bi-star-fill rating-star"></i>
+                            <span>4.7</span>
+                            <span class="review-count">(412)</span>
+                        </div>
+                        <div class="product-bottom">
+                            <div class="product-price">$89</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 4 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card">
+                    <div class="product-img-wrap">
+                        <div class="floating-actions" style="z-index: 5;">
+                            <a href="wishlist.html" class="action-btn wishlist-btn position-relative"
+                                style="z-index: 10;"><i class="bi bi-heart"></i></a>
+                            <button type="button" class="action-btn cart-btn position-relative" style="z-index: 10;"><i
+                                    class="bi bi-cart3"></i></button>
+                        </div>
+                        <img src="../../public/images/user/combo.jpeg" alt="Jeans">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Combo</div>
+                        <h4 class="product-title"><a href="single-product.html"
+                                class="text-decoration-none text-dark stretched-link">Shirt & Pant</a></h4>
+                        <div class="product-rating">
+                            <i class="bi bi-star-fill rating-star"></i>
+                            <span>4.6</span>
+                            <span class="review-count">(289)</span>
+                        </div>
+                        <div class="product-bottom">
+                            <div class="product-price">$129</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Season Clearance — Rounded Parallax Card -->
+    <section class="container parallax-section">
+        <div class="parallax-card">
+            <div class="parallax-content">
+                <span class="parallax-eyebrow">Limited Time</span>
+                <h2 class="parallax-title">Season Clearance</h2>
+                <p class="parallax-subtitle">Up to 70% Off on Selected Items</p>
+                <a href="sale.html" class="parallax-cta">Shop the Sale <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Selling Products -->
+    <section class="container py-5">
+        <div class="mb-5 d-flex justify-content-between align-items-end">
+            <div>
+                <h2 class="section-title mb-1">Top Selling Products</h2>
+                <p class="text-muted m-0">Our most popular items this season</p>
+            </div>
+            <a href="product.html" class="text-primary text-decoration-none fw-600">See All <i
+                    class="bi bi-chevron-right" style="width: 16px; display: inline;"></i></a>
+        </div>
+
+        <div class="row g-3 g-md-4">
+            <!-- Product 1 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card">
+                    <div class="product-img-wrap">
+                        <span class="product-badge badge-dark">Bestseller</span>
+                        <div class="floating-actions" style="z-index: 5;">
+                            <a href="wishlist.html" class="action-btn wishlist-btn position-relative"
+                                style="z-index: 10;"><i class="bi bi-heart"></i></a>
+                            <button type="button" class="action-btn cart-btn position-relative" style="z-index: 10;"><i
+                                    class="bi bi-cart3"></i></button>
+                        </div>
+                        <img src="../../public/images/user/phoodie.jpeg" alt="Suit">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Hoodies</div>
+                        <h4 class="product-title"><a href="single-product.html"
+                                class="text-decoration-none text-dark stretched-link">Oversized Hoodies</a></h4>
+                        <div class="product-rating">
+                            <i class="bi bi-star-fill rating-star"></i>
+                            <span>4.8</span>
+                            <span class="review-count">(234)</span>
+                        </div>
+                        <div class="product-bottom">
+                            <div class="product-price">$899</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card">
+                    <div class="product-img-wrap">
+                        <div class="floating-actions" style="z-index: 5;">
+                            <a href="wishlist.html" class="action-btn wishlist-btn position-relative"
+                                style="z-index: 10;"><i class="bi bi-heart"></i></a>
+                            <button type="button" class="action-btn cart-btn position-relative" style="z-index: 10;"><i
+                                    class="bi bi-cart3"></i></button>
+                        </div>
+                        <img src="../../public/images/user/pbaggy.jpeg" alt="Jacket">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Jeans</div>
+                        <h4 class="product-title"><a href="single-product.html"
+                                class="text-decoration-none text-dark stretched-link">Baggy Jeans</a></h4>
+                        <div class="product-rating">
+                            <i class="bi bi-star-fill rating-star"></i>
+                            <span>4.5</span>
+                            <span class="review-count">(156)</span>
+                        </div>
+                        <div class="product-bottom">
+                            <div class="product-price">$199</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card">
+                    <div class="product-img-wrap">
+                        <span class="product-badge badge-white">New</span>
+                        <div class="floating-actions" style="z-index: 5;">
+                            <a href="wishlist.html" class="action-btn wishlist-btn position-relative"
+                                style="z-index: 10;"><i class="bi bi-heart"></i></a>
+                            <button type="button" class="action-btn cart-btn position-relative" style="z-index: 10;"><i
+                                    class="bi bi-cart3"></i></button>
+                        </div>
+                        <img src="../../public/images/user/pcasual.jpeg" alt="Shirt">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Shirts</div>
+                        <h4 class="product-title"><a href="single-product.html"
+                                class="text-decoration-none text-dark stretched-link">Classic Shirt</a></h4>
+                        <div class="product-rating">
+                            <i class="bi bi-star-fill rating-star"></i>
+                            <span>4.7</span>
+                            <span class="review-count">(412)</span>
+                        </div>
+                        <div class="product-bottom">
+                            <div class="product-price">$89</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 4 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card">
+                    <div class="product-img-wrap">
+                        <div class="floating-actions" style="z-index: 5;">
+                            <a href="wishlist.html" class="action-btn wishlist-btn position-relative"
+                                style="z-index: 10;"><i class="bi bi-heart"></i></a>
+                            <button type="button" class="action-btn cart-btn position-relative" style="z-index: 10;"><i
+                                    class="bi bi-cart3"></i></button>
+                        </div>
+                        <img src="../../public/images/user/combo.jpeg" alt="Jeans">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Combo</div>
+                        <h4 class="product-title"><a href="single-product.html"
+                                class="text-decoration-none text-dark stretched-link">Shirt & Pant</a></h4>
+                        <div class="product-rating">
+                            <i class="bi bi-star-fill rating-star"></i>
+                            <span>4.6</span>
+                            <span class="review-count">(289)</span>
+                        </div>
+                        <div class="product-bottom">
+                            <div class="product-price">$129</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <a href="home.html" class="footer-logo">URBANTIQ</a>
+                    <p class="footer-desc">Premium men’s fashion for the modern generation. Engineering style with
+                        clinical precision.</p>
+                    <div class="footer-social d-none d-md-flex">
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    </div>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Shop</h5>
+                    <ul class="footer-links">
+                        <li><a href="product.html">New Arrivals</a></li>
+                        <li><a href="product.html">Shirts</a></li>
+                        <li><a href="product.html">Jeans</a></li>
+                        <li><a href="product.html">Suits</a></li>
+                        <li><a href="product.html">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Account</h5>
+                    <ul class="footer-links">
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="signup.html">Signup</a></li>
+                        <li><a href="wishlist.html">Wishlist</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="account-orders.html">Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                <div class="copyright text-start">
+                    &copy; 2026 URBANTIQ. All rights reserved.
+                </div>
+                <div class="footer-legal d-flex gap-3 mt-3 mt-md-0">
+                    <a href="#" class="text-muted small text-decoration-none">Terms</a>
+                    <a href="#" class="text-muted small text-decoration-none">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../../controllers/script.js"></script>
+</body>
+
+</html>
