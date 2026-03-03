@@ -1,4 +1,4 @@
-/* assets/js/script.js
+/* public/js/script.js
    Shared interactive behaviours for URBANTIQ
    ------------------------------------------ */
 

@@ -1,9 +1,9 @@
-﻿/* ============================================
-   CART PAGE — cart.css
-   URBANTIQ · Apple-minimal design language
+/* ============================================
+   CART PAGE � cart.css
+   URBANTIQ � Apple-minimal design language
    ============================================ */
 
-/* ── Navbar cart active icon ─────────────── */
+/* -- Navbar cart active icon --------------- */
 .cart-nav-active {
     color: #1d1d1f !important;
     position: relative;
@@ -418,7 +418,7 @@
     color: #34c759;
 }
 
-/* ── Checkout button ─────────────────────── */
+/* -- Checkout button ----------------------- */
 .cart-checkout-btn {
     display: flex;
     align-items: center;
@@ -444,7 +444,7 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
-/* ── Trust strip ─────────────────────────── */
+/* -- Trust strip --------------------------- */
 .cart-trust-strip {
     display: flex;
     justify-content: space-between;

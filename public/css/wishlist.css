@@ -1,9 +1,9 @@
-﻿/* ============================================
-   WISHLIST PAGE — wishlist.css
-   URBANTIQ · Apple-minimal design language
+/* ============================================
+   WISHLIST PAGE � wishlist.css
+   URBANTIQ � Apple-minimal design language
    ============================================ */
 
-/* ── Navbar active heart icon ───────────────── */
+/* -- Navbar active heart icon ----------------- */
 .wl-nav-active {
     color: #e53935 !important;
 }
@@ -89,7 +89,7 @@
     background: #fff;
 }
 
-/* ── Card ──────────────────────────────────── */
+/* -- Card ------------------------------------ */
 .wl-card {
     background: #fff;
     border-radius: 18px;
@@ -107,7 +107,7 @@
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.09);
 }
 
-/* ── Card Image ────────────────────────────── */
+/* -- Card Image ------------------------------ */
 .wl-card-img {
     position: relative;
     aspect-ratio: 3 / 4;
@@ -157,7 +157,7 @@
     color: #fff;
 }
 
-/* Remove / Heart button — shared circle style */
+/* Remove / Heart button � shared circle style */
 .wl-remove-btn {
     position: absolute;
     top: 12px;
@@ -187,7 +187,7 @@
 }
 
 
-/* ── Card Body ─────────────────────────────── */
+/* -- Card Body ------------------------------- */
 .wl-card-body {
     padding: 0.9rem 1rem 1.1rem;
     display: flex;
@@ -266,7 +266,7 @@
     font-weight: 400;
 }
 
-/* ── Move to Cart button ───────────────────── */
+/* -- Move to Cart button --------------------- */
 .wl-cart-btn {
     width: 100%;
     margin-top: auto;
@@ -366,7 +366,7 @@
 
 /* ============================================
    FOOTER (shared with other pages via common.css)
-   — styles already in common.css; just wire
+   � styles already in common.css; just wire
      local overrides here if needed
    ============================================ */
 footer {
