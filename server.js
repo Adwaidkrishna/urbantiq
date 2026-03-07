@@ -1,33 +1,31 @@
-const express = require("express")
-const mongoose = require("mongoose")
-const dotenv = require("dotenv")
-const path = require("path")
+import "dotenv/config"
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
-dotenv.config();
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
 
-const app= express()
 
-//B-parser
-app.use(express.json()) //allows parsing of nested objects and arrays (using qs library).
-app.use(express.urlencoded({extended:true}))
+const app = express();
 
-//static folder
-app.use(express.static(path.join(__dirname,"public")))//It serves static files directly to the client 
+connectDB();
 
-//view engine 
-app.set("view engine","ejs")
-app.set("views",path.join(__dirname,"views"))
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(cookieParser());
 
-//DB connection
-require("./config/db")();
 
-//default route 
-app.get('/',(req,res)=>{
-    res.send("URBANIQ Backend Running 🚀")
+app.use("/api/auth",authRoutes);
+
+app.get("/", (req, res) => {
+    res.json({ message: "URBANIQ Backend Running" });
 });
 
-const PORT=process.env.PORT||5000
+const PORT = process.env.PORT || 5000;
 
-app.listen(PORT,()=>{
-    console.log(`server is running on port ${PORT}`)
-})
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});

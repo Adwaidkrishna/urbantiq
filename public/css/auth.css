@@ -300,3 +300,172 @@ body.auth-body {
     -webkit-appearance: none;
     margin: 0;
 }
+
+/* ══ PASSWORD VALIDATION UI ════════════════ */
+.password-validation-container {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    display: none;
+    /* Hidden until focus */
+}
+
+.password-validation-container.visible {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.requirements-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--auth-text);
+    margin-bottom: 0.8rem;
+    display: block;
+}
+
+.requirements-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+}
+
+.requirements-list li {
+    font-size: 0.78rem;
+    color: #8e8e93;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.requirements-list li i {
+    font-size: 0.7rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #e5e5ea;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.requirements-list li.valid {
+    color: #28a745;
+}
+
+.requirements-list li.valid i {
+    background-color: #28a745;
+}
+
+/* Strength Indicator */
+.strength-meter {
+    margin-top: 10px;
+    display: none;
+}
+
+.strength-meter.visible {
+    display: block;
+}
+
+.strength-bar-bg {
+    height: 4px;
+    background-color: #e5e5ea;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.strength-bar-fill {
+    height: 100%;
+    width: 0;
+    transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.strength-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 5px;
+    display: block;
+    text-align: right;
+}
+
+/* Strength Colors */
+.strength-weak {
+    background-color: #ff3b30;
+}
+
+.strength-medium {
+    background-color: #ff9500;
+}
+
+.strength-strong {
+    background-color: #34c759;
+}
+
+/* Inline Feedback */
+.validation-hint {
+    font-size: 0.78rem;
+    font-weight: 500;
+    margin-top: 6px;
+    display: none;
+}
+
+.validation-hint.visible {
+    display: block;
+}
+
+.validation-hint.error {
+    color: #ff3b30;
+}
+
+.validation-hint.success {
+    color: #34c759;
+}
+
+/* ══ PASSWORD EYE TOGGLE ════════════════════ */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper .form-control {
+    padding-right: 45px;
+}
+
+.eye-toggle {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #aeaeb2;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.eye-toggle:hover {
+    color: var(--auth-text);
+}

@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <!-- Auth CSS -->
-    <link rel="stylesheet" href="../../public/css/auth.css">
+    <link rel="stylesheet" href="/css/auth.css">
 </head>
 
 <body class="auth-body">
@@ -23,7 +23,7 @@
     <div class="auth-wrapper">
         <!-- Left Side — Image -->
         <div class="auth-image-side">
-            <img src="../../public/images/user/auth-bg.png" alt="Fashion background" class="auth-bg-img">
+            <img src="/images/user/auth-bg.png" alt="Fashion background" class="auth-bg-img">
             <div class="auth-brand-overlay">
                 <h1>URBANTIQ</h1>
                 <p>One step closer to your curated collection. Verify your account to get started.</p>
@@ -35,33 +35,39 @@
             <div class="auth-container text-center">
                 <h2 class="auth-title">Verify Your Email</h2>
                 <p class="auth-subtitle">Enter the 6-digit verification code sent to your email address.</p>
+                
+                <div id="otpSuccess" class="alert alert-success d-none"></div>
+                <div id="otpError" class="alert alert-danger d-none"></div>
+                <div id="otpInfo" class="alert alert-info d-none"></div>
 
-                <form class="auth-form" action="login.html">
-                    <div class="otp-inputs">
-                        <input type="number" class="otp-field" maxlength="1" required>
-                        <input type="number" class="otp-field" maxlength="1" required>
-                        <input type="number" class="otp-field" maxlength="1" required>
-                        <input type="number" class="otp-field" maxlength="1" required>
-                        <input type="number" class="otp-field" maxlength="1" required>
-                        <input type="number" class="otp-field" maxlength="1" required>
+                <form id="otpForm" class="auth-form">
+                    <form id="otpForm" class="auth-form">
+                        <input type="hidden" id="emailInput" name="email">
+                        <div class="otp-inputs">
+                            <input type="number" class="otp-field" maxlength="1" required>
+                            <input type="number" class="otp-field" maxlength="1" required>
+                            <input type="number" class="otp-field" maxlength="1" required>
+                            <input type="number" class="otp-field" maxlength="1" required>
+                            <input type="number" class="otp-field" maxlength="1" required>
+                            <input type="number" class="otp-field" maxlength="1" required>
+                        </div>
+
+                        <button type="submit" class="btn-auth-primary">Verify Email</button>
+                    </form>
+
+                    <p class="auth-footnote">
+                        Didn't receive a code? <a href="#" id="resendBtn" class="auth-link">Resend Code</a>
+                    </p>
+                    <div class="mt-4">
+                        <a href="/api/auth/register" class="auth-link small text-muted">
+                            <i class="bi bi-arrow-left"></i> Back to Sign Up
+                        </a>
                     </div>
-
-                    <button type="submit" class="btn-auth-primary">Verify Email</button>
-                </form>
-
-                <p class="auth-footnote">
-                    Didn't receive a code? <a href="#" class="auth-link">Resend Code</a>
-                </p>
-                <div class="mt-4">
-                    <a href="signup.html" class="auth-link small text-muted">
-                        <i class="bi bi-arrow-left"></i> Back to Sign Up
-                    </a>
-                </div>
             </div>
         </div>
     </div>
 
-    <script src="../../public/js/form.js"></script>
+    <script src="/js/otp.js"></script>
 </body>
 
 </html>

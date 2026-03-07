@@ -4,20 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password | URBANTIQ</title>
-
+    <title>Sign Up | URBANTIQ</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-
     <!-- Auth CSS -->
     <link rel="stylesheet" href="/css/auth.css">
 </head>
@@ -25,51 +21,47 @@
 <body class="auth-body">
 
     <div class="auth-wrapper">
-
-        <!-- LEFT SIDE -->
+        <!-- Left Side — Image -->
         <div class="auth-image-side">
-
             <img src="/images/user/auth-bg.png" alt="Fashion background" class="auth-bg-img">
-
             <div class="auth-brand-overlay">
                 <h1>URBANTIQ</h1>
-                <p>New password, new beginnings. Set a strong password to protect your style profile.</p>
+                <p>Join the movement of engineering precision and contemporary elegance. Your style journey starts here.
+                </p>
             </div>
-
         </div>
 
-        <!-- RIGHT SIDE -->
+        <!-- Right Side — Form -->
         <div class="auth-form-side">
-
             <div class="auth-container">
+                <div class="mb-2">
+                    <a href="/api/auth/home" class="text-decoration-none text-black fw-bold small">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Home
+                    </a>
+                </div>
+                <h2 class="auth-title">Create Account</h2>
+                <p class="auth-subtitle">Join URBANTIQ today and redefine your style.</p>
 
-                <h2 class="auth-title">Reset Password</h2>
-
-                <p class="auth-subtitle">
-                    Choose a new, secure password for your URBANTIQ account.
-                </p>
-
-                <!-- NEW: Error message -->
-                <div id="resetError" class="alert alert-danger d-none"></div>
-
-                <form class="auth-form" id="resetPasswordForm" novalidate>
-
-                    <!-- NEW: Hidden email field -->
-                    <input type="hidden" id="emailInput">
+                <form class="auth-form" id="registerForm">
 
                     <div class="mb-3">
-
-                        <label for="newPassword" class="form-label">New Password</label>
-
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="John Doe" required>
+                        <div id="nameError" class="validation-hint error">Full name is required</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                        <div id="emailError" class="validation-hint error">Please enter a valid email</div>
+                    </div>
+                    <div id="registerError" class="alert alert-danger d-none"></div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
                         <div class="password-wrapper">
-
-                            <input type="password" class="form-control" id="newPassword" placeholder="••••••••"
-                                required>
-
-                            <button type="button" class="eye-toggle" id="toggleNewPassword">
+                            <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                            <button type="button" class="eye-toggle" id="togglePassword">
                                 <i class="bi bi-eye"></i>
                             </button>
-
                         </div>
 
                         <!-- Strength Meter -->
@@ -82,73 +74,45 @@
 
                         <!-- Requirements Checklist -->
                         <div class="password-validation-container" id="validationContainer">
-
                             <span class="requirements-title">Password must contain:</span>
-
                             <ul class="requirements-list">
-
                                 <li id="rule-8char"><i class="bi bi-check"></i>At least 8 characters</li>
-
                                 <li id="rule-upper"><i class="bi bi-check"></i>One uppercase letter</li>
-
                                 <li id="rule-lower"><i class="bi bi-check"></i>One lowercase letter</li>
-
                                 <li id="rule-number"><i class="bi bi-check"></i>One number</li>
-
                                 <li id="rule-special"><i class="bi bi-check"></i>One special character</li>
-
                             </ul>
-
                         </div>
-
+                        <div id="passwordError" class="validation-hint error">Password must meet all security
+                            requirements</div>
                     </div>
-
                     <div class="mb-4">
-
-                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
-
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
                         <div class="password-wrapper">
-
                             <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••"
                                 required>
-
                             <button type="button" class="eye-toggle" id="toggleConfirmPassword">
                                 <i class="bi bi-eye"></i>
                             </button>
-
                         </div>
-
                         <div id="confirmHint" class="validation-hint"></div>
-
                     </div>
+                    <button type="submit" id="submitBtn" class="btn-auth-primary" disabled>Create Account</button>
+                    <div class="auth-divider">OR</div>
 
-                    <button type="submit" id="submitBtn" class="btn-auth-primary" disabled>
-
-                        <span id="resetBtnText">Update Password</span>
-
-                        <span id="resetBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status">
-
-                            <span class="visually-hidden">Loading...</span>
-
-                        </span>
-
+                    <button type="button" class="btn-auth-outline">
+                        <i class="bi bi-google"></i>
+                        Sign up with Google
                     </button>
-
                 </form>
 
                 <p class="auth-footnote">
-                    Wait, I remember now!
-                    <a href="/api/auth/login">Back to Login</a>
+                    Already have an account? <a href="/api/auth/login">Login</a>
                 </p>
-
             </div>
-
         </div>
-
     </div>
-
-    <!-- Reset password logic -->
-    <script src="/js/reset-password.js"></script>
+    <script src="/js/register.js"></script>
 
 </body>
 
