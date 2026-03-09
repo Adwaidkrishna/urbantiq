@@ -11,6 +11,7 @@ import {
     verifyResetOTP,
 } from "../controllers/authController.js";
 
+
 const router = express.Router();
 
 router.get("/forgot-password", (req, res) => {

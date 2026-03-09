@@ -17,7 +17,7 @@ const sendEmail = async (email, otp) => {
 
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "URBANIQ Email Verification OTP",
+    subject: "URBANTIQ Email Verification OTP",
 
     html: `
 <h2>Email Verification</h2>

@@ -1,27 +1,27 @@
 import jwt from "jsonwebtoken";
 
-const authMiddleware = (req,res,next)=>{
+const authMiddleware = (req, res, next) => {
 
-const token = req.cookies.token;
+    const token = req.cookies.token;
 
-if(!token){
-return res.redirect("/login");
-}
+    if (!token) {
+        return res.redirect("/login");
+    }
 
-try{
+    try {
 
-const decoded = jwt.verify(token,process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-req.userId = decoded.id;
+        req.userId = decoded.id;
 
-next();
+        next();
 
-}
-catch(error){
+    }
+    catch (error) {
 
-return res.redirect("/login");
+        return res.redirect("/login");
 
-}
+    }
 
 };
 

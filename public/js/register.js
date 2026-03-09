@@ -1,18 +1,10 @@
-/* public/js/register.js
-   URBANTIQ · Auth & Form Behaviors
-   ------------------------------------------ */
-
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ─── UTILITIES ───────────────────────────────────────────────
-
-    /**
-     * Toggles password visibility for a specific input field
-     */
-    const setupEyeToggle = (buttonId, inputId) => {
+    //Toggles password visibility for a specific input field
+    const setupEyeToggle = (buttonId, inputId) => {//resuable function
         const btn = document.getElementById(buttonId);
         const input = document.getElementById(inputId);
-        if (!btn || !input) return;
+        if (!btn || !input) return; //element doesn't exist, stop the function.
 
         btn.addEventListener('click', () => {
             const icon = btn.querySelector('i');
@@ -23,9 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    /**
-     * Validation Rules Helper
-     */
+    //Validation Rules Helper
+     
     const checkRules = (value) => {
         return {
             'rule-8char': value.length >= 8,
@@ -36,9 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    /**
-     * Updates UI based on satisfied rules
-     */
+    
+    //Updates UI based on satisfied rules
+     
     const updateValidationUI = (rulesRes) => {
         let metCount = 0;
         for (const [id, met] of Object.entries(rulesRes)) {
