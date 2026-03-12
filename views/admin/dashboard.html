@@ -8,7 +8,7 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom Admin CSS -->
-    <link rel="stylesheet" href="public/css/admin.css">
+    <link rel="stylesheet" href="/css/admin.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -17,7 +17,7 @@
 
     <div class="admin-wrapper">
         <!-- SIDEBAR -->
-<aside class="admin-sidebar">
+        <aside class="admin-sidebar">
             <div class="sidebar-brand">
                 <div class="sidebar-brand-icon">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +36,7 @@
                 <div class="sidebar-section-label">General</div>
                 <ul class="p-0 m-0">
                     <li class="sidebar-nav-item">
-                        <a href="dashboard.html" class="sidebar-nav-link ">
+                        <a href="/api/admin/dashboard" class="sidebar-nav-link active">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="3" width="7" height="7"></rect>
@@ -48,7 +48,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="order-management.html" class="sidebar-nav-link">
+                        <a href="/api/admin/order-management" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
@@ -59,7 +59,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="customers.html" class="sidebar-nav-link">
+                        <a href="/api/admin/customers" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -72,10 +72,10 @@
                     </li>
                 </ul>
 
-                <div class="sidebar-section-label">Marketing & Sales</div>
+                <div class="sidebar-section-label">Marketing &amp; Sales</div>
                 <ul class="p-0 m-0">
                     <li class="sidebar-nav-item">
-                        <a href="coupons.html" class="sidebar-nav-link">
+                        <a href="/api/admin/coupons" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="16" rx="2"></rect>
@@ -87,7 +87,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="categories.html" class="sidebar-nav-link">
+                        <a href="/api/admin/categories" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -101,7 +101,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="sales-offers.html" class="sidebar-nav-link">
+                        <a href="/api/admin/sales-offers" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path
@@ -109,15 +109,28 @@
                                 </path>
                                 <line x1="7" y1="7" x2="7.01" y2="7"></line>
                             </svg>
-                            Sales & Offers
+                            Sales &amp; Offers
                         </a>
                     </li>
                 </ul>
 
-                <div class="sidebar-section-label">Finance & Inventory</div>
+                <div class="sidebar-section-label">Finance &amp; Inventory</div>
                 <ul class="p-0 m-0">
                     <li class="sidebar-nav-item">
-                        <a href="transactions.html" class="sidebar-nav-link">
+                        <a href="/api/admin/sales-report" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            Sales Report
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/transactions" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -138,11 +151,11 @@
                             </svg>
                             Purchase
                         </div>
-                        <a href="purchases.html" class="sidebar-nav-sublink">Purchase List</a>
-                        <a href="add-purchase.html" class="sidebar-nav-sublink">Add Purchase</a>
+                        <a href="/api/admin/purchases" class="sidebar-nav-sublink">Purchase List</a>
+                        <a href="/api/admin/add-purchase" class="sidebar-nav-sublink">Add Purchase</a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="batch-management.html" class="sidebar-nav-link">
+                        <a href="/api/admin/batch-management" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
@@ -154,7 +167,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="suppliers.html" class="sidebar-nav-link">
+                        <a href="/api/admin/suppliers" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
@@ -174,15 +187,16 @@
                             </svg>
                             Inventory
                         </div>
-                        <a href="inventory.html" class="sidebar-nav-sublink">Inventory Overview</a>
-                        <a href="inventory-management.html" class="sidebar-nav-sublink">Inventory Management</a>
+                        <a href="/api/admin/inventory" class="sidebar-nav-sublink">Inventory Overview</a>
+                        <a href="/api/admin/inventory-management" class="sidebar-nav-sublink">Inventory
+                            Management</a>
                     </li>
                 </ul>
 
                 <div class="sidebar-section-label">Settings</div>
                 <ul class="p-0 m-0">
                     <li class="sidebar-nav-item">
-                        <a href="admin-profile.html" class="sidebar-nav-link">
+                        <a href="/api/admin/admin-profile" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -238,7 +252,7 @@
             </header>
 
             <!-- PAGE CONTENT -->
-<div class="admin-content">
+            <div class="admin-content">
                 <div class="page-header">
                     <div>
                         <h2 class="page-title">Welcome back, Adwaid!</h2>
@@ -354,7 +368,7 @@
                         <div class="admin-card">
                             <div class="admin-card-header">
                                 <h3 class="admin-card-title">Recent Orders</h3>
-                                <a href="order-management.html" class="btn-admin-outline btn-admin-sm">View All</a>
+                                <a href="/api/admin/order-management" class="btn-admin-outline btn-admin-sm">View All</a>
                             </div>
                             <div class="admin-table-wrapper">
                                 <table class="admin-table">
@@ -412,7 +426,7 @@
                         <div class="admin-card">
                             <div class="admin-card-header">
                                 <h3 class="admin-card-title">Low Stock</h3>
-                                <a href="inventory.html" class="btn-admin-outline btn-admin-sm">Details</a>
+                                <a href="/api/admin/inventory" class="btn-admin-outline btn-admin-sm">Details</a>
                             </div>
                             <div class="admin-table-wrapper">
                                 <table class="admin-table">
@@ -449,8 +463,8 @@
         </main>
     </div>
 
-    <!-- Admin Logic -->
-    <script src="/js/admin.js"></script>
-</body>
+    <!-- Admin Chart Logic -->
+    <script src="/js/dashboard.js"></script>
 
+</body>
 </html>

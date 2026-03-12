@@ -5,17 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categories | URBANTIQ Admin</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom Admin CSS -->
-    <link rel="stylesheet" href="../../public/css/admin.css">
+    <link rel="stylesheet" href="/css/admin.css">
 </head>
 
 <body>
 
     <div class="admin-wrapper">
         <!-- SIDEBAR -->
-<aside class="admin-sidebar">
+        <aside class="admin-sidebar">
             <div class="sidebar-brand">
                 <div class="sidebar-brand-icon">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +32,7 @@
                 <div class="sidebar-section-label">General</div>
                 <ul class="p-0 m-0">
                     <li class="sidebar-nav-item">
-                        <a href="dashboard.html" class="sidebar-nav-link ">
+                        <a href="/api/admin/dashboard" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="3" width="7" height="7"></rect>
@@ -46,7 +44,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="order-management.html" class="sidebar-nav-link">
+                        <a href="/api/admin/order-management" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
@@ -57,7 +55,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="customers.html" class="sidebar-nav-link">
+                        <a href="/api/admin/customers" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -70,10 +68,10 @@
                     </li>
                 </ul>
 
-                <div class="sidebar-section-label">Marketing & Sales</div>
+                <div class="sidebar-section-label">Marketing &amp; Sales</div>
                 <ul class="p-0 m-0">
                     <li class="sidebar-nav-item">
-                        <a href="coupons.html" class="sidebar-nav-link">
+                        <a href="/api/admin/coupons" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="16" rx="2"></rect>
@@ -85,7 +83,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="categories.html" class="sidebar-nav-link active">
+                        <a href="/api/admin/categories" class="sidebar-nav-link active">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -99,7 +97,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="sales-offers.html" class="sidebar-nav-link">
+                        <a href="/api/admin/sales-offers" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path
@@ -107,15 +105,28 @@
                                 </path>
                                 <line x1="7" y1="7" x2="7.01" y2="7"></line>
                             </svg>
-                            Sales & Offers
+                            Sales &amp; Offers
                         </a>
                     </li>
                 </ul>
 
-                <div class="sidebar-section-label">Finance & Inventory</div>
+                <div class="sidebar-section-label">Finance &amp; Inventory</div>
                 <ul class="p-0 m-0">
                     <li class="sidebar-nav-item">
-                        <a href="transactions.html" class="sidebar-nav-link">
+                        <a href="/api/admin/sales-report" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            Sales Report
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/transactions" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -136,11 +147,11 @@
                             </svg>
                             Purchase
                         </div>
-                        <a href="purchases.html" class="sidebar-nav-sublink">Purchase List</a>
-                        <a href="add-purchase.html" class="sidebar-nav-sublink">Add Purchase</a>
+                        <a href="/api/admin/purchases" class="sidebar-nav-sublink">Purchase List</a>
+                        <a href="/api/admin/add-purchase" class="sidebar-nav-sublink">Add Purchase</a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="batch-management.html" class="sidebar-nav-link">
+                        <a href="/api/admin/batch-management" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
@@ -152,7 +163,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="suppliers.html" class="sidebar-nav-link">
+                        <a href="/api/admin/suppliers" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
@@ -172,15 +183,15 @@
                             </svg>
                             Inventory
                         </div>
-                        <a href="inventory.html" class="sidebar-nav-sublink">Inventory Overview</a>
-                        <a href="inventory-management.html" class="sidebar-nav-sublink">Inventory Management</a>
+                        <a href="/api/admin/inventory" class="sidebar-nav-sublink">Inventory Overview</a>
+                        <a href="/api/admin/inventory-management" class="sidebar-nav-sublink">Inventory Management</a>
                     </li>
                 </ul>
 
                 <div class="sidebar-section-label">Settings</div>
                 <ul class="p-0 m-0">
                     <li class="sidebar-nav-item">
-                        <a href="admin-profile.html" class="sidebar-nav-link">
+                        <a href="/api/admin/admin-profile" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -209,7 +220,7 @@
             <header class="admin-topbar">
                 <div class="topbar-left">
                     <div class="topbar-breadcrumb">Pages <span>/</span> Categories</div>
-                    <h1 class="topbar-title">Product Categories</h1>
+                    <h1 class="topbar-title">Categories</h1>
                 </div>
                 <div class="topbar-right">
                     <button class="topbar-icon-btn">
@@ -236,7 +247,7 @@
             </header>
 
             <!-- PAGE CONTENT -->
-<div class="admin-content">
+            <div class="admin-content">
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <section class="admin-form-section mb-section">
@@ -244,23 +255,54 @@
                                 <h5 class="admin-form-section-title">Add New Category</h5>
                             </div>
                             <div class="admin-form-section-body">
-                                <form action="#" class="row g-3">
-                                    <div class="col-md-5">
+                                <form id="categoryForm" class="row g-3" enctype="multipart/form-data">
+                                    <!-- Row 1: Category Name -->
+                                    <div class="col-md-6">
                                         <label class="form-label-admin">Category Name</label>
-                                        <input type="text" class="form-control-admin" placeholder="e.g. Outerwear">
+                                        <input type="text" id="categoryName" name="name" class="form-control-admin"
+                                            placeholder="e.g. Outerwear" required>
                                     </div>
-                                    <div class="col-md-5">
-                                        <label class="form-label-admin">Slug (URL friendly)</label>
-                                        <input type="text" class="form-control-admin" placeholder="outerwear">
+
+                                    <!-- Row 1: Category Image Upload -->
+                                    <div class="col-md-6">
+                                        <label class="form-label-admin">Category Image</label>
+                                        <input type="file" id="categoryImage" name="image" class="form-control-admin"
+                                            accept=".jpg,.jpeg,.png,.webp"
+                                            style="padding: 0.45rem 0.75rem; cursor: pointer;"
+                                            onchange="previewCategoryImage(event)" required>
+                                        <!-- Image Preview -->
+                                        <div id="categoryImagePreview" style="display:none; margin-top: 0.75rem;">
+                                            <p class="form-label-admin"
+                                                style="margin-bottom: 0.35rem; font-size: 0.78rem; opacity: 0.7;">
+                                                Preview</p>
+                                            <img id="categoryPreviewImg" src="" alt="Category preview" style="
+                                                    width: 90px;
+                                                    height: 90px;
+                                                    object-fit: cover;
+                                                    border-radius: 10px;
+                                                    border: 2px solid var(--admin-border, rgba(255,255,255,0.12));
+                                                    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+                                                ">
+                                        </div>
                                     </div>
-                                    <div class="col-md-2 d-flex align-items-end">
-                                        <button type="submit" class="btn-admin-primary w-100">Add</button>
+
+                                    <!-- Row 2: Description — full width -->
+                                    <div class="col-12">
+                                        <label class="form-label-admin">Category Description</label>
+                                        <textarea id="categoryDescription" name="description" class="form-control-admin"
+                                            rows="3" placeholder="Write a short description for this category..."
+                                            style="resize: vertical; min-height: 80px;"></textarea>
+                                    </div>
+
+                                    <!-- Row 3: Add button — right aligned -->
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" class="btn-admin-primary" style="min-width: 130px;">Add
+                                            Category</button>
                                     </div>
                                 </form>
                             </div>
                         </section>
                     </div>
-
                     <div class="col-lg-12">
                         <div class="admin-card">
                             <div class="admin-card-header">
@@ -270,94 +312,14 @@
                                 <table class="admin-table">
                                     <thead>
                                         <tr>
+                                            <th>Image</th>
                                             <th>Category Name</th>
                                             <th>Product Count</th>
                                             <th>Status</th>
                                             <th class="text-end">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="fw-600">Men's Apparel</td>
-                                            <td class="td-secondary">154 Products</td>
-                                            <td><span class="status-badge badge-active">Active</span></td>
-                                            <td>
-                                                <div class="action-btns justify-content-end">
-                                                    <button class="btn-admin-outline btn-admin-icon" title="Edit"><svg
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path
-                                                                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7">
-                                                            </path>
-                                                            <path
-                                                                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
-                                                            </path>
-                                                        </svg></button>
-                                                    <button class="btn-admin-danger btn-admin-icon" title="Delete"><svg
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-                                                        </svg></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-600">Women's Collection</td>
-                                            <td class="td-secondary">210 Products</td>
-                                            <td><span class="status-badge badge-active">Active</span></td>
-                                            <td>
-                                                <div class="action-btns justify-content-end">
-                                                    <button class="btn-admin-outline btn-admin-icon" title="Edit"><svg
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path
-                                                                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7">
-                                                            </path>
-                                                            <path
-                                                                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
-                                                            </path>
-                                                        </svg></button>
-                                                    <button class="btn-admin-danger btn-admin-icon" title="Delete"><svg
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-                                                        </svg></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-600">Accessories</td>
-                                            <td class="td-secondary">85 Products</td>
-                                            <td><span class="status-badge badge-active">Active</span></td>
-                                            <td>
-                                                <div class="action-btns justify-content-end">
-                                                    <button class="btn-admin-outline btn-admin-icon" title="Edit"><svg
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path
-                                                                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7">
-                                                            </path>
-                                                            <path
-                                                                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
-                                                            </path>
-                                                        </svg></button>
-                                                    <button class="btn-admin-danger btn-admin-icon" title="Delete"><svg
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-                                                        </svg></button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="categoryTable">
                                     </tbody>
                                 </table>
                             </div>
@@ -368,8 +330,26 @@
         </main>
     </div>
 
-    <!-- Admin Logic -->
-    <script src="../../public/js/admin.js"></script>
+    <script>//adding image preview 
+        function previewCategoryImage(event) {
+            const file = event.target.files[0];
+            const previewBox = document.getElementById('categoryImagePreview');
+            const previewImg = document.getElementById('categoryPreviewImg');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewBox.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewBox.style.display = 'none';
+                previewImg.src = '';
+            }
+        }
+    </script>
+    <script src="/js/admin/categories.js"></script>
+
 </body>
 
 </html>

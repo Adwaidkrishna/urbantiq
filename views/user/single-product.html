@@ -12,8 +12,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../../public/css/common.css">
-    <link rel="stylesheet" href="../../public/css/single-product.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/single-product.css">
 </head>
 
 <body>
@@ -21,14 +21,14 @@
     <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="home.html">URBANTIQ</a>
+            <a class="navbar-brand" href="/">URBANTIQ</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="product.html">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html">Signup</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/product">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register">Signup</a></li>
                 </ul>
             </div>
             <div class="d-flex align-items-center gap-2">
@@ -53,9 +53,9 @@
     <div class="sp-breadcrumb-wrap">
         <div class="container">
             <nav class="sp-breadcrumb">
-                <a href="home.html">Home</a>
+                <a href="/">Home</a>
                 <i class="bi bi-chevron-right"></i>
-                <a href="product.html">Shop</a>
+                <a href="/product">Shop</a>
                 <i class="bi bi-chevron-right"></i>
                 <span>Oversized Hoodie</span>
             </nav>
@@ -73,7 +73,7 @@
 
                         <!-- Main Image -->
                         <div class="sp-main-img">
-                            <img src="../../public/images/user/phoodie.jpeg" alt="Oversized Hoodie — main view" id="mainProductImg">
+                            <img src="/images/user/phoodie.jpeg" alt="Oversized Hoodie — main view" id="mainProductImg">
                             <span class="sp-img-badge">Bestseller</span>
                             <button class="sp-img-wishlist" id="imgWishlistBtn" aria-label="Add to Wishlist">
                                 <i class="bi bi-heart" id="imgWishlistIcon"></i>
@@ -82,17 +82,17 @@
 
                         <!-- Thumbnail Row -->
                         <div class="sp-thumbs">
-                            <button class="sp-thumb active" data-src="../../public/images/user/phoodie.jpeg" aria-label="View 1">
-                                <img src="../../public/images/user/phoodie.jpeg" alt="View 1">
+                            <button class="sp-thumb active" data-src="/images/user/phoodie.jpeg" aria-label="View 1">
+                                <img src="/images/user/phoodie.jpeg" alt="View 1">
                             </button>
-                            <button class="sp-thumb" data-src="../../public/images/user/hoodies.jpeg" aria-label="View 2">
-                                <img src="../../public/images/user/hoodies.jpeg" alt="View 2">
+                            <button class="sp-thumb" data-src="/images/user/hoodies.jpeg" aria-label="View 2">
+                                <img src="/images/user/hoodies.jpeg" alt="View 2">
                             </button>
-                            <button class="sp-thumb" data-src="../../public/images/user/oversized.jpeg" aria-label="View 3">
-                                <img src="../../public/images/user/oversized.jpeg" alt="View 3">
+                            <button class="sp-thumb" data-src="/images/user/oversized.jpeg" aria-label="View 3">
+                                <img src="/images/user/oversized.jpeg" alt="View 3">
                             </button>
-                            <button class="sp-thumb" data-src="../../public/images/user/pcasual.jpeg" aria-label="View 4">
-                                <img src="../../public/images/user/pcasual.jpeg" alt="View 4">
+                            <button class="sp-thumb" data-src="/images/user/pcasual.jpeg" aria-label="View 4">
+                                <img src="/images/user/pcasual.jpeg" alt="View 4">
                             </button>
                         </div>
 
@@ -190,7 +190,7 @@
 
                         <!-- Action Buttons -->
                         <div class="sp-actions">
-                            <a href="checkout-details.html" class="sp-btn-primary">Order Now</a>
+                            <a href="/checkout-details" class="sp-btn-primary">Order Now</a>
                             <button class="sp-btn-cart" id="addToCartBtn">
                                 <i class="bi bi-bag-plus"></i> Add to Cart
                             </button>
@@ -470,7 +470,7 @@
         <div class="container">
             <div class="sp-section-header">
                 <h2 class="sp-section-title">You May Also Like</h2>
-                <a href="product.html" class="sp-see-all">See All <i class="bi bi-arrow-right"></i></a>
+                <a href="/product" class="sp-see-all">See All <i class="bi bi-arrow-right"></i></a>
             </div>
 
             <div class="row g-3 g-md-4">
@@ -478,7 +478,7 @@
                 <div class="col-6 col-md-3">
                     <div class="sp-related-card">
                         <div class="sp-rel-img">
-                            <img src="../../public/images/user/hoodies.jpeg" alt="Classic Hoodie">
+                            <img src="/images/user/hoodies.jpeg" alt="Classic Hoodie">
                             <div class="sp-rel-actions">
                                 <button class="sp-rel-btn"><i class="bi bi-heart"></i></button>
                                 <button class="sp-rel-btn"><i class="bi bi-bag"></i></button>
@@ -486,7 +486,7 @@
                         </div>
                         <div class="sp-rel-info">
                             <div class="sp-rel-cat">Hoodies</div>
-                            <h5 class="sp-rel-name"><a href="single-product.html">Classic Pullover</a></h5>
+                            <h5 class="sp-rel-name"><a href="/product/1">Classic Pullover</a></h5>
                             <div class="sp-rel-price">₹749</div>
                         </div>
                     </div>
@@ -495,7 +495,7 @@
                 <div class="col-6 col-md-3">
                     <div class="sp-related-card">
                         <div class="sp-rel-img">
-                            <img src="../../public/images/user/oversized.jpeg" alt="Drop Shoulder Tee">
+                            <img src="/images/user/oversized.jpeg" alt="Drop Shoulder Tee">
                             <div class="sp-rel-actions">
                                 <button class="sp-rel-btn"><i class="bi bi-heart"></i></button>
                                 <button class="sp-rel-btn"><i class="bi bi-bag"></i></button>
@@ -503,7 +503,7 @@
                         </div>
                         <div class="sp-rel-info">
                             <div class="sp-rel-cat">Oversized</div>
-                            <h5 class="sp-rel-name"><a href="single-product.html">Drop-Shoulder Tee</a></h5>
+                            <h5 class="sp-rel-name"><a href="/product/1">Drop-Shoulder Tee</a></h5>
                             <div class="sp-rel-price">₹549</div>
                         </div>
                     </div>
@@ -512,7 +512,7 @@
                 <div class="col-6 col-md-3">
                     <div class="sp-related-card">
                         <div class="sp-rel-img">
-                            <img src="../../public/images/user/pbaggy.jpeg" alt="Baggy Jeans">
+                            <img src="/images/user/pbaggy.jpeg" alt="Baggy Jeans">
                             <div class="sp-rel-actions">
                                 <button class="sp-rel-btn"><i class="bi bi-heart"></i></button>
                                 <button class="sp-rel-btn"><i class="bi bi-bag"></i></button>
@@ -520,7 +520,7 @@
                         </div>
                         <div class="sp-rel-info">
                             <div class="sp-rel-cat">Jeans</div>
-                            <h5 class="sp-rel-name"><a href="single-product.html">Baggy Jeans</a></h5>
+                            <h5 class="sp-rel-name"><a href="/product/1">Baggy Jeans</a></h5>
                             <div class="sp-rel-price">₹1,199</div>
                         </div>
                     </div>
@@ -529,7 +529,7 @@
                 <div class="col-6 col-md-3">
                     <div class="sp-related-card">
                         <div class="sp-rel-img">
-                            <img src="../../public/images/user/pcasual.jpeg" alt="Classic Shirt">
+                            <img src="/images/user/pcasual.jpeg" alt="Classic Shirt">
                             <div class="sp-rel-actions">
                                 <button class="sp-rel-btn"><i class="bi bi-heart"></i></button>
                                 <button class="sp-rel-btn"><i class="bi bi-bag"></i></button>
@@ -537,7 +537,7 @@
                         </div>
                         <div class="sp-rel-info">
                             <div class="sp-rel-cat">Shirts</div>
-                            <h5 class="sp-rel-name"><a href="single-product.html">Classic Shirt</a></h5>
+                            <h5 class="sp-rel-name"><a href="/product/1">Classic Shirt</a></h5>
                             <div class="sp-rel-price">₹649</div>
                         </div>
                     </div>
@@ -555,7 +555,7 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-12 col-md-6 col-lg-3 text-start">
-                    <a href="home.html" class="footer-logo">URBANTIQ</a>
+                    <a href="/" class="footer-logo">URBANTIQ</a>
                     <p class="footer-desc">Premium men's fashion for the modern generation.</p>
                     <div class="footer-social d-none d-md-flex">
                         <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
@@ -566,16 +566,16 @@
                 <div class="col-4 col-md-6 col-lg-3 text-start">
                     <h5 class="footer-heading">Shop</h5>
                     <ul class="footer-links">
-                        <li><a href="product.html">New Arrivals</a></li>
-                        <li><a href="product.html">Hoodies</a></li>
-                        <li><a href="product.html">Jeans</a></li>
-                        <li><a href="product.html">Formals</a></li>
+                        <li><a href="/product">New Arrivals</a></li>
+                        <li><a href="/product">Hoodies</a></li>
+                        <li><a href="/product">Jeans</a></li>
+                        <li><a href="/product">Formals</a></li>
                     </ul>
                 </div>
                 <div class="col-4 col-md-6 col-lg-3 text-start">
                     <h5 class="footer-heading">Support</h5>
                     <ul class="footer-links">
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="/contact">Contact</a></li>
                         <li><a href="#">FAQs</a></li>
                         <li><a href="#">Returns</a></li>
                         <li><a href="#">Shipping</a></li>
@@ -584,10 +584,10 @@
                 <div class="col-4 col-md-6 col-lg-3 text-start">
                     <h5 class="footer-heading">Account</h5>
                     <ul class="footer-links">
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="signup.html">Signup</a></li>
-                        <li><a href="wishlist.html">Wishlist</a></li>
-                        <li><a href="account-orders.html">Orders</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Signup</a></li>
+                        <li><a href="/wishlist">Wishlist</a></li>
+                        <li><a href="/account-orders">Orders</a></li>
                     </ul>
                 </div>
             </div>
@@ -603,7 +603,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../public/js/single-product.js"></script>
+    <script src="/js/single-product.js"></script>
 
 </body>
 

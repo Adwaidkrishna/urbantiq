@@ -28,11 +28,11 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="home.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html">Signup</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/product">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register">Signup</a></li>
                 </ul>
             </div>
 
@@ -70,9 +70,9 @@
             <p class="hero-subtitle">Discover our curated collection of premium men's fashion. Elegance meets comfort in
                 every piece.</p>
             <div class="d-flex justify-content-center gap-3 align-items-center">
-                <a href="product.html" class="btn btn-pill btn-black">Shop Now <i class="bi bi-chevron-right"
+                <a href="/product" class="btn btn-pill btn-black">Shop Now <i class="bi bi-chevron-right"
                         style="width: 18px; display: inline; vertical-align: middle;"></i></a>
-                <a href="sale.html" class="btn fw-600 text-decoration-none text-dark">View Deals</a>
+                <a href="/sale" class="btn fw-600 text-decoration-none text-dark">View Deals</a>
             </div>
         </div>
     </header>
@@ -81,59 +81,10 @@
     <section class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="section-title mb-0">Shop by Category</h2>
-            <a href="product.html" class="text-primary text-decoration-none fw-600">View All <i
+            <a href="/product" class="text-primary text-decoration-none fw-600">View All <i
                     class="bi bi-chevron-right" style="width: 16px; display: inline;"></i></a>
         </div>
-        <div class="row g-4">
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="product.html?category=shirts" class="category-card">
-                    <img src="/images/user/shirts.jpg.jpeg" alt="Shirts">
-                    <div class="category-overlay">
-                        <h3>Shirts</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="product.html?category=jeans" class="category-card">
-                    <img src="/images/user/jeans.jpeg" alt="Jeans">
-                    <div class="category-overlay">
-                        <h3>Jeans</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="product.html?category=hoodies" class="category-card">
-                    <img src="/images/user/hoodies.jpeg" alt="Hoodies">
-                    <div class="category-overlay">
-                        <h3>Hoodies</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="product.html?category=formals" class="category-card">
-                    <img src="/images/user/formals.jpeg" alt="Formals">
-                    <div class="category-overlay">
-                        <h3>Formals</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="product.html?category=oversized" class="category-card">
-                    <img src="/images/user/oversized.jpeg" alt="Oversized">
-                    <div class="category-overlay">
-                        <h3>Oversized</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-4 col-lg-2">
-                <a href="product.html?category=cargo" class="category-card">
-                    <img src="/images/user/cargo.webp" alt="Cargo Pants">
-                    <div class="category-overlay">
-                        <h3>Cargo Pants</h3>
-                    </div>
-                </a>
-            </div>
-        </div>
+        <div class="row g-4" id="homeCategories"></div>
     </section>
 
     <!-- Discover New Arrivals -->
@@ -143,7 +94,7 @@
                 <h2 class="section-title mb-1">Discover New Arrivals</h2>
                 <p class="text-muted m-0">Handpicked essentials for the modern man</p>
             </div>
-            <a href="product.html" class="text-primary text-decoration-none fw-600">See All <i
+            <a href="/product" class="text-primary text-decoration-none fw-600">See All <i
                     class="bi bi-chevron-right" style="width: 16px; display: inline;"></i></a>
         </div>
 
@@ -163,7 +114,7 @@
                     </div>
                     <div class="product-info">
                         <div class="product-category">Hoodies</div>
-                        <h4 class="product-title"><a href="single-product.html"
+                        <h4 class="product-title"><a href="/product/1"
                                 class="text-decoration-none text-dark stretched-link">Oversized Hoodies</a></h4>
                         <div class="product-rating">
                             <i class="bi bi-star-fill rating-star"></i>
@@ -191,7 +142,7 @@
                     </div>
                     <div class="product-info">
                         <div class="product-category">Jeans</div>
-                        <h4 class="product-title"><a href="single-product.html"
+                        <h4 class="product-title"><a href="/product/1"
                                 class="text-decoration-none text-dark stretched-link">Baggy Jeans</a></h4>
                         <div class="product-rating">
                             <i class="bi bi-star-fill rating-star"></i>
@@ -220,7 +171,7 @@
                     </div>
                     <div class="product-info">
                         <div class="product-category">Shirts</div>
-                        <h4 class="product-title"><a href="single-product.html"
+                        <h4 class="product-title"><a href="/product/1"
                                 class="text-decoration-none text-dark stretched-link">Classic Shirt</a></h4>
                         <div class="product-rating">
                             <i class="bi bi-star-fill rating-star"></i>
@@ -248,7 +199,7 @@
                     </div>
                     <div class="product-info">
                         <div class="product-category">Combo</div>
-                        <h4 class="product-title"><a href="single-product.html"
+                        <h4 class="product-title"><a href="/product/1"
                                 class="text-decoration-none text-dark stretched-link">Shirt & Pant</a></h4>
                         <div class="product-rating">
                             <i class="bi bi-star-fill rating-star"></i>
@@ -284,7 +235,7 @@
                 <h2 class="section-title mb-1">Top Selling Products</h2>
                 <p class="text-muted m-0">Our most popular items this season</p>
             </div>
-            <a href="product.html" class="text-primary text-decoration-none fw-600">See All <i
+            <a href="/product" class="text-primary text-decoration-none fw-600">See All <i
                     class="bi bi-chevron-right" style="width: 16px; display: inline;"></i></a>
         </div>
 
@@ -304,7 +255,7 @@
                     </div>
                     <div class="product-info">
                         <div class="product-category">Hoodies</div>
-                        <h4 class="product-title"><a href="single-product.html"
+                        <h4 class="product-title"><a href="/product/1"
                                 class="text-decoration-none text-dark stretched-link">Oversized Hoodies</a></h4>
                         <div class="product-rating">
                             <i class="bi bi-star-fill rating-star"></i>
@@ -332,7 +283,7 @@
                     </div>
                     <div class="product-info">
                         <div class="product-category">Jeans</div>
-                        <h4 class="product-title"><a href="single-product.html"
+                        <h4 class="product-title"><a href="/product/1"
                                 class="text-decoration-none text-dark stretched-link">Baggy Jeans</a></h4>
                         <div class="product-rating">
                             <i class="bi bi-star-fill rating-star"></i>
@@ -361,7 +312,7 @@
                     </div>
                     <div class="product-info">
                         <div class="product-category">Shirts</div>
-                        <h4 class="product-title"><a href="single-product.html"
+                        <h4 class="product-title"><a href="/product/1"
                                 class="text-decoration-none text-dark stretched-link">Classic Shirt</a></h4>
                         <div class="product-rating">
                             <i class="bi bi-star-fill rating-star"></i>
@@ -389,7 +340,7 @@
                     </div>
                     <div class="product-info">
                         <div class="product-category">Combo</div>
-                        <h4 class="product-title"><a href="single-product.html"
+                        <h4 class="product-title"><a href="/product/1"
                                 class="text-decoration-none text-dark stretched-link">Shirt & Pant</a></h4>
                         <div class="product-rating">
                             <i class="bi bi-star-fill rating-star"></i>
@@ -423,17 +374,17 @@
                 <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
                     <h5 class="footer-heading">Shop</h5>
                     <ul class="footer-links">
-                        <li><a href="product.html">New Arrivals</a></li>
-                        <li><a href="product.html">Shirts</a></li>
-                        <li><a href="product.html">Jeans</a></li>
-                        <li><a href="product.html">Suits</a></li>
-                        <li><a href="product.html">Accessories</a></li>
+                        <li><a href="/product">New Arrivals</a></li>
+                        <li><a href="/product">Shirts</a></li>
+                        <li><a href="/product">Jeans</a></li>
+                        <li><a href="/product">Suits</a></li>
+                        <li><a href="/product">Accessories</a></li>
                     </ul>
                 </div>
                 <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
                     <h5 class="footer-heading">Support</h5>
                     <ul class="footer-links">
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
                         <li><a href="#">FAQs</a></li>
                         <li><a href="#">Shipping Policy</a></li>
                         <li><a href="#">Returns</a></li>
@@ -443,11 +394,11 @@
                 <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
                     <h5 class="footer-heading">Account</h5>
                     <ul class="footer-links">
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="signup.html">Signup</a></li>
-                        <li><a href="wishlist.html">Wishlist</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="account-orders.html">Orders</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Signup</a></li>
+                        <li><a href="/wishlist">Wishlist</a></li>
+                        <li><a href="/cart">Cart</a></li>
+                        <li><a href="/account-orders">Orders</a></li>
                     </ul>
                 </div>
             </div>
@@ -467,6 +418,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
     <script src="/js/script.js"></script>
+    <script src="/js/homeCategories.js"></script>
 </body>
 
 </html>

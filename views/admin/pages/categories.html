@@ -1,0 +1,155 @@
+<div class="row g-4">
+    <div class="col-lg-12">
+        <section class="admin-form-section mb-section">
+            <div class="admin-form-section-header">
+                <h5 class="admin-form-section-title">Add New Category</h5>
+            </div>
+            <div class="admin-form-section-body">
+                <form id="categoryForm" class="row g-3" enctype="multipart/form-data">
+                    <!-- Row 1: Category Name -->
+                    <div class="col-md-6">
+                        <label class="form-label-admin">Category Name</label>
+                        <input type="text" id="categoryName" class="form-control-admin" placeholder="e.g. Outerwear">
+                    </div>
+
+                    <!-- Row 1: Category Image Upload -->
+                    <div class="col-md-6">
+                        <label class="form-label-admin">Category Image</label>
+                        <input type="file" id="categoryImage" class="form-control-admin"
+                            accept=".jpg,.jpeg,.png,.webp" style="padding: 0.45rem 0.75rem; cursor: pointer;"
+                            onchange="previewCategoryImage(event)">
+                        <!-- Image Preview -->
+                        <div id="categoryImagePreview" style="display:none; margin-top: 0.75rem;">
+                            <p class="form-label-admin"
+                                style="margin-bottom: 0.35rem; font-size: 0.78rem; opacity: 0.7;">Preview</p>
+                            <img id="categoryPreviewImg" src="" alt="Category preview" style="
+                                    width: 90px;
+                                    height: 90px;
+                                    object-fit: cover;
+                                    border-radius: 10px;
+                                    border: 2px solid var(--admin-border, rgba(255,255,255,0.12));
+                                    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+                                ">
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Description — full width -->
+                    <div class="col-12">
+                        <label class="form-label-admin">Category Description</label>
+                        <textarea id="categoryDescription" class="form-control-admin" rows="3"
+                            placeholder="Write a short description for this category..."
+                            style="resize: vertical; min-height: 80px;"></textarea>
+                    </div>
+
+                    <!-- Row 3: Add button — right aligned -->
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="submit" class="btn-admin-primary" style="min-width: 130px;">Add Category</button>
+                    </div>
+                </form>
+
+                <script>
+                    function previewCategoryImage(event) {
+                        const file = event.target.files[0];
+                        const previewBox = document.getElementById('categoryImagePreview');
+                        const previewImg = document.getElementById('categoryPreviewImg');
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                previewImg.src = e.target.result;
+                                previewBox.style.display = 'block';
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            previewBox.style.display = 'none';
+                            previewImg.src = '';
+                        }
+                    }
+                </script>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-12">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h3 class="admin-card-title">Category List</h3>
+            </div>
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Category Name</th>
+                            <th>Product Count</th>
+                            <th>Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-600">Men's Apparel</td>
+                            <td class="td-secondary">154 Products</td>
+                            <td><span class="status-badge badge-active">Active</span></td>
+                            <td>
+                                <div class="action-btns justify-content-end">
+                                    <button class="btn-admin-outline btn-admin-icon" title="Edit"><svg
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg></button>
+                                    <button class="btn-admin-danger btn-admin-icon" title="Delete"><svg
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                        </svg></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600">Women's Collection</td>
+                            <td class="td-secondary">210 Products</td>
+                            <td><span class="status-badge badge-active">Active</span></td>
+                            <td>
+                                <div class="action-btns justify-content-end">
+                                    <button class="btn-admin-outline btn-admin-icon" title="Edit"><svg
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg></button>
+                                    <button class="btn-admin-danger btn-admin-icon" title="Delete"><svg
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                        </svg></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600">Accessories</td>
+                            <td class="td-secondary">85 Products</td>
+                            <td><span class="status-badge badge-active">Active</span></td>
+                            <td>
+                                <div class="action-btns justify-content-end">
+                                    <button class="btn-admin-outline btn-admin-icon" title="Edit"><svg
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg></button>
+                                    <button class="btn-admin-danger btn-admin-icon" title="Delete"><svg
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                        </svg></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

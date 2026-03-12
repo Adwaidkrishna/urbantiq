@@ -1,0 +1,506 @@
+﻿/* ============================================
+   WISHLIST PAGE — wishlist.css
+   URBANTIQ · Apple-minimal design language
+   ============================================ */
+
+/* ── Navbar active heart icon ───────────────── */
+.wl-nav-active {
+    color: #e53935 !important;
+}
+
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+.wl-header-wrap {
+    padding: 2rem 0 1.5rem;
+    border-bottom: 1px solid #f2f2f2;
+    background: #fff;
+}
+
+.wl-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    margin-bottom: 1.1rem;
+    flex-wrap: wrap;
+}
+
+.wl-breadcrumb a {
+    color: #86868b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
+}
+
+.wl-breadcrumb a:hover {
+    color: #1d1d1f;
+}
+
+.wl-breadcrumb i {
+    font-size: 0.55rem;
+    color: #c7c7cc;
+}
+
+.wl-breadcrumb span {
+    color: #1d1d1f;
+    font-weight: 600;
+}
+
+.wl-title-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.wl-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.04em;
+    margin: 0 0 0.2rem;
+}
+
+.wl-subtitle {
+    font-size: 0.875rem;
+    color: #86868b;
+    margin: 0;
+    font-weight: 400;
+}
+
+.wl-count-badge {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #86868b;
+    background: #f5f5f7;
+    padding: 6px 14px;
+    border-radius: 50px;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+/* ============================================
+   WISHLIST GRID SECTION
+   ============================================ */
+.wl-section {
+    padding: 2.5rem 0 3rem;
+    background: #fff;
+}
+
+/* ── Card ──────────────────────────────────── */
+.wl-card {
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.28s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.wl-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.09);
+}
+
+/* ── Card Image ────────────────────────────── */
+.wl-card-img {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    background: #f5f5f7;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.wl-card-img a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.wl-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.45s ease;
+}
+
+.wl-card:hover .wl-card-img img {
+    transform: scale(1.04);
+}
+
+/* Badge */
+.wl-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #fff;
+    color: #1d1d1f;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 50px;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+.wl-badge-dark {
+    background: #1d1d1f;
+    color: #fff;
+}
+
+/* Remove / Heart button — shared circle style */
+.wl-remove-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.80);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: #1d1d1f;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.wl-remove-btn:hover {
+    background: #1d1d1f;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+
+/* ── Card Body ─────────────────────────────── */
+.wl-card-body {
+    padding: 0.9rem 1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.wl-cat {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: #86868b;
+    margin-bottom: 4px;
+}
+
+.wl-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin: 0 0 6px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.wl-name a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.wl-name a:hover {
+    color: #000;
+}
+
+.wl-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    color: #1d1d1f;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.wl-rating i {
+    color: #f4a200;
+    font-size: 0.72rem;
+}
+
+.wl-reviews {
+    color: #86868b;
+    font-weight: 400;
+    font-size: 0.72rem;
+}
+
+.wl-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin-bottom: 12px;
+}
+
+.wl-price {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+}
+
+.wl-price-old {
+    font-size: 0.8rem;
+    color: #aeaeb2;
+    text-decoration: line-through;
+    font-weight: 400;
+}
+
+/* ── Move to Cart button ───────────────────── */
+.wl-cart-btn {
+    width: 100%;
+    margin-top: auto;
+    padding: 10px 14px;
+    background: transparent;
+    color: #1d1d1f;
+    border: 1.5px solid #e5e5e7;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.wl-cart-btn:hover {
+    border-color: #1d1d1f;
+    background: #1d1d1f;
+    color: #fff;
+}
+
+.wl-cart-btn.wl-cart-added {
+    border-color: #34c759;
+    color: #34c759;
+    background: rgba(52, 199, 89, 0.06);
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+.wl-empty-wrap {
+    padding: 5rem 0 6rem;
+    background: #fff;
+}
+
+.wl-empty-card {
+    max-width: 420px;
+    margin: 0 auto;
+    background: #f8f8f8;
+    border-radius: 24px;
+    padding: 3.5rem 2.5rem;
+    text-align: center;
+}
+
+.wl-empty-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.8rem;
+    color: #aeaeb2;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.wl-empty-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+}
+
+.wl-empty-sub {
+    font-size: 0.875rem;
+    color: #86868b;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+}
+
+.wl-empty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 28px;
+    background: #1d1d1f;
+    color: #fff;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: opacity 0.2s ease;
+}
+
+.wl-empty-btn:hover {
+    color: #fff;
+    opacity: 0.88;
+}
+
+/* ============================================
+   FOOTER (shared with other pages via common.css)
+   — styles already in common.css; just wire
+     local overrides here if needed
+   ============================================ */
+footer {
+    background: #fff;
+    padding: 4rem 0 2rem;
+    border-top: 1px solid #f2f2f2;
+}
+
+.footer-logo {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #000;
+    text-decoration: none;
+    letter-spacing: -0.05em;
+    display: inline-block;
+    margin-bottom: 0.85rem;
+}
+
+.footer-desc {
+    font-size: 0.875rem;
+    color: #6e6e73;
+    line-height: 1.65;
+    max-width: 220px;
+    margin-bottom: 1.25rem;
+}
+
+.footer-social {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.social-icon:hover {
+    background: #1d1d1f;
+    color: #fff;
+}
+
+.footer-heading {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.6rem;
+}
+
+.footer-links a {
+    font-size: 0.875rem;
+    color: #6e6e73;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.footer-links a:hover {
+    color: #1d1d1f;
+}
+
+.footer-bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f2f2f2;
+}
+
+.copyright {
+    font-size: 0.82rem;
+    color: #86868b;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 767.98px) {
+    .wl-header-wrap {
+        padding: 1.5rem 0 1rem;
+    }
+
+    .wl-title {
+        font-size: 1.5rem;
+    }
+
+    .wl-section {
+        padding: 1.5rem 0 2rem;
+    }
+
+    .wl-card-body {
+        padding: 0.75rem 0.85rem 0.9rem;
+    }
+
+    .wl-name {
+        font-size: 0.82rem;
+    }
+
+    .wl-price {
+        font-size: 0.92rem;
+    }
+
+    .wl-cart-btn {
+        font-size: 0.74rem;
+        padding: 9px 10px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .wl-remove-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+
+    .wl-badge {
+        font-size: 0.55rem;
+        padding: 3px 8px;
+    }
+}

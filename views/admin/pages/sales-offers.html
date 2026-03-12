@@ -1,0 +1,98 @@
+<div class="row g-4">
+    <div class="col-lg-5">
+        <section class="admin-form-section">
+            <div class="admin-form-section-header">
+                <h5 class="admin-form-section-title">Schedule New Offer</h5>
+            </div>
+            <div class="admin-form-section-body">
+                <form action="#">
+                    <div class="form-group-admin">
+                        <label class="form-label-admin">Offer Title</label>
+                        <input type="text" class="form-control-admin" placeholder="e.g. Summer Clearance Sale">
+                    </div>
+                    <div class="form-row-admin form-row-2">
+                        <div class="form-group-admin">
+                            <label class="form-label-admin">Discount percentage (%)</label>
+                            <input type="number" class="form-control-admin" placeholder="20">
+                        </div>
+                        <div class="form-group-admin">
+                            <label class="form-label-admin">Status</label>
+                            <select class="form-select-admin">
+                                <option>Active</option>
+                                <option>Scheduled</option>
+                                <option>Expired</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-admin">
+                        <label class="form-label-admin">Validity Period</label>
+                        <div class="input-group">
+                            <input type="date" class="form-control-admin" style="border-radius: 8px 0 0 8px;">
+                            <span class="input-group-text bg-light border-start-0"
+                                style="font-size: 11px; border: 1px solid #dee2e6;">TO</span>
+                            <input type="date" class="form-control-admin" style="border-radius: 0 8px 8px 0;">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-admin-primary w-100 mt-3">Add New Offer</button>
+                </form>
+            </div>
+        </section>
+    </div>
+    <div class="col-lg-7">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h3 class="admin-card-title">Promotional Offers</h3>
+            </div>
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Offer Title</th>
+                            <th>Discount</th>
+                            <th>Valid Until</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-600">EndOfSeason 2023</td>
+                            <td>40% OFF</td>
+                            <td class="td-secondary">Oct 30, 2023</td>
+                            <td><span class="status-badge badge-active">Active</span></td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn-admin-outline btn-admin-icon"><svg viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        </svg></button>
+                                    <button class="btn-admin-danger btn-admin-icon"><svg viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                        </svg></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-600">Flash Sale - Friday</td>
+                            <td>15% OFF</td>
+                            <td class="td-secondary">Next Friday</td>
+                            <td><span class="status-badge badge-pending">Scheduled</span></td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn-admin-outline btn-admin-icon"><svg viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        </svg></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

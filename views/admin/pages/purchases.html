@@ -1,0 +1,94 @@
+<div class="page-header">
+    <div>
+        <h2 class="page-title">All Purchase Entries</h2>
+        <p class="page-subtitle">View all recorded supplier purchases and their batch details.</p>
+    </div>
+    <div class="page-actions">
+        <a href="#" class="btn-admin-primary btn-admin-sm" data-page="add-purchase.html">+ Add Purchase</a>
+    </div>
+</div>
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div class="table-filter-bar w-100">
+            <div class="search-input-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="search-input" placeholder="Search by supplier or product...">
+            </div>
+        </div>
+    </div>
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Purchase ID</th>
+                    <th>Supplier</th>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                    <th>Batch ID</th>
+                    <th>Date</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="fw-600">PUR-1041</td>
+                    <td>Urban Fabrics Co.</td>
+                    <td>Slim Fit Denim</td>
+                    <td>50</td>
+                    <td class="td-secondary">$25.00</td>
+                    <td class="fw-600">$1,250.00</td>
+                    <td class="td-secondary">B-2024-001</td>
+                    <td class="td-secondary">Oct 20, 2023</td>
+                    <td>
+                        <div class="action-btns justify-content-end">
+                            <button class="btn-admin-outline btn-admin-icon" title="View"><svg viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg></button>
+                            <button class="btn-admin-danger btn-admin-icon" title="Delete"><svg viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                </svg></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fw-600">PUR-1040</td>
+                    <td>Premium Threads</td>
+                    <td>Premium Cotton Tee</td>
+                    <td>200</td>
+                    <td class="td-secondary">$12.00</td>
+                    <td class="fw-600">$2,400.00</td>
+                    <td class="td-secondary">B-2024-002</td>
+                    <td class="td-secondary">Oct 18, 2023</td>
+                    <td>
+                        <div class="action-btns justify-content-end">
+                            <button class="btn-admin-outline btn-admin-icon" title="View"><svg viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg></button>
+                            <button class="btn-admin-danger btn-admin-icon" title="Delete"><svg viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                </svg></button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

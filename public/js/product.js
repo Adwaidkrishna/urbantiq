@@ -66,3 +66,44 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    loadFilterCategories();
+
+});
+
+async function loadFilterCategories() {
+
+    try {
+
+        const res = await fetch("/api/categories");
+        const data = await res.json();
+
+        const list = document.getElementById("categoryFilterList");
+
+        list.innerHTML = "";
+
+        data.categories.forEach(cat => {
+
+            const li = document.createElement("li");
+
+            li.innerHTML = `
+                <label class="filter-check">
+                    <input type="checkbox" value="${cat._id}">
+                    <span class="checkmark"></span>
+                    ${cat.name}
+                </label>
+            `;
+
+            list.appendChild(li);
+
+        });
+
+    } catch (err) {
+
+        console.error("Category load error:", err);
+
+    }
+
+}

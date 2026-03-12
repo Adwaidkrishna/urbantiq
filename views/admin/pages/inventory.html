@@ -1,0 +1,66 @@
+<div class="row g-4 mb-section">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <span class="stat-card-label">Total Stock Units</span>
+            <div class="stat-card-value">12,450</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <span class="stat-card-label">Out of Stock</span>
+            <div class="stat-card-value text-danger">12</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <span class="stat-card-label">Low Stock Items</span>
+            <div class="stat-card-value text-warning">45</div>
+        </div>
+    </div>
+</div>
+<div class="admin-card">
+    <div class="admin-card-header d-flex justify-content-between align-items-center">
+        <h3 class="admin-card-title">Stock Status List</h3>
+        <a href="#" class="btn-admin-primary btn-admin-sm" data-page="inventory-management.html">Manage Stock</a>
+    </div>
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Current Stock</th>
+                    <th>Unit Price</th>
+                    <th>Status</th>
+                    <th class="text-end">Last Restocked</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="fw-600">Premium Cotton Tee</td>
+                    <td class="td-secondary">Apparel</td>
+                    <td class="fw-600">450 Units</td>
+                    <td>$25.00</td>
+                    <td><span class="status-badge badge-active">In Stock</span></td>
+                    <td class="text-end td-secondary">Oct 20, 2023</td>
+                </tr>
+                <tr>
+                    <td class="fw-600">Slim Fit Denim</td>
+                    <td class="td-secondary">Apparel</td>
+                    <td class="fw-600 text-warning">15 Units</td>
+                    <td>$65.00</td>
+                    <td><span class="status-badge badge-pending">Low Stock</span></td>
+                    <td class="text-end td-secondary">Oct 18, 2023</td>
+                </tr>
+                <tr>
+                    <td class="fw-600">Leather Wallet</td>
+                    <td class="td-secondary">Accessories</td>
+                    <td class="fw-600 text-danger">0 Units</td>
+                    <td>$40.00</td>
+                    <td><span class="status-badge badge-cancelled">Out of Stock</span></td>
+                    <td class="text-end td-secondary">Sep 30, 2023</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,1134 @@
+/* ============================================
+   CHECKOUT — checkout.css
+   Shared across all checkout pages
+   URBANTIQ · Apple-minimal design language
+   ============================================ */
+
+/* ============================================
+   PROGRESS STEPPER
+   ============================================ */
+.ck-stepper-wrap {
+    background: #fff;
+    border-bottom: 1px solid #f2f2f2;
+    padding: 1.25rem 0;
+}
+
+.ck-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.ck-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.ck-step-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid #e5e5e7;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #aeaeb2;
+    flex-shrink: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ck-step-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #aeaeb2;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.ck-step-line {
+    flex: 1;
+    height: 2px;
+    background: #e5e5e7;
+    margin: 0 8px;
+    transition: background 0.3s ease;
+    border-radius: 2px;
+}
+
+/* Done/Active States */
+.ck-step.active .ck-step-circle {
+    background: #1d1d1f;
+    border-color: #1d1d1f;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.ck-step.active .ck-step-label {
+    color: #1d1d1f;
+    font-weight: 700;
+}
+
+.ck-step.done .ck-step-circle {
+    background: #f5f5f7;
+    border-color: #d2d2d7;
+    color: #1d1d1f;
+}
+
+.ck-step.done .ck-step-label {
+    color: #1d1d1f;
+}
+
+.ck-step.done+.ck-step-line {
+    background: #1d1d1f;
+}
+
+/* Mobile Specific Refinement */
+@media (max-width: 576px) {
+    .ck-stepper-wrap {
+        padding: 1.5rem 0 1rem;
+    }
+
+    .ck-stepper {
+        max-width: 100%;
+        padding: 0 5px;
+        align-items: flex-start;
+        /* For stacked labels */
+    }
+
+    .ck-step {
+        flex-direction: column;
+        gap: 8px;
+        width: 64px;
+        /* Consistent step width for equal spacing */
+        flex: 0 0 auto;
+    }
+
+    .ck-step-circle {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+
+    .ck-step-label {
+        font-size: 0.65rem;
+        text-align: center;
+        white-space: normal;
+        line-height: 1.2;
+    }
+
+    .ck-step-line {
+        margin: 0 -20px;
+        /* Pull steps together and ensure line touches circles */
+        margin-top: 14px;
+        /* Center with the 30px circle (15px is mid, -1px for stroke) */
+        height: 2px;
+    }
+}
+
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+.ck-header-wrap {
+    padding: 1.75rem 0 1.25rem;
+    background: #fff;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.ck-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    margin-bottom: 0.85rem;
+}
+
+.ck-breadcrumb a {
+    color: #86868b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
+}
+
+.ck-breadcrumb a:hover {
+    color: #1d1d1f;
+}
+
+.ck-breadcrumb i {
+    font-size: 0.52rem;
+    color: #c7c7cc;
+}
+
+.ck-breadcrumb span {
+    color: #1d1d1f;
+    font-weight: 600;
+}
+
+.ck-page-title {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+
+/* ============================================
+   MAIN LAYOUT
+   ============================================ */
+.ck-main {
+    padding: 2.5rem 0 5rem;
+    background: #f5f5f7;
+    min-height: 70vh;
+}
+
+/* Single-column centered layout (details page) */
+.ck-form-center {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   FORM CARD (Left column)
+   ============================================ */
+.ck-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+    margin-bottom: 1rem;
+}
+
+.ck-card-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+/* Form fields */
+.ck-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #86868b;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.ck-input,
+.ck-select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #e5e5e7;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-family: inherit;
+    color: #1d1d1f;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.ck-input:focus,
+.ck-select:focus {
+    border-color: #1d1d1f;
+    box-shadow: 0 0 0 3px rgba(29, 29, 31, 0.06);
+}
+
+.ck-input::placeholder {
+    color: #c7c7cc;
+}
+
+.ck-select-wrap {
+    position: relative;
+}
+
+.ck-select-wrap::after {
+    content: '\203A';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-size: 1rem;
+    color: #86868b;
+    pointer-events: none;
+}
+
+.ck-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.ck-form-group {
+    margin-bottom: 1rem;
+}
+
+.ck-form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================
+   MINI SUMMARY CARD (Right column — details page)
+   ============================================ */
+.ck-mini-summary {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+    position: sticky;
+    top: 80px;
+}
+
+.ck-mini-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f2f2f2;
+    letter-spacing: -0.01em;
+}
+
+.ck-mini-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #f9f9f9;
+}
+
+.ck-mini-item:last-of-type {
+    border-bottom: none;
+}
+
+.ck-mini-img {
+    width: 48px;
+    height: 58px;
+    border-radius: 10px;
+    object-fit: cover;
+    background: #f5f5f7;
+    flex-shrink: 0;
+}
+
+.ck-mini-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ck-mini-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.ck-mini-meta {
+    font-size: 0.68rem;
+    color: #86868b;
+    font-weight: 400;
+}
+
+.ck-mini-price {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+}
+
+.ck-mini-divider {
+    height: 1px;
+    background: #f2f2f2;
+    margin: 0.85rem 0;
+}
+
+.ck-mini-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #1d1d1f;
+}
+
+/* ============================================
+   CART ITEM ROW (summary page)
+   ============================================ */
+.ck-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.ck-item:last-of-type {
+    border-bottom: none;
+}
+
+.ck-item-img {
+    width: 76px;
+    height: 90px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: #f5f5f7;
+    flex-shrink: 0;
+}
+
+.ck-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ck-item-cat {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #86868b;
+    margin-bottom: 3px;
+}
+
+.ck-item-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ck-item-meta {
+    font-size: 0.72rem;
+    color: #86868b;
+}
+
+.ck-item-meta span {
+    color: #1d1d1f;
+    font-weight: 600;
+}
+
+.ck-item-price-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+    flex-shrink: 0;
+}
+
+.ck-item-price {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+}
+
+.ck-item-price-old {
+    font-size: 0.75rem;
+    color: #aeaeb2;
+    text-decoration: line-through;
+    font-weight: 400;
+}
+
+.ck-item-discount {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #34c759;
+    background: rgba(52, 199, 89, 0.1);
+    padding: 2px 7px;
+    border-radius: 50px;
+}
+
+/* ============================================
+   ORDER SUMMARY CARD (right column)
+   ============================================ */
+.ck-summary-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+    position: sticky;
+    top: 80px;
+}
+
+.ck-summary-title {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.ck-price-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-bottom: 0.5rem;
+}
+
+.ck-price-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #6e6e73;
+    font-weight: 400;
+}
+
+.ck-discount-val {
+    color: #34c759;
+    font-weight: 700;
+}
+
+.ck-free {
+    color: #34c759;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.ck-divider {
+    height: 1px;
+    background: #f2f2f2;
+    margin: 0.9rem 0;
+}
+
+.ck-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1d1d1f;
+}
+
+.ck-total-val {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.ck-savings-badge {
+    margin-top: 0.7rem;
+    background: rgba(52, 199, 89, 0.08);
+    color: #1a7a3a;
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ck-savings-badge i {
+    color: #34c759;
+}
+
+/* Coupon (summary page only) */
+.ck-coupon-wrap {
+    margin-top: 0.85rem;
+}
+
+.ck-coupon-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.ck-coupon-row {
+    display: flex;
+    gap: 8px;
+}
+
+.ck-coupon-input {
+    flex: 1;
+    padding: 10px 13px;
+    border: 1.5px solid #e5e5e7;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-family: inherit;
+    color: #1d1d1f;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.ck-coupon-input:focus {
+    border-color: #1d1d1f;
+}
+
+.ck-coupon-btn {
+    padding: 10px 16px;
+    background: #1d1d1f;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.ck-coupon-btn:hover {
+    opacity: 0.86;
+}
+
+.ck-coupon-success {
+    font-size: 0.72rem;
+    color: #34c759;
+    font-weight: 600;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ============================================
+   PAYMENT OPTIONS
+   ============================================ */
+.ck-payment-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 1rem 1.1rem;
+    border: 1.5px solid #e5e5e7;
+    border-radius: 14px;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    position: relative;
+    user-select: none;
+}
+
+.ck-payment-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.ck-pay-radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #d2d2d7;
+    background: #fff;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s ease;
+}
+
+.ck-pay-radio::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #1d1d1f;
+    display: none;
+}
+
+.ck-payment-option.selected {
+    border-color: #1d1d1f;
+    background: #f9f9f9;
+}
+
+.ck-payment-option.selected .ck-pay-radio {
+    border-color: #1d1d1f;
+}
+
+.ck-payment-option.selected .ck-pay-radio::after {
+    display: block;
+}
+
+.ck-pay-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #f5f5f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    color: #1d1d1f;
+    flex-shrink: 0;
+}
+
+.ck-pay-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1d1d1f;
+}
+
+.ck-pay-sub {
+    font-size: 0.72rem;
+    color: #86868b;
+    font-weight: 400;
+}
+
+/* Card fields panel */
+.ck-card-fields {
+    background: #f8f8f8;
+    border-radius: 14px;
+    padding: 1.1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    display: none;
+}
+
+.ck-card-fields.visible {
+    display: block;
+}
+
+/* ============================================
+   BOTTOM ACTION BUTTON
+   ============================================ */
+.ck-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    padding: 15px 24px;
+    margin-top: 1.5rem;
+    background: #1d1d1f;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ck-action-btn:hover {
+    color: #fff;
+    opacity: 0.90;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   ORDER SUCCESS PAGE
+   ============================================ */
+.ck-success-wrap {
+    min-height: 80vh;
+    padding: 5rem 1rem 6rem;
+    background: #f5f5f7;
+}
+
+.ck-success-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.ck-success-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 4rem 2.5rem;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+}
+
+.ck-success-section {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2.5rem;
+    width: 100%;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+}
+
+.ck-success-section-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    margin-bottom: 1.5rem;
+    border-bottom: none;
+    padding-bottom: 0;
+    text-align: left;
+}
+
+.ck-success-icon {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: rgba(52, 199, 89, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2.25rem;
+    color: #34c759;
+}
+
+.ck-success-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.75rem;
+}
+
+.ck-success-sub {
+    font-size: 1rem;
+    color: #86868b;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.ck-order-meta {
+    background: #f5f5f7;
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.75rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ck-order-meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+}
+
+.ck-order-meta-row span:first-child {
+    color: #86868b;
+    font-weight: 500;
+}
+
+.ck-order-meta-row span:last-child {
+    color: #1d1d1f;
+    font-weight: 700;
+}
+
+.ck-success-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ck-btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 24px;
+    background: #1d1d1f;
+    color: #fff;
+    border-radius: 13px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.ck-btn-primary:hover {
+    color: #fff;
+    opacity: 0.88;
+}
+
+.ck-btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background: transparent;
+    color: #1d1d1f;
+    border: 1.5px solid #e5e5e7;
+    border-radius: 13px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.ck-btn-secondary:hover {
+    border-color: #1d1d1f;
+    background: #f5f5f7;
+    color: #1d1d1f;
+}
+
+/* ============================================
+   NAVBAR / FOOTER (shared)
+   ============================================ */
+footer {
+    background: #fff;
+    padding: 3.5rem 0 2rem;
+    border-top: 1px solid #f2f2f2;
+}
+
+.footer-logo {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #000;
+    text-decoration: none;
+    letter-spacing: -0.05em;
+    display: inline-block;
+    margin-bottom: 0.7rem;
+}
+
+.footer-desc {
+    font-size: 0.84rem;
+    color: #6e6e73;
+    line-height: 1.65;
+    max-width: 220px;
+    margin-bottom: 1rem;
+}
+
+.footer-social {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.social-icon:hover {
+    background: #1d1d1f;
+    color: #fff;
+}
+
+.footer-heading {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.9rem;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.55rem;
+}
+
+.footer-links a {
+    font-size: 0.84rem;
+    color: #6e6e73;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.footer-links a:hover {
+    color: #1d1d1f;
+}
+
+.footer-bottom {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #f2f2f2;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: #86868b;
+}
+
+/* ============================================
+   DEFAULT ADDRESS CHECKBOX
+   ============================================ */
+.ck-default-addr {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #f2f2f2;
+}
+
+.ck-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding: 6px 0;
+    /* Better tap area */
+    width: fit-content;
+}
+
+.ck-checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.ck-checkmark {
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border: 1.5px solid #d2d2d7;
+    border-radius: 6px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ck-checkbox-container:hover input~.ck-checkmark {
+    border-color: #1d1d1f;
+}
+
+.ck-checkbox-container input:checked~.ck-checkmark {
+    background-color: #1d1d1f;
+    border-color: #1d1d1f;
+}
+
+.ck-checkmark:after {
+    content: "\F26E";
+    font-family: "bootstrap-icons";
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: white;
+    display: none;
+    line-height: 1;
+}
+
+.ck-checkbox-container input:checked~.ck-checkmark:after {
+    display: block;
+}
+
+.ck-checkbox-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    line-height: 1;
+}
+
+.ck-checkbox-desc {
+    font-size: 0.74rem;
+    color: #86868b;
+    margin-top: 2px;
+    margin-left: 32px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 991.98px) {
+
+    .ck-mini-summary,
+    .ck-summary-card {
+        position: static;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .ck-main {
+        padding: 1.5rem 0 3.5rem;
+    }
+
+    .ck-card {
+        padding: 1.25rem 1.1rem;
+    }
+
+    .ck-form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .ck-stepper-wrap {
+        padding: 0.75rem 0;
+    }
+
+    .ck-step-label {
+        display: none;
+    }
+
+    .ck-success-card {
+        padding: 3rem 1.5rem;
+    }
+
+    .ck-success-section {
+        padding: 2rem 1.5rem;
+    }
+
+    .ck-header-wrap {
+        padding: 1.25rem 0 1rem;
+    }
+
+    /* Mobile: Ensure checkbox container takes full width for easier tap */
+    .ck-checkbox-container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .ck-coupon-row {
+        flex-direction: column;
+    }
+
+    .ck-coupon-btn {
+        width: 100%;
+    }
+
+    .ck-action-btn {
+        font-size: 0.9rem;
+        padding: 14px;
+    }
+
+    .ck-item-img {
+        width: 62px;
+        height: 74px;
+    }
+}
+
+/* ── Mobile: address above items ──────────── */
+@media (max-width: 991.98px) {
+    .col-12.col-lg-8 {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ck-address-card {
+        order: -1;
+    }
+}
