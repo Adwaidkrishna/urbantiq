@@ -1,22 +1,23 @@
 import multer from "multer";
-import path from "path";
 import fs from "fs";
 
-const uploadDir = "public/images/categories";
+const uploadDir = "public/images/products";
 
-// Auto-create directory if it doesn't exist
 fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
+
   destination: (req, file, cb) => {
     cb(null, uploadDir);
   },
+
   filename: (req, file, cb) => {
-    const uniqueName = Date.now() + path.extname(file.originalname);
+    const uniqueName = Date.now() + "-" + file.originalname;
     cb(null, uniqueName);
   }
+
 });
 
-const upload = multer({ storage });
+const uploadProduct = multer({ storage });
 
-export default upload;
+export default uploadProduct;

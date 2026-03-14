@@ -36,12 +36,12 @@
                     <i class="bi bi-search text-muted me-2"></i>
                     <input type="text" class="search-input" placeholder="Search products...">
                 </div>
-                <a href="wishlist.html" class="icon-btn"><i class="bi bi-heart"></i></a>
-                <a href="cart.html" class="icon-btn">
+                <a href="/wishlist" class="icon-btn"><i class="bi bi-heart"></i></a>
+                <a href="/cart" class="icon-btn">
                     <i class="bi bi-cart3"></i>
                     <span class="cart-badge">0</span>
                 </a>
-                <a href="account.html" class="icon-btn" title="Profile"><i class="bi bi-person"></i></a>
+                <a href="/account" class="icon-btn" title="Profile"><i class="bi bi-person"></i></a>
                 <button class="navbar-toggler border-0 p-2" type="button" id="navToggler">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -65,7 +65,7 @@
     <!-- ══ PRODUCT OVERVIEW ════════════════════════════════════ -->
     <section class="sp-overview">
         <div class="container">
-            <div class="row g-5 align-items-start">
+            <div class="row g-4 g-lg-5 align-items-start">
 
                 <!-- LEFT — Image Gallery -->
                 <div class="col-12 col-lg-6">
@@ -73,8 +73,8 @@
 
                         <!-- Main Image -->
                         <div class="sp-main-img">
-                            <img src="/images/user/phoodie.jpeg" alt="Oversized Hoodie — main view" id="mainProductImg">
-                            <span class="sp-img-badge">Bestseller</span>
+                            <img src="" alt="" id="mainProductImg">
+                            <span class="sp-img-badge" style="display:none;" id="mainProductBadge">Bestseller</span>
                             <button class="sp-img-wishlist" id="imgWishlistBtn" aria-label="Add to Wishlist">
                                 <i class="bi bi-heart" id="imgWishlistIcon"></i>
                             </button>
@@ -82,18 +82,7 @@
 
                         <!-- Thumbnail Row -->
                         <div class="sp-thumbs">
-                            <button class="sp-thumb active" data-src="/images/user/phoodie.jpeg" aria-label="View 1">
-                                <img src="/images/user/phoodie.jpeg" alt="View 1">
-                            </button>
-                            <button class="sp-thumb" data-src="/images/user/hoodies.jpeg" aria-label="View 2">
-                                <img src="/images/user/hoodies.jpeg" alt="View 2">
-                            </button>
-                            <button class="sp-thumb" data-src="/images/user/oversized.jpeg" aria-label="View 3">
-                                <img src="/images/user/oversized.jpeg" alt="View 3">
-                            </button>
-                            <button class="sp-thumb" data-src="/images/user/pcasual.jpeg" aria-label="View 4">
-                                <img src="/images/user/pcasual.jpeg" alt="View 4">
-                            </button>
+                            <!-- JS will inject thumbnails here -->
                         </div>
 
                     </div>
@@ -104,10 +93,10 @@
                     <div class="sp-info">
 
                         <!-- Category -->
-                        <div class="sp-category">Hoodies</div>
+                        <div class="sp-category">Loading...</div>
 
                         <!-- Title -->
-                        <h1 class="sp-title">Oversized Washed Hoodie</h1>
+                        <h1 class="sp-title">Loading...</h1>
 
                         <!-- Rating -->
                         <div class="sp-rating-row">
@@ -124,35 +113,24 @@
 
                         <!-- Price -->
                         <div class="sp-price-row">
-                            <span class="sp-price">₹899</span>
-                            <span class="sp-price-old">₹1,499</span>
-                            <span class="sp-discount-tag">40% OFF</span>
+                            <span class="sp-price"></span>
+                            <span class="sp-price-old"></span>
+                            <span class="sp-discount-tag" style="display:none;"></span>
                         </div>
 
                         <!-- Short Description -->
                         <p class="sp-desc">
-                            Crafted from a 400GSM French terry cotton blend, this washed-out hoodie delivers that
-                            perfectly broken-in feel from day one. Designed with a dropped shoulder and relaxed body
-                            for an effortlessly oversized silhouette.
+                            Loading product description...
                         </p>
 
                         <div class="sp-divider"></div>
 
                         <!-- Color -->
                         <div class="sp-option-group">
-                            <div class="sp-option-label">Colour — <span class="sp-option-val">Washed Black</span>
+                            <div class="sp-option-label">Colour — <span class="sp-option-val">...</span>
                             </div>
                             <div class="sp-color-row">
-                                <button class="sp-color active" style="background:#2c2c2e;" title="Washed Black"
-                                    aria-label="Washed Black"></button>
-                                <button class="sp-color" style="background:#6b6b6b;" title="Washed Grey"
-                                    aria-label="Washed Grey"></button>
-                                <button class="sp-color" style="background:#4a3728;" title="Mocha Brown"
-                                    aria-label="Mocha Brown"></button>
-                                <button class="sp-color" style="background:#2d3a4a;" title="Midnight Navy"
-                                    aria-label="Midnight Navy"></button>
-                                <button class="sp-color" style="background:#5c4033;" title="Rust"
-                                    aria-label="Rust"></button>
+                                <!-- Colors injected via JS -->
                             </div>
                         </div>
 
@@ -163,12 +141,7 @@
                                 <a href="#" class="sp-size-guide">Size Guide <i class="bi bi-arrow-up-right"></i></a>
                             </div>
                             <div class="sp-size-row">
-                                <button class="sp-size">XS</button>
-                                <button class="sp-size">S</button>
-                                <button class="sp-size active">M</button>
-                                <button class="sp-size">L</button>
-                                <button class="sp-size">XL</button>
-                                <button class="sp-size">XXL</button>
+                                <!-- Sizes injected via JS -->
                             </div>
                         </div>
 
@@ -218,8 +191,6 @@
             </div>
         </div>
     </section>
-
-
 
     <!-- ══ CUSTOMER REVIEWS ═══════════════════════════════════ -->
     <section class="sp-reviews-section" id="sp-reviews">
@@ -546,9 +517,6 @@
             </div>
         </div>
     </section>
-
-
-
 
     <!-- ══ FOOTER ══════════════════════════════════════════════ -->
     <footer>

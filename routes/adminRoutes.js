@@ -29,6 +29,9 @@ const adminPages = [
   "inventory",
   "inventory-management",
   "admin-profile",
+  "add-product",
+  "products",
+  "edit-product",
 ];
 
 adminPages.forEach((page) => {

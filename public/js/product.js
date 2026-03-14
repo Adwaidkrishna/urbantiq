@@ -68,8 +68,67 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    async function loadProducts() {
+        const productGrid = document.getElementById("productGrid");
+        if (!productGrid) return;
+        
+        try {
+            const res = await fetch("/api/products");
+            const data = await res.json();
+            
+            if (data.success) {
+                renderProducts(data.products);
+            }
+        } catch (err) {
+            console.error("Error loading products:", err);
+        }
+    }
 
+    function renderProducts(products) {
+        const productGrid = document.getElementById("productGrid");
+        const template = document.getElementById("userProductTemplate");
+        if (!productGrid || !template) return;
+
+        productGrid.innerHTML = products.length ? "" : '<div class="col-12 text-center py-5">No products found</div>';
+        
+        products.forEach(p => {
+            const clone = template.content.cloneNode(true);
+            const mainImg = (p.variants?.[0]?.images?.[0]) ? `/images/products/${p.variants[0].images[0]}` : '/images/user/phoodie.jpeg';
+            
+            // Set data
+            clone.querySelector("a").href = `/product/${p._id}`;
+            clone.querySelector("img").src = mainImg;
+            clone.querySelector("img").alt = p.name;
+            clone.querySelector(".p-cat").textContent = p.category?.name || 'Uncategorized';
+            clone.querySelector(".p-name").textContent = p.name;
+            clone.querySelector(".p-price").textContent = `₹${p.offerPrice || p.price}`;
+
+            // Optional: Show "New" badge if created recently
+            const isNew = (new Date() - new Date(p.createdAt)) < 7 * 24 * 60 * 60 * 1000;
+            if (isNew) {
+                const badge = clone.querySelector(".p-badge");
+                badge.textContent = "New";
+                badge.classList.remove("d-none");
+                badge.classList.add("p-badge-white");
+            }
+
+            // Listeners
+            clone.querySelector(".wishlist-btn").addEventListener("click", (e) => {
+                e.preventDefault();
+                alert("Added to wishlist!");
+            });
+            clone.querySelector(".cart-btn").addEventListener("click", (e) => {
+                e.preventDefault();
+                alert("Added to cart!");
+            });
+
+            productGrid.appendChild(clone);
+        });
+    }
+
+    // Call loaders
     loadFilterCategories();
+    loadProducts();
 
 });
 

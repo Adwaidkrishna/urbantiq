@@ -522,3 +522,21 @@
         font-size: 0.8rem;
     }
 }
+
+/* Color Swatches on Product Card */
+
+.product-colors {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.color-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+}
+

@@ -1,64 +1,42 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // === 1. LOGIN FORM LOGIC ===
+    const loginForm = document.getElementById("adminLoginForm");
+    if (loginForm) {
+        const emailInput = document.getElementById("adminEmail");
+        const passwordInput = document.getElementById("adminPassword");
+        const btnText = document.getElementById("btnText");
+        const spinner = document.getElementById("btnSpinner");
 
-    const form = document.getElementById("adminLoginForm");
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
 
-    const emailInput = document.getElementById("adminEmail");
-    const passwordInput = document.getElementById("adminPassword");
+            btnText.textContent = "Logging in...";
+            if (spinner) spinner.classList.remove("d-none");
 
-    const btnText = document.getElementById("btnText");
-    const spinner = document.getElementById("btnSpinner");
+            try {
+                const response = await fetch("/api/admin/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
 
-
-    form.addEventListener("submit", async (e) => {
-
-        e.preventDefault();
-
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-
-        btnText.textContent = "Logging in...";
-        spinner.classList.remove("d-none");
-
-        try {
-
-            const response = await fetch("/api/admin/login", {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    email,
-                    password
-                })
-
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-
-                window.location.href = "/api/admin/dashboard";
-
-            } else {
-
-                alert(data.message || "Login failed");
-
+                const data = await response.json();
+                if (response.ok) {
+                    window.location.href = "/api/admin/dashboard";
+                } else {
+                    alert(data.message || "Login failed");
+                }
+            } catch (error) {
+                alert("Server error");
+            } finally {
+                btnText.textContent = "Login to Dashboard";
+                if (spinner) spinner.classList.add("d-none");
             }
+        });
+    }
 
-        } catch (error) {
-
-            alert("Server error");
-
-        } finally {
-
-            btnText.textContent = "Login to Dashboard";
-            spinner.classList.add("d-none");
-
-        }
-
-    });
-
-});
+    // === 2. OTHER ADMIN LOGIC ===
+    // (Additional general admin logic can go here)
+});

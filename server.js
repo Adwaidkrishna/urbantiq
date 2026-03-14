@@ -10,6 +10,9 @@ import adminRoutes from "./routes/adminRoutes.js";
 import adminCategoryRoutes from "./routes/adminCategoryRoutes.js"
 import categoryRoutes from "./routes/categoryRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import adminProductRoutes from "./routes/adminProductRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+
 
 
 const app = express();
@@ -25,11 +28,15 @@ app.use(express.static("public"));
 
 
 
+
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/admin/pages", express.static("views/admin/pages"));
 app.use("/api/admin", adminCategoryRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api/admin", adminProductRoutes);
+app.use("/api", productRoutes);
+
 
 // User side pages
 app.use("/", userRoutes);

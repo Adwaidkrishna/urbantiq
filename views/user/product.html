@@ -143,315 +143,34 @@
                 </button>
 
                 <div class="row g-3 g-md-4" id="productGrid">
+                    <!-- Products will be injected here dynamically -->
+                </div>
 
-                    <!-- Card 1 -->
+                <!-- Product Card Template -->
+                <template id="userProductTemplate">
                     <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
+                        <a href="" class="p-card-wrapper text-decoration-none text-reset">
                             <div class="p-card">
                                 <div class="p-card-img">
-                                    <span class="p-badge p-badge-dark">Bestseller</span>
+                                    <span class="p-badge p-badge-dark d-none"></span>
                                     <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
+                                        <button type="button" class="p-action-btn wishlist-btn"><i class="bi bi-heart"></i></button>
+                                        <button type="button" class="p-action-btn cart-btn"><i class="bi bi-cart3"></i></button>
                                     </div>
-                                    <img src="../../public/images/user/phoodie.jpeg" alt="Oversized Hoodies">
+                                    <img src="" alt="Product Image">
                                 </div>
                                 <div class="p-card-body">
-                                    <div class="p-cat">Hoodies</div>
-                                    <h4 class="p-name">Oversized Hoodies</h4>
+                                    <div class="p-cat"></div>
+                                    <h4 class="p-name"></h4>
                                     <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.8</span><span
-                                            class="p-reviews">(234)</span>
+                                        <i class="bi bi-star-fill"></i><span>4.5</span><span class="p-reviews">(0)</span>
                                     </div>
-                                    <div class="p-price">₹899</div>
+                                    <div class="p-price"></div>
                                 </div>
                             </div>
                         </a>
                     </div>
-
-                    <!-- Card 2 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/pbaggy.jpeg" alt="Baggy Jeans">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Jeans</div>
-                                    <h4 class="p-name">Baggy Jeans</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.5</span><span
-                                            class="p-reviews">(156)</span>
-                                    </div>
-                                    <div class="p-price">₹199</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Card 3 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <span class="p-badge p-badge-white">New</span>
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/pcasual.jpeg" alt="Classic Shirt">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Shirts</div>
-                                    <h4 class="p-name">Classic Shirt</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.7</span><span
-                                            class="p-reviews">(412)</span>
-                                    </div>
-                                    <div class="p-price">₹89</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Card 4 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/combo.jpeg" alt="Shirt & Pant">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Combo</div>
-                                    <h4 class="p-name">Shirt &amp; Pant</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.6</span><span
-                                            class="p-reviews">(289)</span>
-                                    </div>
-                                    <div class="p-price">₹129</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Card 5 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <span class="p-badge p-badge-dark">Bestseller</span>
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/phoodie.jpeg" alt="Oversized Hoodies">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Hoodies</div>
-                                    <h4 class="p-name">Oversized Hoodies</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.8</span><span
-                                            class="p-reviews">(234)</span>
-                                    </div>
-                                    <div class="p-price">₹899</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Card 6 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <span class="p-badge p-badge-white">New</span>
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/pbaggy.jpeg" alt="Baggy Jeans">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Jeans</div>
-                                    <h4 class="p-name">Baggy Jeans</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.5</span><span
-                                            class="p-reviews">(156)</span>
-                                    </div>
-                                    <div class="p-price">₹1,199</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Card 7 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/shirts.jpg.jpeg" alt="Premium Poplin Shirt">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Shirts</div>
-                                    <h4 class="p-name">Premium Poplin Shirt</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.9</span><span
-                                            class="p-reviews">(521)</span>
-                                    </div>
-                                    <div class="p-price">₹799</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Card 8 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <span class="p-badge p-badge-dark">Sale</span>
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/cargo.webp" alt="Classic Cargo Pants">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Cargo Pants</div>
-                                    <h4 class="p-name">Classic Cargo Pants</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.4</span><span
-                                            class="p-reviews">(98)</span>
-                                    </div>
-                                    <div class="p-price">₹1,099</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Card 9 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/formals.jpeg" alt="Tailored Trousers">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Formals</div>
-                                    <h4 class="p-name">Tailored Trousers</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.6</span><span
-                                            class="p-reviews">(143)</span>
-                                    </div>
-                                    <div class="p-price">₹1,349</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Card 10 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <span class="p-badge p-badge-white">New</span>
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/oversized.jpeg" alt="Drop-Shoulder Tee">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Oversized</div>
-                                    <h4 class="p-name">Drop-Shoulder Tee</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.3</span><span
-                                            class="p-reviews">(76)</span>
-                                    </div>
-                                    <div class="p-price">₹549</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Card 11 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <span class="p-badge p-badge-dark">Bestseller</span>
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/jeans.jpeg" alt="Slim-Fit Denim">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Jeans</div>
-                                    <h4 class="p-name">Slim-Fit Denim</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.7</span><span
-                                            class="p-reviews">(330)</span>
-                                    </div>
-                                    <div class="p-price">₹1,299</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Card 12 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="/product/1" class="p-card-wrapper text-decoration-none text-reset">
-                            <div class="p-card">
-                                <div class="p-card-img">
-                                    <div class="p-card-actions">
-                                        <button type="button" class="p-action-btn"><i class="bi bi-heart"></i></button>
-                                        <button type="button" class="p-action-btn cart-btn"><i
-                                                class="bi bi-cart3"></i></button>
-                                    </div>
-                                    <img src="../../public/images/user/combo.jpeg" alt="Denim Combo">
-                                </div>
-                                <div class="p-card-body">
-                                    <div class="p-cat">Combo</div>
-                                    <h4 class="p-name">Denim Combo Set</h4>
-                                    <div class="p-rating">
-                                        <i class="bi bi-star-fill"></i><span>4.5</span><span
-                                            class="p-reviews">(192)</span>
-                                    </div>
-                                    <div class="p-price">₹1,799</div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                </div><!-- /row -->
+                </template><!-- /row -->
 
                 <!-- Pagination -->
                 <div class="p-pagination">

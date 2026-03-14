@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | URBANTIQ Admin</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom Admin CSS -->
+    <link rel="stylesheet" href="/css/admin.css">
+
+</head>
+
+<body>
+
+    <div class="admin-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" />
+                        <path d="M2 17L12 22L22 17" />
+                        <path d="M2 12L12 17L22 12" />
+                    </svg>
+                </div>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-title">URBANTIQ</span>
+                    <span class="sidebar-brand-sub">Management System</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="sidebar-section-label">General</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/dashboard" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/order-management" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                            </svg>
+                            Order Management
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/customers" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Customers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-label">Marketing &amp; Sales</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/coupons" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                                <line x1="7" y1="8" x2="17" y2="8"></line>
+                                <line x1="7" y1="12" x2="17" y2="12"></line>
+                                <line x1="7" y1="16" x2="12" y2="16"></line>
+                            </svg>
+                            Coupon Codes
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/categories" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="21" y2="18"></line>
+                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                            </svg>
+                            Categories
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/sales-offers" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                            </svg>
+                            Sales &amp; Offers
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-label">Finance &amp; Inventory</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/sales-report" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            Sales Report
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/transactions" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            Transactions
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <div class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                            Purchase
+                        </div>
+                        <a href="/api/admin/purchases" class="sidebar-nav-sublink">Purchase List</a>
+                        <a href="/api/admin/add-purchase" class="sidebar-nav-sublink">Add Purchase</a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/batch-management" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                                <line x1="6" y1="6" x2="6" y2="6"></line>
+                                <line x1="6" y1="18" x2="6" y2="18"></line>
+                            </svg>
+                            Batch Implementation
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/suppliers" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 8v4"></path>
+                                <path d="M12 16h.01"></path>
+                            </svg>
+                            Suppliers
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <div class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z"></path>
+                                <path d="M2 17L12 22L22 17"></path>
+                                <path d="M2 12L12 17L22 12"></path>
+                            </svg>
+                            Inventory
+                        </div>
+                        <a href="/api/admin/inventory" class="sidebar-nav-sublink">Inventory Overview</a>
+                        <a href="/api/admin/inventory-management" class="sidebar-nav-sublink">Inventory Management</a>
+                        <a href="/api/admin/products" class="sidebar-nav-sublink active">Product Management</a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-section-label">Settings</div>
+                <ul class="p-0 m-0">
+                    <li class="sidebar-nav-item">
+                        <a href="/api/admin/admin-profile" class="sidebar-nav-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Admin Profile
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">AD</div>
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name">Adwaid S.</div>
+                        <div class="sidebar-user-role">Super Admin</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-main">
+            <!-- TOP BAR -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <div class="topbar-breadcrumb">Pages <span>/</span> Inventory <span>/</span> Products</div>
+                    <h1 class="topbar-title">Product Management</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="search-input-wrapper d-none d-md-flex me-2">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search products...">
+                    </div>
+                    <button class="topbar-icon-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span class="topbar-badge">4</span>
+                    </button>
+                    <div class="topbar-divider"></div>
+                    <div class="topbar-user">
+                        <div class="topbar-user-avatar">AD</div>
+                        <span class="topbar-user-name">Adwaid</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+            <div class="admin-content">
+                <!-- Header Section -->
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Products</h2>
+                        <p class="page-subtitle">Manage all products</p>
+                    </div>
+                    <div class="page-actions">
+                        <a href="/api/admin/add-product" class="btn-admin-primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add Product
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="row g-4" id="productsGrid">
+                    <!-- Dummy Products (Hardcoded in HTML as requested) -->
+                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-6">
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <span class="status-pill pill-active">Active</span>
+                                <img src="https://picsum.photos/seed/p1/400/533" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Apparel</span>
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <h3 class="product-name">Premium Cotton Tee (Demo)</h3>
+                                    <div class="product-price-stock-box">
+                                        <div class="offer-price">₹999</div>
+                                        <div class="product-stock">Stock: 15</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions mt-auto p-2 d-flex gap-2 bg-light border-top">
+                                <button class="btn-admin-outline btn-admin-sm w-50" onclick="alert('Demo Product')">Edit</button>
+                                <button class="btn-admin-danger btn-admin-sm w-50" onclick="alert('Demo Product')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-6">
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <span class="status-pill pill-active">Active</span>
+                                <img src="https://picsum.photos/seed/p2/400/533" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Bottoms</span>
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <h3 class="product-name">Nero Slim Denim (Demo)</h3>
+                                    <div class="product-price-stock-box">
+                                        <div class="offer-price">₹2499</div>
+                                        <div class="product-stock">Stock: 8</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions mt-auto p-2 d-flex gap-2 bg-light border-top">
+                                <button class="btn-admin-outline btn-admin-sm w-50" onclick="alert('Demo Product')">Edit</button>
+                                <button class="btn-admin-danger btn-admin-sm w-50" onclick="alert('Demo Product')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-6">
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <span class="status-pill pill-active">Active</span>
+                                <img src="https://picsum.photos/seed/p3/400/533" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Outerwear</span>
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <h3 class="product-name">Urban Explorer Jacket (Demo)</h3>
+                                    <div class="product-price-stock-box">
+                                        <div class="offer-price">₹3999</div>
+                                        <div class="product-stock">Stock: 4</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions mt-auto p-2 d-flex gap-2 bg-light border-top">
+                                <button class="btn-admin-outline btn-admin-sm w-50" onclick="alert('Demo Product')">Edit</button>
+                                <button class="btn-admin-danger btn-admin-sm w-50" onclick="alert('Demo Product')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-6">
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <span class="status-pill pill-inactive">Inactive</span>
+                                <img src="https://picsum.photos/seed/p4/400/533" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category">Apparel</span>
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <h3 class="product-name">Classic Oxford Shirt (Demo)</h3>
+                                    <div class="product-price-stock-box">
+                                        <div class="offer-price">₹1599</div>
+                                        <div class="product-stock">Stock: 0</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions mt-auto p-2 d-flex gap-2 bg-light border-top">
+                                <button class="btn-admin-outline btn-admin-sm w-50" onclick="alert('Demo Product')">Edit</button>
+                                <button class="btn-admin-danger btn-admin-sm w-50" onclick="alert('Demo Product')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card Template -->
+                <template id="productCardTemplate">
+                    <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-6">
+                        <div class="product-card">
+                            <div class="product-image-wrapper">
+                                <span class="status-pill"></span>
+                                <img src="" alt="Product Image">
+                            </div>
+                            <div class="product-info">
+                                <span class="product-category"></span>
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <h3 class="product-name"></h3>
+                                    <div class="product-price-stock-box">
+                                        <div class="offer-price"></div>
+                                        <div class="product-stock"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions mt-auto p-2 d-flex gap-2 bg-light border-top">
+                                <button class="btn-admin-outline btn-admin-sm w-50 edit-btn">Edit</button>
+                                <button class="btn-admin-danger btn-admin-sm w-50 delete-btn">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </main>
+    </div>
+
+    <!-- Admin JS -->
+    <script src="/js/admin/products.js"></script>
+
+</body>
+
+</html>
