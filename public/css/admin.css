@@ -533,6 +533,11 @@
     font-size: 13px;
 }
 
+.fs-14 {
+    font-size: 14px;
+}
+
+
 /* ── 10. STATUS BADGES ── */
 .status-badge {
     display: inline-block;
@@ -591,7 +596,7 @@
     gap: 6px;
     padding: 9px 18px;
     background: #111827;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     border: 1px solid #111827;
     border-radius: 8px;
     font-size: 13px;
@@ -599,12 +604,12 @@
     cursor: pointer;
     transition: background 0.15s, opacity 0.15s;
     white-space: nowrap;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .btn-admin-primary:hover {
     background: #1F2937;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
 }
 
 .btn-admin-outline {

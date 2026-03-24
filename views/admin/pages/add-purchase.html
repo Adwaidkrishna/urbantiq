@@ -5,62 +5,58 @@
                 <h5 class="admin-form-section-title">Record Purchase Entry</h5>
             </div>
             <div class="admin-form-section-body">
-                <form action="#">
-                    <div class="form-row-admin form-row-2">
-                        <div class="form-group-admin">
-                            <label class="form-label-admin">Select Supplier</label>
-                            <select class="form-select-admin">
-                                <option>Global Logistics Ltd.</option>
-                                <option>Urban Fabrics Co.</option>
-                                <option>Premium Threads</option>
-                            </select>
-                        </div>
-                        <div class="form-group-admin">
-                            <label class="form-label-admin">Purchase Date</label>
-                            <input type="date" class="form-control-admin">
-                        </div>
+
+                <!-- ── Purchase Header ─────────────────── -->
+                <div class="form-row-admin form-row-3">
+                    <div class="form-group-admin">
+                        <label class="form-label-admin" for="purchase-supplier">Select Supplier</label>
+                        <select id="purchase-supplier" class="form-select-admin">
+                            <option value="">Loading suppliers...</option>
+                        </select>
                     </div>
-                    <div class="section-divider"></div>
-                    <h6 class="mb-3 fw-600 fs-13">Purchase Details</h6>
-                    <div class="form-row-admin"
-                        style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr 40px; gap: 10px; align-items: flex-end;">
-                        <div>
-                            <label class="form-label-admin">Product Name</label>
-                            <input type="text" class="form-control-admin" placeholder="e.g. Slim Fit Denim">
-                        </div>
-                        <div>
-                            <label class="form-label-admin">Quantity</label>
-                            <input type="number" class="form-control-admin" placeholder="10">
-                        </div>
-                        <div>
-                            <label class="form-label-admin">Unit Price ($)</label>
-                            <input type="number" class="form-control-admin" placeholder="25.00">
-                        </div>
-                        <div>
-                            <label class="form-label-admin">Total ($)</label>
-                            <input type="number" class="form-control-admin" value="250.00" disabled
-                                style="background-color: #f8f9fa;">
-                        </div>
-                        <div>
-                            <label class="form-label-admin">Batch ID</label>
-                            <input type="text" class="form-control-admin" placeholder="B-2024-001">
-                        </div>
-                        <div>
-                            <button type="button" class="btn-admin-danger btn-admin-icon" style="height: 38px;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="18" y1="6" x2="6" y2="18" />
-                                    <line x1="6" y1="6" x2="18" y2="18" />
-                                </svg>
-                            </button>
-                        </div>
+                    <div class="form-group-admin">
+                        <label class="form-label-admin" for="purchase-invoice">Invoice Number</label>
+                        <input type="text" id="purchase-invoice" class="form-control-admin"
+                            placeholder="e.g. INV-2026-001">
                     </div>
-                    <button type="button" class="btn-admin-outline btn-admin-sm mt-3">+ Add Another Item</button>
-                    <div class="form-actions mt-5">
-                        <a href="#" class="btn-admin-outline" data-page="purchases.html">Cancel</a>
-                        <button type="submit" class="btn-admin-primary">Submit Purchase Entry</button>
+                    <div class="form-group-admin">
+                        <label class="form-label-admin" for="purchase-date">Purchase Date</label>
+                        <input type="date" id="purchase-date" class="form-control-admin">
                     </div>
-                </form>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <!-- ── Purchase Items ──────────────────── -->
+                <h6 class="mb-3 fw-600 fs-13">Purchase Items</h6>
+
+                <div id="items-container">
+                    <!-- Item rows are injected here by JS -->
+                </div>
+
+                <div id="purchase-error" class="mt-2"
+                    style="color: #e74c3c; font-size: 13px; display: none;"></div>
+
+                <button type="button" id="add-item-btn" class="btn-admin-outline btn-admin-sm mt-3">
+                    + Add Another Item
+                </button>
+
+                <!-- ── Grand Total ─────────────────────── -->
+                <div class="mt-4"
+                    style="display: flex; justify-content: flex-end; align-items: center; gap: 16px;">
+                    <span class="fw-600 fs-14">Grand Total:</span>
+                    <span id="grand-total-display"
+                        style="font-size: 18px; font-weight: 700; color: #2c3e50;">₹0.00</span>
+                </div>
+
+                <!-- ── Actions ─────────────────────────── -->
+                <div class="form-actions mt-5">
+                    <a href="#" class="btn-admin-outline" data-page="purchases.html">Cancel</a>
+                    <button type="button" id="submit-purchase-btn" class="btn-admin-primary">
+                        Submit Purchase Entry
+                    </button>
+                </div>
+
             </div>
         </section>
     </div>

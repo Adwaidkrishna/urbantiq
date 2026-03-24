@@ -45,6 +45,11 @@ router.get("/edit-category/:id", adminAuthMiddleware, (req, res) => {
   res.sendFile(path.resolve("views/admin/edit-category.html"));
 });
 
+// Edit supplier page — dynamic ID param
+router.get("/edit-supplier/:id", adminAuthMiddleware, (req, res) => {
+  res.sendFile(path.resolve("views/admin/edit-supplier.html"));
+});
+
 router.post("/login", adminLogin);
 
 export default router;
