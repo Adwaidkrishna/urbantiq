@@ -68,13 +68,29 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const lastUpdated = product.updatedAt ? new Date(product.updatedAt).toLocaleDateString() : 'N/A';
-            const displayPrice = `₹${Number(product.price || 0).toLocaleString('en-IN')}`;
+            const price = Number(product.price || 0);
+            const displayPrice = `₹${price.toLocaleString('en-IN')}`;
+
+            // Create a breakdown tooltip-like string
+            let breakdown = '';
+            product.variants?.forEach(v => {
+                v.sizes?.forEach(s => {
+                    if (s.stock > 0) {
+                        breakdown += `${v.colorName || v.color} (${s.size}): ${s.stock}\n`;
+                    }
+                });
+            });
 
             html += `
-                <tr>
+                <tr title="${breakdown || 'No stock allocated'}">
                     <td class="fw-600">${product.name || 'Unknown Item'}</td>
                     <td class="td-secondary">${product.category?.name || 'Uncategorized'}</td>
-                    <td class="fw-600 ${stockClass}">${productTotalStock} Units</td>
+                    <td class="fw-600 ${stockClass}">
+                        ${productTotalStock} Units
+                        <div style="font-size: 0.75rem; color: #666; font-weight: 400; margin-top: 2px;">
+                            ${product.variants?.length || 0} Colors / ${product.variants?.[0]?.sizes?.length || 0} Sizes
+                        </div>
+                    </td>
                     <td>${displayPrice}</td>
                     <td>${statusBadge}</td>
                     <td class="text-end td-secondary">${lastUpdated}</td>
