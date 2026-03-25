@@ -8,9 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch('/api/admin/products/list')
         .then(response => response.json())
         .then(data => {
-            // Only render if we have products in the database
-            if (data.length > 0) {
-                renderProductsUI(data);
+            // Handle both { success: true, products: [] } and raw []
+            const products = Array.isArray(data) ? data : (data.products || []);
+            
+            if (products.length > 0) {
+                renderProductsUI(products);
             } else {
                 console.log("No real products found. Showing default demo products from HTML.");
             }
