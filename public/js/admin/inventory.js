@@ -4,16 +4,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const outOfStockEl = document.querySelector('.stat-card:nth-child(2) .stat-card-value');
     const lowStockEl = document.querySelector('.stat-card:nth-child(3) .stat-card-value');
 
+    // Thresholds
     const LOW_STOCK_THRESHOLD = 10;
 
     async function fetchInventory() {
         try {
             const response = await fetch('/api/admin/products/list');
-            const products = await response.json();
+            const data = await response.json();
+            
+            const products = Array.isArray(data) ? data : (data.products || []);
             renderInventory(products);
         } catch (error) {
             console.error('Error fetching inventory:', error);
-            tableBody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Failed to load inventory data</td></tr>';
+            if (tableBody) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Failed to load inventory data</td></tr>';
+            }
         }
     }
 
@@ -24,30 +29,37 @@ document.addEventListener('DOMContentLoaded', function () {
         let html = '';
 
         if (!products || products.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No products found</td></tr>';
+            if (tableBody) tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No products found</td></tr>';
+            updateStats(0, 0, 0);
             return;
         }
 
         products.forEach(product => {
-            // Calculate total stock across all variants/sizes
+            // 1. Calculate the TOTAL stock across all size variants for this product
             let productTotalStock = 0;
-            product.variants?.forEach(variant => {
-                variant.sizes?.forEach(size => {
-                    productTotalStock += (size.stock || 0);
+            if (product.variants && Array.isArray(product.variants)) {
+                product.variants.forEach(variant => {
+                    if (variant.sizes && Array.isArray(variant.sizes)) {
+                        variant.sizes.forEach(size => {
+                            productTotalStock += (Number(size.stock) || 0);
+                        });
+                    }
                 });
-            });
+            }
 
+            // 2. Global stats tracking
             totalUnits += productTotalStock;
 
             let statusBadge = '';
             let stockClass = '';
 
+            // 3. Logic for Out of Stock vs Low Stock
             if (productTotalStock === 0) {
-                outOfStockCount++;
+                outOfStockCount++; // Flag this product as Out of Stock
                 statusBadge = '<span class="status-badge badge-cancelled">Out of Stock</span>';
                 stockClass = 'text-danger';
             } else if (productTotalStock <= LOW_STOCK_THRESHOLD) {
-                lowStockCount++;
+                lowStockCount++; // Flag this product as Low Stock
                 statusBadge = '<span class="status-badge badge-pending">Low Stock</span>';
                 stockClass = 'text-warning';
             } else {
@@ -55,29 +67,38 @@ document.addEventListener('DOMContentLoaded', function () {
                 stockClass = 'text-success';
             }
 
-            const lastUpdated = new Date(product.updatedAt).toLocaleDateString();
+            const lastUpdated = product.updatedAt ? new Date(product.updatedAt).toLocaleDateString() : 'N/A';
+            const displayPrice = `₹${Number(product.price || 0).toLocaleString('en-IN')}`;
 
             html += `
                 <tr>
-                    <td class="fw-600">${product.name}</td>
+                    <td class="fw-600">${product.name || 'Unknown Item'}</td>
                     <td class="td-secondary">${product.category?.name || 'Uncategorized'}</td>
                     <td class="fw-600 ${stockClass}">${productTotalStock} Units</td>
-                    <td>₹${product.price.toLocaleString()}</td>
+                    <td>${displayPrice}</td>
                     <td>${statusBadge}</td>
                     <td class="text-end td-secondary">${lastUpdated}</td>
                 </tr>
             `;
         });
 
-        tableBody.innerHTML = html;
-        
-        // Update Stats Cards
-        totalUnitsEl.textContent = totalUnits.toLocaleString();
-        outOfStockEl.textContent = outOfStockCount;
-        lowStockEl.textContent = lowStockCount;
+        if (tableBody) tableBody.innerHTML = html;
+        updateStats(totalUnits, outOfStockCount, lowStockCount);
+    }
 
-        // Animate the numbers if possible
-        animateValue(totalUnitsEl, 0, totalUnits, 1000);
+    function updateStats(total, out, low) {
+        if (totalUnitsEl) animateValue(totalUnitsEl, 0, total, 1000);
+        if (outOfStockEl) outOfStockEl.textContent = out;
+        if (lowStockEl) lowStockEl.textContent = low;
+
+        // Apply visual warning to Out of Stock card if count > 0
+        if (outOfStockEl && out > 0) {
+            outOfStockEl.style.color = '#de350b'; // Red
+        }
+        // Apply visual warning to Low Stock card if count > 0
+        if (lowStockEl && low > 0) {
+            lowStockEl.style.color = '#ff991f'; // Orange/Yellow
+        }
     }
 
     function animateValue(obj, start, end, duration) {
