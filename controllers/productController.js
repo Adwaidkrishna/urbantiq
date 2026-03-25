@@ -5,9 +5,9 @@ export const createProduct = async (req, res) => {
         const { name, description, category, price, offerPrice, status } = req.body;
         const variants = JSON.parse(req.body.variants);
 
-        const variantsWithImages = variants.map((variant, index) => {
+        const variantsWithImages = variants.map((variant, index) => {//attaching uploaded images to each variant.
             const images = req.files
-                .filter(file => file.fieldname === `variantImages${index}`)
+                .filter(file => file.fieldname === `variantImages${index}`)//matching variant images with fieldname
                 .map(file => file.filename);
             return { ...variant, images };
         });
@@ -18,7 +18,7 @@ export const createProduct = async (req, res) => {
             category,
             price,
             offerPrice,
-            status: status === "true" || status === true,
+            status: status === "true" || status === true,//boolean conversion
             variants: variantsWithImages
         });
 
@@ -34,10 +34,10 @@ export const getProducts = async (req, res) => {
     try {
         const products = await Product
             .find()
-            .populate("category", "name")   // so p.category?.name works in your UI
+            .populate("category", "name")
             .sort({ createdAt: -1 });
 
-        res.json(products);               // your frontend expects a plain array
+        res.json(products);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -70,8 +70,8 @@ export const updateProduct = async (req, res) => {
                 .map(file => file.filename);
 
             // Clean paths from existing images if they come with prefix
-            const existingImages = (variant.images || []).map(img => img.split('/').pop());
-            variant.images = [...existingImages, ...newImages];
+            const existingImages = (variant.images || []).map(img => img.split('/').pop());//["uploads","products","img1.jpg"]
+            variant.images = [...existingImages, ...newImages];// replacing old images with new images
         });
 
         const updatedProduct = await Product.findByIdAndUpdate(

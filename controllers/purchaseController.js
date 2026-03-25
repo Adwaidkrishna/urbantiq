@@ -1,15 +1,16 @@
 import Purchase from "../models/PurchaseModel.js";
 import PurchaseItem from "../models/PurchaseItemModel.js";
+import Product from "../models/ProductModel.js";
 
 // ─── Counter for batch generation ─────────────────────────────────────────
 // Simple in-process counter per server boot; for production use a DB counter.
 let batchCounter = 1;
 function generateBatchId() {
-  const now   = new Date();
-  const year  = now.getFullYear();
+  const now = new Date();
+  const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0"); // 01–12
-  const day   = String(now.getDate()).padStart(2, "0");       // 01–31
-  const seq   = String(batchCounter++).padStart(3, "0");      // 001, 002 …
+  const day = String(now.getDate()).padStart(2, "0");       // 01–31
+  const seq = String(batchCounter++).padStart(3, "0");      // 001, 002 …
   return `B-${year}${month}${day}-${seq}`;
   // e.g. B-20260324-001
 }

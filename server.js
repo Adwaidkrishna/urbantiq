@@ -14,7 +14,7 @@ import adminProductRoutes from "./routes/adminProductRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import supplierRoutes from "./routes/supplierRoutes.js";
 import purchaseRoutes from "./routes/purchaseRoutes.js";
-
+import batchRoutes from "./routes/batchRoutes.js";
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(express.static("public"));  
+app.use(express.static("public"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
@@ -36,8 +36,7 @@ app.use("/api/admin", adminProductRoutes);
 app.use("/api", productRoutes);
 app.use("/api/admin/suppliers", supplierRoutes);
 app.use("/api/admin", purchaseRoutes);
-
-
+app.use("/api/admin", batchRoutes);
 
 // User side pages
 app.use("/", userRoutes);
