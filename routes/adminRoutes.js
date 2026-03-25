@@ -27,7 +27,6 @@ const adminPages = [
   "batch-management",
   "suppliers",
   "inventory",
-  "inventory-management",
   "admin-profile",
   "add-product",
   "products",
