@@ -37,11 +37,10 @@ export const createCategory = async (req, res) => {
     });
 
   } catch (error) {
-
-    console.log(error);
-
+    console.error("Create Category Error:", error);
     res.status(500).json({
-      message: "Server error"
+      message: "Server error during category creation",
+      error: error.message
     });
   }
 };
@@ -57,13 +56,11 @@ export const getCategories = async (req, res) => {
     });
 
   } catch (error) {
-
-    console.log(error);
-
+    console.error("Get Categories Error:", error);
     res.status(500).json({
-      message: "Server error"
+      message: "Server error during categories fetch",
+      error: error.message
     });
-
   }
 };
 

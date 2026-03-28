@@ -4,7 +4,7 @@ import Product from "../models/ProductModel.js";
 // ─── GET only unlinked batches ─────────────────────────────────────────────
 export const getUnlinkedBatches = async (req, res) => {
   try {
-    const batches = await PurchaseItem.find({ status: "UNLINKED" }).sort({ createdAt: -1 });
+    const batches = await PurchaseItem.find({ status: "UNLINKED" }).sort({ createdAt: 1 });
     res.json(batches);
   } catch (error) {
     console.error("getUnlinkedBatches error:", error);
@@ -44,8 +44,13 @@ export const linkBatch = async (req, res) => {
       if (alloc.quantity > 0) {
         await Product.updateOne(
           { "variants.sizes._id": alloc.variantId },
-          { $inc: { "variants.$[].sizes.$[size].stock": alloc.quantity } },
-          { arrayFilters: [{ "size._id": alloc.variantId }] }
+          { $inc: { "variants.$[v].sizes.$[s].stock": alloc.quantity } },
+          { 
+            arrayFilters: [
+              { "v._id": alloc.variantId },
+              { "s._id": alloc.sizeId }
+            ] 
+          }
         );
       }
     }

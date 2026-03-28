@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const file = files[index];
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             cropperImage.src = e.target.result;
             cropperModal.show();
         };
@@ -58,24 +58,24 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        document.getElementById('applyCropBtn').addEventListener('click', function() {
+        document.getElementById('applyCropBtn').addEventListener('click', function () {
             if (!cropper) return;
             cropper.getCroppedCanvas({
                 width: 600,
                 height: 800,
                 imageSmoothingEnabled: true,
                 imageSmoothingQuality: 'high',
-            }).toBlob(function(blob) {
+            }).toBlob(function (blob) {
                 const originalFile = currentFilesToCrop[currentFileIndex];
                 const fileName = originalFile.name;
                 const croppedFile = new File([blob], fileName, { type: "image/jpeg", lastModified: new Date().getTime() });
 
                 if (!currentCard.croppedFiles) currentCard.croppedFiles = [];
                 currentCard.croppedFiles.push(croppedFile);
-                
+
                 const url = URL.createObjectURL(blob);
                 showImagePreviewUI(currentPreviewGrid, url, croppedFile, currentCard);
-                
+
                 cropperModal.hide();
             }, 'image/jpeg', 0.9);
         });
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-    
+
     // Get Product ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // ==========================================
     // 1. INITIAL LOAD (Categories + Product Data)
     // ==========================================
-    
+
     // First, load categories
     fetch('/api/admin/categories/list')
         .then(res => res.json())
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("productPrice").value = product.price;
                 document.getElementById("offerPrice").value = product.offerPrice || '';
                 document.getElementById("categorySelect").value = product.category?._id || product.category;
-                
+
                 // Status Switch
                 const statusSwitch = document.getElementById("statusSwitch");
                 const statusValueInput = document.getElementById("statusValue");
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
             card.querySelectorAll(".preview-item").forEach(item => {
                 const imgSrc = item.querySelector("img").src;
                 if (imgSrc.startsWith('data:') || imgSrc.startsWith('blob:')) return; // skip new previews
-                
+
                 // Get filename and decode to prevent double encoding spaces
                 const filename = decodeURIComponent(imgSrc.split('/').pop());
                 keptImages.push(filename);
@@ -215,19 +215,19 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "PUT",
             body: formData
         })
-        .then(res => res.json())
-        .then(result => {
-            if (result.success) {
-                alert("Product Updated Successfully!");
-                window.location.href = "/api/admin/products";
-            } else {
-                alert("Error: " + result.message);
-            }
-        });
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    alert("Product Updated Successfully!");
+                    window.location.href = "/api/admin/products";
+                } else {
+                    alert("Error: " + result.message);
+                }
+            });
     });
 
     // Handle Delete Product (exposed to global for HTML onclick)
-    window.deleteProduct = function(id) {
+    window.deleteProduct = function (id) {
         if (confirm("Are you sure you want to delete this product?")) {
             fetch(`/api/admin/products/${id}`, { method: "DELETE" })
                 .then(res => res.json())
@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const template = document.getElementById("variantTemplate");
         const clone = template.content.cloneNode(true);
         const card = clone.querySelector(".variant-card");
-        
+
         const colorInput = card.querySelector(".variant-color-input");
         const colorNameSpan = card.querySelector(".selected-color-name");
 

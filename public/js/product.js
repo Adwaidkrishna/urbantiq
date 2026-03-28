@@ -68,11 +68,21 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    let currentWishlist = [];
+
     async function loadProducts() {
         const productGrid = document.getElementById("productGrid");
         if (!productGrid) return;
         
         try {
+            // Load wishlist first if logged in
+            const status = await window.AuthGuard.fetchStatus();
+            if (status.loggedIn) {
+                const wlRes = await fetch("/api/wishlist");
+                const wlData = await wlRes.json();
+                if (wlData.success) currentWishlist = wlData.products.map(p => p._id);
+            }
+
             const res = await fetch("/api/products");
             const data = await res.json();
             
@@ -96,30 +106,97 @@ document.addEventListener("DOMContentLoaded", () => {
             const mainImg = (p.variants?.[0]?.images?.[0]) ? `/images/products/${p.variants[0].images[0]}` : '/images/user/phoodie.jpeg';
             
             // Set data
-            clone.querySelector("a").href = `/product/${p._id}`;
+            clone.querySelector(".p-card-link").href = `/product/${p._id}`;
             clone.querySelector("img").src = mainImg;
             clone.querySelector("img").alt = p.name;
             clone.querySelector(".p-cat").textContent = p.category?.name || 'Uncategorized';
             clone.querySelector(".p-name").textContent = p.name;
             clone.querySelector(".p-price").textContent = `₹${p.offerPrice || p.price}`;
 
+            // Initial wishlist state
+            const wlBtn = clone.querySelector(".wishlist-btn");
+            if (currentWishlist.includes(p._id)) {
+                wlBtn.querySelector("i").classList.replace('bi-heart', 'bi-heart-fill');
+                wlBtn.classList.add('active');
+            }
+
             // Optional: Show "New" badge if created recently
             const isNew = (new Date() - new Date(p.createdAt)) < 7 * 24 * 60 * 60 * 1000;
             if (isNew) {
                 const badge = clone.querySelector(".p-badge");
-                badge.textContent = "New";
-                badge.classList.remove("d-none");
-                badge.classList.add("p-badge-white");
+                if(badge) {
+                    badge.textContent = "New";
+                    badge.classList.remove("d-none");
+                }
             }
 
             // Listeners
-            clone.querySelector(".wishlist-btn").addEventListener("click", (e) => {
+            wlBtn.addEventListener("click", async (e) => {
                 e.preventDefault();
-                alert("Added to wishlist!");
+                e.stopPropagation();
+                const allowed = await window.AuthGuard.requireAuth(window.location.href);
+                if (!allowed) return;
+
+                try {
+                    const res = await fetch("/api/wishlist/toggle", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ productId: p._id })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        window.AuthGuard.updateWishlistBadge();
+                        const icon = wlBtn.querySelector("i");
+                        if (data.added) {
+                            icon.classList.replace('bi-heart', 'bi-heart-fill');
+                            wlBtn.classList.add('active');
+                            window.AuthGuard.showToast("Product added to wishlist!");
+                        } else {
+                            icon.classList.replace('bi-heart-fill', 'bi-heart');
+                            wlBtn.classList.remove('active');
+                            window.AuthGuard.showToast("Removed from wishlist.");
+                        }
+                    }
+                } catch (err) { console.error(err); }
             });
-            clone.querySelector(".cart-btn").addEventListener("click", (e) => {
+
+            clone.querySelector(".cart-btn").addEventListener("click", async (e) => {
                 e.preventDefault();
-                alert("Added to cart!");
+                e.stopPropagation();
+
+                const allowed = await window.AuthGuard.requireAuth(window.location.href);
+                if (!allowed) return;
+
+                // Pick first variant and first size with stock
+                const defaultVariant = p.variants?.[0];
+                const defaultSize = defaultVariant?.sizes?.find(s => s.stock > 0);
+
+                if (!defaultVariant || !defaultSize) {
+                    window.location.href = `/product/${p._id}`;
+                    return;
+                }
+
+                try {
+                    const res = await fetch("/api/cart/add", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            productId: p._id,
+                            variantId: defaultVariant._id,
+                            size: defaultSize.size,
+                            quantity: 1
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        window.AuthGuard.updateCartBadge();
+                        window.AuthGuard.showToast("Product added to cart!");
+                    } else {
+                        window.location.href = `/product/${p._id}`;
+                    }
+                } catch (err) {
+                    window.location.href = `/product/${p._id}`;
+                }
             });
 
             productGrid.appendChild(clone);

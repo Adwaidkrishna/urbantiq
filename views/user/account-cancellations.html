@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -16,8 +16,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../../public/css/common.css">
-    <link rel="stylesheet" href="../../public/css/account.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/account.css">
 </head>
 
 <body class="account-body">
@@ -33,7 +33,8 @@
                     <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html">Signup</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register">Signup</a></li>
                 </ul>
             </div>
 
@@ -48,7 +49,7 @@
                         <i class="bi bi-cart3"></i>
                         <span class="cart-badge">0</span>
                     </a>
-                    <a href="account.html" class="icon-btn active-nav-icon" title="Profile"><i
+                    <a href="/account" class="icon-btn active-nav-icon" title="Profile"><i
                             class="bi bi-person"></i></a>
                 </div>
                 <button class="navbar-toggler border-0 p-2" type="button"><span
@@ -94,7 +95,7 @@
 
                         <!-- Col 1: Image -->
                         <div class="cx-img-col">
-                            <img src="../../public/images/user/pcasual.jpeg" alt="Premium Casual Shirt" class="cx-product-img">
+                            <img src="/images/user/pcasual.jpeg" alt="Premium Casual Shirt" class="cx-product-img">
                         </div>
 
                         <!-- Col 2: Details -->
@@ -180,7 +181,7 @@
                     <h5 class="footer-heading">Account</h5>
                     <ul class="footer-links">
                         <li><a href="login.html">Login</a></li>
-                        <li><a href="signup.html">Signup</a></li>
+                        <li><a href="/register">Signup</a></li>
                         <li><a href="wishlist.html">Wishlist</a></li>
                         <li><a href="cart.html">Cart</a></li>
                         <li><a href="account-orders.html">Orders</a></li>
@@ -199,7 +200,8 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../public/js/script.js"></script>
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/script.js"></script>
 </body>
 
 </html>

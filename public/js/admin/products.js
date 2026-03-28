@@ -14,7 +14,20 @@ document.addEventListener("DOMContentLoaded", function () {
             if (products.length > 0) {
                 renderProductsUI(products);
             } else {
-                console.log("No real products found. Showing default demo products from HTML.");
+                productsGrid.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <div class="no-products-state">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mb-3">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                            <h3 class="text-muted h5">No products found</h3>
+                            <p class="text-muted small">Try adding some original products to see them here.</p>
+                            <a href="/api/admin/add-product" class="btn btn-sm btn-outline-primary mt-2">Add First Product</a>
+                        </div>
+                    </div>
+                `;
             }
         })
         .catch(error => console.error("Error fetching products:", error));

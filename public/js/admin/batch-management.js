@@ -31,7 +31,15 @@
   function renderProducts(list) {
     prodSelect.innerHTML = '<option value="">-- Select Product --</option>';
     list.forEach(p => {
-      prodSelect.innerHTML += `<option value="${p._id}">${p.name}</option>`;
+      // Calculate total stock to determine status
+      let totalStock = 0;
+      if (p.variants) {
+        p.variants.forEach(v => {
+          if (v.sizes) v.sizes.forEach(s => totalStock += (Number(s.stock) || 0));
+        });
+      }
+      const statusLabel = totalStock > 0 ? "Linked" : "Unlinked";
+      prodSelect.innerHTML += `<option value="${p._id}">${p.name} (${statusLabel})</option>`;
     });
   }
 
@@ -56,7 +64,7 @@
   batchSelect.addEventListener('change', (e) => {
     const bId = e.target.value;
     currentBatch = unlinkedBatches.find(b => b._id === bId);
-    
+
     if (currentBatch) {
       batchInfo.style.display = 'block';
       document.getElementById('batch-info-qty').innerText = `Total Qty: ${currentBatch.quantity}`;
@@ -79,7 +87,7 @@
 
   function evaluateState() {
     const pId = prodSelect.value;
-    
+
     if (!pId || !currentBatch) {
       resetAllocation();
       return;
@@ -88,7 +96,7 @@
     const prod = products.find(p => p._id === pId);
     allocContainer.style.display = 'block';
     variantsList.innerHTML = '';
-    
+
     let firstInputAdded = false;
 
     if (prod && prod.variants) {
@@ -100,11 +108,20 @@
             if (!firstInputAdded) firstInputAdded = true;
 
             const label = `${v.colorName || v.color} - ${sz.size}`;
+            const isLinked = (sz.stock || 0) > 0;
+            const statusBadge = isLinked 
+              ? `<span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-2 ms-2" style="font-size: 0.65rem;">LINKED</span>`
+              : `<span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary-subtle px-2 ms-2" style="font-size: 0.65rem;">UNLINKED</span>`;
+
             variantsList.innerHTML += `
               <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
-                <span style="font-weight:500;">${label} <small class="text-muted">(${sz.stock || 0} in stock)</small></span>
+                <div>
+                  <span style="font-weight:500;">${label} ${statusBadge}</span>
+                  <div style="font-size: 0.75rem; color: #666;">Current: ${sz.stock || 0} units</div>
+                </div>
                 <input type="number" class="form-control variant-qty text-center" 
-                  data-variant-id="${sz._id}" 
+                  data-size-id="${sz._id}" 
+                  data-variant-id="${v._id}"
                   min="0" max="${currentBatch.quantity}" 
                   value="${defVal}" 
                   style="width: 80px;" />
@@ -124,7 +141,7 @@
   function checkValidation() {
     let sum = 0;
     document.querySelectorAll('.variant-qty').forEach(i => sum += Number(i.value || 0));
-    
+
     const qtySpan = document.getElementById('total-allocated');
     const iconSpan = document.getElementById('allocation-icon');
     qtySpan.innerText = sum;
@@ -150,7 +167,11 @@
     const allocations = [];
     document.querySelectorAll('.variant-qty').forEach(i => {
       const q = Number(i.value || 0);
-      if (q > 0) allocations.push({ variantId: i.dataset.variantId, quantity: q });
+      if (q > 0) allocations.push({ 
+        variantId: i.dataset.variantId, 
+        sizeId: i.dataset.sizeId, 
+        quantity: q 
+      });
     });
 
     try {
@@ -160,7 +181,7 @@
         body: JSON.stringify({ allocations })
       });
       const data = await res.json();
-      
+
       if (res.ok) {
         alert('Batch Linked Successfully! Stock has been updated.');
         batchSelect.value = '';

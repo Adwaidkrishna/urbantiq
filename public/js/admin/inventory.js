@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('.admin-table tbody');
-    const totalUnitsEl = document.querySelector('.stat-card:nth-child(1) .stat-card-value');
-    const outOfStockEl = document.querySelector('.stat-card:nth-child(2) .stat-card-value');
-    const lowStockEl = document.querySelector('.stat-card:nth-child(3) .stat-card-value');
+    const totalUnitsEl = document.getElementById('totalStockUnits');
+    const outOfStockEl = document.getElementById('outOfStockCount');
+    const lowStockEl = document.getElementById('lowStockCount');
+    const totalProductsEl = document.getElementById('totalProductsCount');
 
     // Thresholds
     const LOW_STOCK_THRESHOLD = 10;
@@ -30,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!products || products.length === 0) {
             if (tableBody) tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No products found</td></tr>';
-            updateStats(0, 0, 0);
+            updateStats(0, 0, 0, 0);
             return;
         }
 
@@ -99,13 +100,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         if (tableBody) tableBody.innerHTML = html;
-        updateStats(totalUnits, outOfStockCount, lowStockCount);
+        updateStats(totalUnits, outOfStockCount, lowStockCount, products.length);
     }
 
-    function updateStats(total, out, low) {
+    function updateStats(total, out, low, totalProducts) {
         if (totalUnitsEl) animateValue(totalUnitsEl, 0, total, 1000);
         if (outOfStockEl) outOfStockEl.textContent = out;
         if (lowStockEl) lowStockEl.textContent = low;
+        if (totalProductsEl) animateValue(totalProductsEl, 0, totalProducts, 500);
 
         // Apply visual warning to Out of Stock card if count > 0
         if (outOfStockEl && out > 0) {

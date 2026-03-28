@@ -58,7 +58,7 @@ protectedPages.forEach((page) => {
   });
 });
 
-// Dynamic route for single product details
+// Dynamic route for single product details (public — auth guard handled on frontend)
 router.get("/product/:id", (req, res) => {
   res.sendFile(path.resolve("views/user/single-product.html"));
 });

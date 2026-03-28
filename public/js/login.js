@@ -115,7 +115,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (data.success) {
 
-                    window.location.href = data.redirect;
+                    // If user was redirected here from a protected page, go back there
+                    const params = new URLSearchParams(window.location.search);
+                    const redirectTo = params.get("redirect");
+                    window.location.href = redirectTo || data.redirect;
 
                 } else {
 

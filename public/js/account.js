@@ -16,4 +16,21 @@ document.addEventListener("DOMContentLoaded", function () {
             if (rowEl) rowEl.classList.add('expanded');
         }
     };
+
+    // Logout — calls the API to clear the JWT cookie, then redirects to home
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+            const label = logoutBtn.querySelector("span");
+            if (label) label.textContent = "Logging out...";
+            try {
+                await fetch("/api/auth/logout", { method: "POST" });
+            } catch (e) { /* ignore network errors */ }
+            // Clear the cached auth status so navbar re-evaluates on next page
+            if (window.AuthGuard && window.AuthGuard.clearCache) {
+                window.AuthGuard.clearCache();
+            }
+            window.location.href = "/";
+        });
+    }
 });

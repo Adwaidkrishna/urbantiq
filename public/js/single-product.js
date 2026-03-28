@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Quantity
+    // Quantity logic
     let qty = 1;
     const display = document.getElementById('qtyDisplay');
     const qtyPlus = document.getElementById('qtyPlus');
@@ -18,30 +18,126 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Extraction helper
+    function getProductId() {
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        const id = pathParts[pathParts.length - 1];
+        return id.endsWith('.html') ? id.slice(0, -5) : id;
+    }
+
     // Image wishlist toggle
     const imgWishlistBtn = document.getElementById('imgWishlistBtn');
     if (imgWishlistBtn) {
-        imgWishlistBtn.addEventListener('click', function () {
-            const icon = document.getElementById('imgWishlistIcon');
-            const isWished = icon.classList.contains('bi-heart-fill');
-            icon.classList.replace(
-                isWished ? 'bi-heart-fill' : 'bi-heart',
-                isWished ? 'bi-heart' : 'bi-heart-fill'
-            );
-            this.classList.toggle('active', !isWished);
+        imgWishlistBtn.addEventListener('click', async function () {
+            const allowed = await window.AuthGuard.requireAuth(window.location.href);
+            if (!allowed) return;
+
+            const productId = getProductId();
+
+            try {
+                const res = await fetch("/api/wishlist/toggle", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ productId })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.AuthGuard.updateWishlistBadge();
+                    const icon = document.getElementById('imgWishlistIcon');
+                    if (data.added) {
+                        icon.classList.replace('bi-heart', 'bi-heart-fill');
+                        this.classList.add('active');
+                        window.AuthGuard.showToast("Product added to wishlist!");
+                    } else {
+                        icon.classList.replace('bi-heart-fill', 'bi-heart');
+                        this.classList.remove('active');
+                        window.AuthGuard.showToast("Removed from wishlist.");
+                    }
+                }
+            } catch (err) {
+                console.error("Wishlist toggle error:", err);
+            }
         });
     }
 
-    // Add to Cart feedback
+    // Add to Cart — requires login
     const addToCartBtn = document.getElementById('addToCartBtn');
     if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', function () {
-            this.classList.add('added');
-            this.innerHTML = '<i class="bi bi-check-circle"></i> Added to Cart';
-            setTimeout(() => {
-                this.classList.remove('added');
-                this.innerHTML = '<i class="bi bi-bag-plus"></i> Add to Cart';
-            }, 1800);
+        addToCartBtn.addEventListener('click', async function () {
+            const allowed = await window.AuthGuard.requireAuth(window.location.href);
+            if (!allowed) return;
+
+            const productId = getProductId();
+            const activeVariantBtn = document.querySelector('.sp-color.active');
+            const variantId = activeVariantBtn ? activeVariantBtn.dataset.id : null;
+            const activeSizeBtn = document.querySelector('.sp-size.active');
+            const size = activeSizeBtn ? activeSizeBtn.textContent : null;
+
+            if (!variantId || !size) {
+                window.AuthGuard.showToast("Please select a color and size", "error");
+                return;
+            }
+
+            try {
+                const res = await fetch("/api/cart/add", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        productId,
+                        variantId,
+                        size,
+                        quantity: qty
+                    })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    window.AuthGuard.updateCartBadge();
+                    window.AuthGuard.showToast("Product added to cart!");
+                } else {
+                    window.AuthGuard.showToast(data.message || "Failed to add to cart", "error");
+                }
+            } catch (err) {
+                console.error("Add to cart error:", err);
+                window.AuthGuard.showToast("Something went wrong. Try again.", "error");
+            }
+        });
+    }
+
+    // Order Now — requires login
+    const orderNowBtn = document.getElementById('orderNowBtn');
+    if (orderNowBtn) {
+        orderNowBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            const allowed = await window.AuthGuard.requireAuth(window.location.href);
+            if (!allowed) return;
+            
+            const productId = getProductId();
+            const activeVariantBtn = document.querySelector('.sp-color.active');
+            const variantId = activeVariantBtn ? activeVariantBtn.dataset.id : null;
+            const activeSizeBtn = document.querySelector('.sp-size.active');
+            const size = activeSizeBtn ? activeSizeBtn.textContent : null;
+
+            if (!variantId || !size) {
+                alert("Please select a color and size");
+                return;
+            }
+
+            try {
+                const res = await fetch("/api/cart/add", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ productId, variantId, size, quantity: qty })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.href = '/checkout-details';
+                } else {
+                    alert(data.message || "Something went wrong.");
+                }
+            } catch(err) {
+                window.location.href = '/checkout-details';
+            }
         });
     }
 
@@ -49,8 +145,26 @@ document.addEventListener("DOMContentLoaded", function () {
     loadSingleProduct();
 });
 
+async function checkWishlistStatus(productId) {
+    try {
+        const res = await fetch("/api/wishlist");
+        const data = await res.json();
+        if (data.success && data.products) {
+            const isWished = data.products.some(p => p._id === productId);
+            if (isWished) {
+                const icon = document.getElementById('imgWishlistIcon');
+                const btn = document.getElementById('imgWishlistBtn');
+                if (icon) icon.classList.replace('bi-heart', 'bi-heart-fill');
+                if (btn) btn.classList.add('active');
+            }
+        }
+    } catch (err) {
+        console.error("Error checking wishlist:", err);
+    }
+}
+
 async function loadSingleProduct() {
-    const pathParts = window.location.pathname.split('/');
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
     const productId = pathParts[pathParts.length - 1];
 
     if (!productId || productId === 'product') {
@@ -63,6 +177,7 @@ async function loadSingleProduct() {
 
         if (data.success && data.product) {
             renderProduct(data.product);
+            checkWishlistStatus(productId);
         } else {
             console.error("Product not found");
             const titleEl = document.querySelector('.sp-title');
@@ -75,8 +190,8 @@ async function loadSingleProduct() {
 
 function renderProduct(product) {
     // Breadcrumb
-    const breadcrumbSpans = document.querySelectorAll(".sp-breadcrumb span");
-    if(breadcrumbSpans.length) breadcrumbSpans[0].textContent = product.name;
+    const bName = document.getElementById("breadcrumbName");
+    if(bName) bName.textContent = product.name;
 
     // Title & Category
     const titleEl = document.querySelector(".sp-title");
@@ -126,6 +241,7 @@ function renderProduct(product) {
                 const btn = document.createElement("button");
                 btn.className = `sp-color ${index === 0 ? 'active' : ''}`;
                 btn.style.background = v.color || '#ccc';
+                btn.dataset.id = v._id;
                 btn.title = v.colorName || '';
                 btn.setAttribute('aria-label', v.colorName || '');
                 
@@ -151,7 +267,6 @@ function renderVariantImagesAndSizes(variant, product = null) {
     
     if (thumbsContainer) thumbsContainer.innerHTML = "";
     
-    // Aggregate images across all variants, prioritizing the current variant first
     let allImages = [];
     if (product && product.variants) {
         const currentImages = variant.images || [];
@@ -162,11 +277,9 @@ function renderVariantImagesAndSizes(variant, product = null) {
     }
     
     if (allImages.length > 0) {
-        // Set first image as main image
         if(mainImg) mainImg.src = `/images/products/${allImages[0]}`;
         
         if (thumbsContainer) {
-            // Fill array to ensure exactly 4 thumbnails always show in the grid
             let displayImages = allImages.slice(0, 4);
             let i = 0;
             while (displayImages.length < 4) {
@@ -178,21 +291,18 @@ function renderVariantImagesAndSizes(variant, product = null) {
                 const btn = document.createElement("button");
                 btn.className = `sp-thumb ${idx === 0 ? 'active' : ''}`;
                 btn.dataset.src = `/images/products/${img}`;
-                btn.setAttribute('aria-label', `View ${idx + 1}`);
                 
                 const imgEl = document.createElement("img");
                 imgEl.src = `/images/products/${img}`;
                 imgEl.alt = `View ${idx + 1}`;
                 
                 btn.appendChild(imgEl);
-                
                 btn.addEventListener('click', function() {
                     const src = this.getAttribute('data-src');
                     if (mainImg) mainImg.src = src;
                     document.querySelectorAll('.sp-thumb').forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                 });
-                
                 thumbsContainer.appendChild(btn);
             });
         }
@@ -222,7 +332,6 @@ function renderVariantImagesAndSizes(variant, product = null) {
                         btn.classList.add('active');
                     });
                 }
-                
                 sizeRow.appendChild(btn);
             });
         } else {

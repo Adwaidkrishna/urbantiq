@@ -171,39 +171,35 @@
     border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-/* Floating Actions (Wishlist + Cart) */
+/* Floating Actions (Wishlist + Cart) — ALWAYS VISIBLE */
 .floating-actions {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 10px;
+    right: 10px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    opacity: 0;
-    transform: translateX(8px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.product-card:hover .floating-actions {
-    opacity: 1;
-    transform: translateX(0);
+    z-index: 10;
+    transition: transform 0.25s ease;
 }
 
 .action-btn {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.92);
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #1d1d1f;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     text-decoration: none;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .action-btn:hover {

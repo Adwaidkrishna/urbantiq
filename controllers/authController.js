@@ -8,6 +8,7 @@ import sendEmail from "../utils/sendEmail.js";
 
 
 
+
 export const register = async (req, res) => {
 
     try {
@@ -344,3 +345,53 @@ export const resetPassword = async (req, res) => {
 
 }
 
+
+/* ============================================================
+   GET AUTH STATUS  — used by frontend to know if logged in
+============================================================ */
+export const getAuthStatus = async (req, res) => {
+
+    try {
+
+        const token = req.cookies.token;
+
+        if (!token) {
+            return res.json({ loggedIn: false });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        const user = await User.findById(decoded.id).select("name email");
+
+        if (!user) {
+            return res.json({ loggedIn: false });
+        }
+
+        return res.json({
+            loggedIn: true,
+            user: { name: user.name, email: user.email }
+        });
+
+    } catch (err) {
+
+        return res.json({ loggedIn: false });
+
+    }
+
+};
+
+
+/* ============================================================
+   LOGOUT  — clears the token cookie
+============================================================ */
+export const logout = (req, res) => {
+
+    res.clearCookie("token", {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: false
+    });
+
+    return res.json({ success: true, message: "Logged out successfully" });
+
+};

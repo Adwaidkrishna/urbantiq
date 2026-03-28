@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -15,8 +15,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../../public/css/common.css">
-    <link rel="stylesheet" href="../../public/css/account.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/account.css">
 </head>
 
 <body class="account-body">
@@ -24,15 +24,16 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="home.html">URBANTIQ</a>
+            <a class="navbar-brand" href="/">URBANTIQ</a>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html">Signup</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/product">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register">Signup</a></li>
                 </ul>
             </div>
 
@@ -42,14 +43,14 @@
                     <input type="text" class="search-input" placeholder="Search products...">
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <a href="wishlist.html" class="icon-btn" title="Wishlist">
+                    <a href="/wishlist" class="icon-btn" title="Wishlist">
                         <i class="bi bi-heart"></i>
                     </a>
-                    <a href="cart.html" class="icon-btn" title="Cart">
+                    <a href="/cart" class="icon-btn" title="Cart">
                         <i class="bi bi-cart3"></i>
                         <span class="cart-badge">0</span>
                     </a>
-                    <a href="account.html" class="icon-btn active-nav-icon" title="Profile">
+                    <a href="/account" class="icon-btn active-nav-icon" title="Profile">
                         <i class="bi bi-person"></i>
                     </a>
                 </div>
@@ -66,7 +67,7 @@
                 <!-- 🧑 Profile Header -->
                 <header class="profile-header">
                     <div class="avatar-wrap">
-                        <img src="../../public/images/user/auth-bg.png" alt="Profile" class="avatar-img">
+                        <img src="/images/user/auth-bg.png" alt="Profile" class="avatar-img">
                     </div>
                     <h1 class="profile-name">Adwaid S.</h1>
                     <p class="profile-email">adwaid@urbantiq.com</p>
@@ -161,7 +162,7 @@
                     <!-- 📋 SECTION 2: Orders & Activity -->
                     <h2 class="account-section-title">Orders & Activity</h2>
                     <div class="account-group">
-                        <a href="account-orders.html" class="ac-row">
+                        <a href="/account-orders" class="ac-row">
                             <div class="ac-row-left">
                                 <div class="ac-row-icon"><i class="bi bi-box-seam"></i></div>
                                 <span class="ac-row-label">My Orders</span>
@@ -170,7 +171,7 @@
                                 <i class="bi bi-chevron-right"></i>
                             </div>
                         </a>
-                        <a href="account-cancellations.html" class="ac-row">
+                        <a href="/account-cancellations" class="ac-row">
                             <div class="ac-row-left">
                                 <div class="ac-row-icon"><i class="bi bi-x-circle"></i></div>
                                 <span class="ac-row-label">Cancellations</span>
@@ -179,7 +180,7 @@
                                 <i class="bi bi-chevron-right"></i>
                             </div>
                         </a>
-                        <a href="account-returns.html" class="ac-row">
+                        <a href="/account-returns" class="ac-row">
                             <div class="ac-row-left">
                                 <div class="ac-row-icon"><i class="bi bi-arrow-counterclockwise"></i></div>
                                 <span class="ac-row-label">Returns</span>
@@ -193,7 +194,7 @@
                     <!-- 📋 SECTION 3: Address & Wallet -->
                     <h2 class="account-section-title">Finance & Delivery</h2>
                     <div class="account-group">
-                        <a href="account-address.html" class="ac-row">
+                        <a href="/account-address" class="ac-row">
                             <div class="ac-row-left">
                                 <div class="ac-row-icon"><i class="bi bi-geo-alt"></i></div>
                                 <span class="ac-row-label">Address Book</span>
@@ -203,7 +204,7 @@
                                 <i class="bi bi-chevron-right"></i>
                             </div>
                         </a>
-                        <a href="account-wallet.html" class="ac-row">
+                        <a href="/account-wallet" class="ac-row">
                             <div class="ac-row-left">
                                 <div class="ac-row-icon"><i class="bi bi-wallet2"></i></div>
                                 <span class="ac-row-label">Wallet</span>
@@ -217,9 +218,9 @@
 
                     <!-- 📋 SECTION 4: Logout -->
                     <div class="account-group">
-                        <a href="login.html" class="ac-row justify-content-center">
+                        <button id="logoutBtn" class="ac-row justify-content-center w-100" style="background:none;border:none;cursor:pointer;">
                             <span class="ac-row-label text-danger">Logout</span>
-                        </a>
+                        </button>
                     </div>
 
                 </div>
@@ -234,7 +235,7 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-12 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
-                    <a href="home.html" class="footer-logo">URBANTIQ</a>
+                    <a href="/" class="footer-logo">URBANTIQ</a>
                     <p class="footer-desc">Premium men’s fashion for the modern generation. Engineering style with
                         clinical precision.</p>
                     <div class="footer-social d-none d-md-flex">
@@ -256,7 +257,7 @@
                 <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
                     <h5 class="footer-heading">Support</h5>
                     <ul class="footer-links">
-                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
                         <li><a href="#">FAQs</a></li>
                         <li><a href="#">Shipping Policy</a></li>
                         <li><a href="#">Returns</a></li>
@@ -266,11 +267,11 @@
                 <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
                     <h5 class="footer-heading">Account</h5>
                     <ul class="footer-links">
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="signup.html">Signup</a></li>
-                        <li><a href="wishlist.html">Wishlist</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="account-orders.html">Orders</a></li>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Signup</a></li>
+                        <li><a href="/wishlist">Wishlist</a></li>
+                        <li><a href="/cart">Cart</a></li>
+                        <li><a href="/account-orders">Orders</a></li>
                     </ul>
                 </div>
             </div>
@@ -289,7 +290,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../public/js/account.js"></script>
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/account.js"></script>
 
 </body>
 

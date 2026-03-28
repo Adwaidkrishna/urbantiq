@@ -9,6 +9,8 @@ import {
     forgotPassword,
     resetPassword,
     verifyResetOTP,
+    getAuthStatus,
+    logout,
 } from "../controllers/authController.js";
 
 
@@ -50,6 +52,10 @@ router.post("/login", login);
 router.post("/forgot-password", forgotPassword)
 router.post("/verify-reset-otp", verifyResetOTP)
 router.post("/reset-password", resetPassword)
+
+// Auth status & logout
+router.get("/status", getAuthStatus)
+router.post("/logout", logout)
 
 
 export default router;

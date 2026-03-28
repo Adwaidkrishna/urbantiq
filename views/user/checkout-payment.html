@@ -11,8 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../../public/css/common.css">
-    <link rel="stylesheet" href="../../public/css/checkout.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/checkout.css">
 </head>
 
 <body>
@@ -20,19 +20,21 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="home.html">URBANTIQ</a>
+            <a class="navbar-brand" href="/">URBANTIQ</a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product.html">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/product">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
                 </ul>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <a href="wishlist.html" class="icon-btn"><i class="bi bi-heart"></i></a>
-                <a href="cart.html" class="icon-btn"><i class="bi bi-cart3"></i><span class="cart-badge">3</span></a>
-                <a href="account.html" class="icon-btn" title="Profile"><i class="bi bi-person"></i></a>
+                <a href="/wishlist" class="icon-btn" title="Wishlist"><i class="bi bi-heart"></i></a>
+                <a href="/cart" class="icon-btn" title="Cart">
+                    <i class="bi bi-cart3"></i><span class="cart-badge">0</span>
+                </a>
+                <a href="/account" class="icon-btn" title="Profile"><i class="bi bi-person"></i></a>
                 <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
@@ -41,7 +43,7 @@
         </div>
     </nav>
 
-    <!-- STEPPER -->
+    <!-- PROGRESS STEPPER -->
     <div class="ck-stepper-wrap">
         <div class="container">
             <div class="ck-stepper">
@@ -67,9 +69,9 @@
     <div class="ck-header-wrap">
         <div class="container">
             <nav class="ck-breadcrumb">
-                <a href="home.html">Home</a><i class="bi bi-chevron-right"></i>
-                <a href="cart.html">Cart</a><i class="bi bi-chevron-right"></i>
-                <a href="checkout-summary.html">Summary</a><i class="bi bi-chevron-right"></i>
+                <a href="/">Home</a><i class="bi bi-chevron-right"></i>
+                <a href="/cart">Cart</a><i class="bi bi-chevron-right"></i>
+                <a href="/checkout-summary">Summary</a><i class="bi bi-chevron-right"></i>
                 <span>Payment</span>
             </nav>
             <h1 class="ck-page-title">Payment</h1>
@@ -97,51 +99,6 @@
                             </div>
                         </label>
 
-                        <!-- Card -->
-                        <label class="ck-payment-option" id="opt-card">
-                            <input type="radio" name="payMethod" value="card">
-                            <div class="ck-pay-radio"></div>
-                            <div class="ck-pay-icon"><i class="bi bi-credit-card"></i></div>
-                            <div>
-                                <div class="ck-pay-label">Credit / Debit Card</div>
-                                <div class="ck-pay-sub">Visa, Mastercard, RuPay</div>
-                            </div>
-                        </label>
-
-                        <!-- Card fields -->
-                        <div class="ck-card-fields" id="cardFields">
-                            <div class="ck-form-group">
-                                <label class="ck-label" for="cardNum">Card Number</label>
-                                <input type="text" id="cardNum" class="ck-input" placeholder="1234 5678 9012 3456"
-                                    maxlength="19">
-                            </div>
-                            <div class="ck-form-group">
-                                <label class="ck-label" for="cardName">Name on Card</label>
-                                <input type="text" id="cardName" class="ck-input" placeholder="ADWAID KUMAR">
-                            </div>
-                            <div class="ck-form-row">
-                                <div class="ck-form-group">
-                                    <label class="ck-label" for="expiry">Expiry</label>
-                                    <input type="text" id="expiry" class="ck-input" placeholder="MM / YY" maxlength="7">
-                                </div>
-                                <div class="ck-form-group">
-                                    <label class="ck-label" for="cvv">CVV</label>
-                                    <input type="password" id="cvv" class="ck-input" placeholder="•••" maxlength="4">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Net Banking -->
-                        <label class="ck-payment-option" id="opt-nb">
-                            <input type="radio" name="payMethod" value="netbanking">
-                            <div class="ck-pay-radio"></div>
-                            <div class="ck-pay-icon"><i class="bi bi-bank"></i></div>
-                            <div>
-                                <div class="ck-pay-label">Net Banking</div>
-                                <div class="ck-pay-sub">All major Indian banks</div>
-                            </div>
-                        </label>
-
                         <!-- COD -->
                         <label class="ck-payment-option" id="opt-cod">
                             <input type="radio" name="payMethod" value="cod">
@@ -153,66 +110,23 @@
                             </div>
                         </label>
 
-                        <!-- Secure note -->
-                        <div
-                            style="display:flex;align-items:center;gap:7px;font-size:0.72rem;color:#86868b;margin-top:1rem;">
+                        <div style="display:flex;align-items:center;gap:7px;font-size:0.72rem;color:#86868b;margin-top:1rem;">
                             <i class="bi bi-shield-lock-fill" style="color:#34c759;"></i>
                             Payments are 100% encrypted and secure
                         </div>
 
-                        <a href="order-success.html" class="ck-action-btn">
-                            Pay Now — ₹1,624 <i class="bi bi-lock-fill" style="font-size:0.8rem;"></i>
+                        <a href="/order-success" class="ck-action-btn mt-4">
+                            Pay Now <i class="bi bi-lock-fill" style="font-size:0.8rem;"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- RIGHT — Mini Summary -->
+                <!-- RIGHT — Summary Mini -->
                 <div class="col-12 col-lg-4">
                     <div class="ck-mini-summary">
-                        <div class="ck-mini-title">Order Total</div>
-
-                        <div class="ck-mini-item">
-                            <img src="../../public/images/user/phoodie.jpeg" alt="Hoodie" class="ck-mini-img">
-                            <div class="ck-mini-info">
-                                <div class="ck-mini-name">Oversized Washed Hoodie</div>
-                                <div class="ck-mini-meta">M · Qty 1</div>
-                            </div>
-                            <div class="ck-mini-price">₹899</div>
-                        </div>
-
-                        <div class="ck-mini-item">
-                            <img src="../../public/images/user/pbaggy.jpeg" alt="Jeans" class="ck-mini-img">
-                            <div class="ck-mini-info">
-                                <div class="ck-mini-name">Baggy Fit Jeans</div>
-                                <div class="ck-mini-meta">32 · Qty 1</div>
-                            </div>
-                            <div class="ck-mini-price">₹1,199</div>
-                        </div>
-
-                        <div class="ck-mini-item">
-                            <img src="../../public/images/user/pcasual.jpeg" alt="Shirt" class="ck-mini-img">
-                            <div class="ck-mini-info">
-                                <div class="ck-mini-name">Classic Casual Shirt</div>
-                                <div class="ck-mini-meta">L · Qty 1</div>
-                            </div>
-                            <div class="ck-mini-price">₹649</div>
-                        </div>
-
-                        <div class="ck-mini-divider"></div>
-
-                        <div style="display:flex;flex-direction:column;gap:6px;font-size:0.82rem;">
-                            <div style="display:flex;justify-content:space-between;color:#6e6e73;">
-                                <span>Discount</span><span style="color:#34c759;font-weight:700;">−₹1,148</span>
-                            </div>
-                            <div style="display:flex;justify-content:space-between;color:#6e6e73;">
-                                <span>Shipping</span><span style="color:#34c759;font-weight:700;">FREE</span>
-                            </div>
-                        </div>
-
-                        <div class="ck-mini-divider"></div>
                         <div class="ck-mini-total-row">
                             <span>Total to Pay</span>
-                            <span>₹1,624</span>
+                            <span id="finalPaymentTotal">₹0</span>
                         </div>
                     </div>
                 </div>
@@ -224,55 +138,15 @@
     <!-- FOOTER -->
     <footer>
         <div class="container">
-            <div class="row g-4">
-                <div class="col-12 col-md-6 col-lg-3 text-start">
-                    <a href="home.html" class="footer-logo">URBANTIQ</a>
-                    <p class="footer-desc">Premium men's fashion for the modern generation.</p>
-                    <div class="footer-social d-none d-md-flex">
-                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
-                    </div>
-                </div>
-                <div class="col-4 col-md-6 col-lg-3 text-start">
-                    <h5 class="footer-heading">Shop</h5>
-                    <ul class="footer-links">
-                        <li><a href="product.html">New Arrivals</a></li>
-                        <li><a href="product.html">Shirts</a></li>
-                        <li><a href="product.html">Jeans</a></li>
-                    </ul>
-                </div>
-                <div class="col-4 col-md-6 col-lg-3 text-start">
-                    <h5 class="footer-heading">Support</h5>
-                    <ul class="footer-links">
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Returns</a></li>
-                    </ul>
-                </div>
-                <div class="col-4 col-md-6 col-lg-3 text-start">
-                    <h5 class="footer-heading">Account</h5>
-                    <ul class="footer-links">
-                        <li><a href="wishlist.html">Wishlist</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="account-orders.html">Orders</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div
-                class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+            <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center">
                 <div class="copyright">&copy; 2026 URBANTIQ. All rights reserved.</div>
-                <div class="d-flex gap-3 mt-3 mt-md-0">
-                    <a href="#" class="text-muted small text-decoration-none">Terms</a>
-                    <a href="#" class="text-muted small text-decoration-none">Privacy</a>
-                </div>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../public/js/checkout.js"></script>
-
+    <script src="/js/auth-guard.js"></script>
+    <script src="/js/checkout.js"></script>
 </body>
 
 </html>

@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oversized Hoodie | URBANTIQ</title>
-    <meta name="description" content="Premium oversized hoodie in washed black. Crafted for the modern wardrobe.">
+    <title>Product Details | URBANTIQ</title>
+    <meta name="description" content="Premium men's fashion. Crafted for the modern wardrobe.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,6 +28,7 @@
                     <li class="nav-item"><a class="nav-link active" href="/product">Shop</a></li>
                     <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="/register">Signup</a></li>
                 </ul>
             </div>
@@ -36,13 +37,16 @@
                     <i class="bi bi-search text-muted me-2"></i>
                     <input type="text" class="search-input" placeholder="Search products...">
                 </div>
-                <a href="/wishlist" class="icon-btn"><i class="bi bi-heart"></i></a>
-                <a href="/cart" class="icon-btn">
+                <a href="/wishlist" class="icon-btn" title="Wishlist">
+                    <i class="bi bi-heart"></i>
+                    <span class="wishlist-badge">0</span>
+                </a>
+                <a href="/cart" class="icon-btn" title="Cart">
                     <i class="bi bi-cart3"></i>
                     <span class="cart-badge">0</span>
                 </a>
                 <a href="/account" class="icon-btn" title="Profile"><i class="bi bi-person"></i></a>
-                <button class="navbar-toggler border-0 p-2" type="button" id="navToggler">
+                <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
@@ -57,7 +61,7 @@
                 <i class="bi bi-chevron-right"></i>
                 <a href="/product">Shop</a>
                 <i class="bi bi-chevron-right"></i>
-                <span>Oversized Hoodie</span>
+                <span id="breadcrumbName">Product</span>
             </nav>
         </div>
     </div>
@@ -70,474 +74,86 @@
                 <!-- LEFT — Image Gallery -->
                 <div class="col-12 col-lg-6">
                     <div class="sp-gallery">
-
-                        <!-- Main Image -->
                         <div class="sp-main-img">
                             <img src="" alt="" id="mainProductImg">
-                            <span class="sp-img-badge" style="display:none;" id="mainProductBadge">Bestseller</span>
+                            <span class="sp-img-badge" style="display:none;" id="mainProductBadge"></span>
                             <button class="sp-img-wishlist" id="imgWishlistBtn" aria-label="Add to Wishlist">
                                 <i class="bi bi-heart" id="imgWishlistIcon"></i>
                             </button>
                         </div>
-
-                        <!-- Thumbnail Row -->
-                        <div class="sp-thumbs">
-                            <!-- JS will inject thumbnails here -->
-                        </div>
-
+                        <div class="sp-thumbs"></div>
                     </div>
                 </div>
 
                 <!-- RIGHT — Product Info -->
                 <div class="col-12 col-lg-6">
                     <div class="sp-info">
-
-                        <!-- Category -->
-                        <div class="sp-category">Loading...</div>
-
-                        <!-- Title -->
+                        <div class="sp-category">Category</div>
                         <h1 class="sp-title">Loading...</h1>
-
-                        <!-- Rating -->
                         <div class="sp-rating-row">
                             <div class="sp-stars">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-half"></i>
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
                             </div>
                             <span class="sp-rating-num">4.8</span>
-                            <a href="#sp-reviews" class="sp-review-link">234 Reviews</a>
+                            <a href="#" class="sp-review-link">234 Reviews</a>
                         </div>
-
-                        <!-- Price -->
                         <div class="sp-price-row">
                             <span class="sp-price"></span>
                             <span class="sp-price-old"></span>
                             <span class="sp-discount-tag" style="display:none;"></span>
                         </div>
-
-                        <!-- Short Description -->
-                        <p class="sp-desc">
-                            Loading product description...
-                        </p>
-
+                        <p class="sp-desc">Loading product details...</p>
                         <div class="sp-divider"></div>
-
-                        <!-- Color -->
                         <div class="sp-option-group">
-                            <div class="sp-option-label">Colour — <span class="sp-option-val">...</span>
-                            </div>
-                            <div class="sp-color-row">
-                                <!-- Colors injected via JS -->
-                            </div>
+                            <div class="sp-option-label">Colour — <span class="sp-option-val">Default</span></div>
+                            <div class="sp-color-row"></div>
                         </div>
-
-                        <!-- Size -->
                         <div class="sp-option-group">
                             <div class="sp-option-label-row">
                                 <span class="sp-option-label">Select Size</span>
                                 <a href="#" class="sp-size-guide">Size Guide <i class="bi bi-arrow-up-right"></i></a>
                             </div>
-                            <div class="sp-size-row">
-                                <!-- Sizes injected via JS -->
-                            </div>
+                            <div class="sp-size-row"></div>
                         </div>
-
-                        <!-- Quantity -->
                         <div class="sp-option-group">
                             <div class="sp-option-label">Quantity</div>
                             <div class="sp-qty-wrap">
-                                <button class="sp-qty-btn" id="qtyMinus" aria-label="Decrease quantity">
-                                    <i class="bi bi-dash"></i>
-                                </button>
+                                <button class="sp-qty-btn" id="qtyMinus"><i class="bi bi-dash"></i></button>
                                 <span class="sp-qty-val" id="qtyDisplay">1</span>
-                                <button class="sp-qty-btn" id="qtyPlus" aria-label="Increase quantity">
-                                    <i class="bi bi-plus"></i>
-                                </button>
+                                <button class="sp-qty-btn" id="qtyPlus"><i class="bi bi-plus"></i></button>
                             </div>
                         </div>
-
                         <div class="sp-divider"></div>
-
-                        <!-- Action Buttons -->
                         <div class="sp-actions">
-                            <a href="/checkout-details" class="sp-btn-primary">Order Now</a>
+                            <button id="orderNowBtn" class="sp-btn-primary">Order Now</button>
                             <button class="sp-btn-cart" id="addToCartBtn">
                                 <i class="bi bi-bag-plus"></i> Add to Cart
                             </button>
                         </div>
-
-                        <!-- Trust Badges -->
                         <div class="sp-trust">
-                            <div class="sp-trust-item">
-                                <i class="bi bi-shield-check"></i>
-                                <span>Secure checkout</span>
-                            </div>
-                            <div class="sp-trust-item">
-                                <i class="bi bi-arrow-counterclockwise"></i>
-                                <span>Free 30-day returns</span>
-                            </div>
-                            <div class="sp-trust-item">
-                                <i class="bi bi-truck"></i>
-                                <span>Free delivery over ₹999</span>
-                            </div>
+                            <div class="sp-trust-item"><i class="bi bi-shield-check"></i><span>Secure checkout</span></div>
+                            <div class="sp-trust-item"><i class="bi bi-arrow-counterclockwise"></i><span>Free 30-day returns</span></div>
+                            <div class="sp-trust-item"><i class="bi bi-truck"></i><span>Free delivery over ₹999</span></div>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- ══ CUSTOMER REVIEWS ═══════════════════════════════════ -->
-    <section class="sp-reviews-section" id="sp-reviews">
-        <div class="container">
-
-            <!-- Section Header -->
-            <div class="sp-section-header">
-                <h2 class="sp-section-title">Customer Reviews</h2>
-            </div>
-
-            <!-- Rating Summary -->
-            <div class="sp-rating-summary">
-                <div class="sp-rating-big">
-                    <div class="sp-rating-score">4.8</div>
-                    <div class="sp-rating-meta">
-                        <div class="sp-stars-lg">
-                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                        </div>
-                        <div class="sp-rating-total">Based on 234 reviews</div>
-                    </div>
-                </div>
-                <div class="sp-rating-bars">
-                    <div class="sp-bar-row">
-                        <span class="sp-bar-label">5 ★</span>
-                        <div class="sp-bar-track">
-                            <div class="sp-bar-fill" style="width:72%"></div>
-                        </div>
-                        <span class="sp-bar-count">169</span>
-                    </div>
-                    <div class="sp-bar-row">
-                        <span class="sp-bar-label">4 ★</span>
-                        <div class="sp-bar-track">
-                            <div class="sp-bar-fill" style="width:18%"></div>
-                        </div>
-                        <span class="sp-bar-count">42</span>
-                    </div>
-                    <div class="sp-bar-row">
-                        <span class="sp-bar-label">3 ★</span>
-                        <div class="sp-bar-track">
-                            <div class="sp-bar-fill" style="width:6%"></div>
-                        </div>
-                        <span class="sp-bar-count">14</span>
-                    </div>
-                    <div class="sp-bar-row">
-                        <span class="sp-bar-label">2 ★</span>
-                        <div class="sp-bar-track">
-                            <div class="sp-bar-fill" style="width:2%"></div>
-                        </div>
-                        <span class="sp-bar-count">5</span>
-                    </div>
-                    <div class="sp-bar-row">
-                        <span class="sp-bar-label">1 ★</span>
-                        <div class="sp-bar-track">
-                            <div class="sp-bar-fill" style="width:2%"></div>
-                        </div>
-                        <span class="sp-bar-count">4</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Review Cards Grid -->
-            <div class="row g-3 g-md-4 mt-2">
-
-                <!-- Review 1 -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="rv-card">
-                        <div class="rv-header">
-                            <div class="rv-avatar" style="background:#1d1d1f;">A</div>
-                            <div class="rv-meta">
-                                <div class="rv-name">Arjun M.</div>
-                                <div class="rv-stars">
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="rv-text">Absolutely love this hoodie. The weight is perfect — not too heavy, not too
-                            light. Fits exactly as described and the wash gives it a premium lived-in feel.</p>
-                        <div class="rv-date">12 Feb 2026</div>
-                    </div>
-                </div>
-
-                <!-- Review 2 -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="rv-card">
-                        <div class="rv-header">
-                            <div class="rv-avatar" style="background:#3a3a3c;">R</div>
-                            <div class="rv-meta">
-                                <div class="rv-name">Rahul K.</div>
-                                <div class="rv-stars">
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="rv-text">Sizing is spot on. I got a medium as per the guide and it gives the perfect
-                            oversized drape without looking sloppy. Will definitely order more colours.</p>
-                        <div class="rv-date">8 Feb 2026</div>
-                    </div>
-                </div>
-
-                <!-- Review 3 -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="rv-card">
-                        <div class="rv-header">
-                            <div class="rv-avatar" style="background:#4a3728;">S</div>
-                            <div class="rv-meta">
-                                <div class="rv-name">Siddharth V.</div>
-                                <div class="rv-stars">
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="rv-text">Quality is genuinely impressive for the price. The 400GSM fabric feels
-                            substantial and the stitching is clean. Slight delay in delivery but worth the wait.</p>
-                        <div class="rv-date">3 Feb 2026</div>
-                    </div>
-                </div>
-
-                <!-- Review 4 -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="rv-card">
-                        <div class="rv-header">
-                            <div class="rv-avatar" style="background:#2d3a4a;">K</div>
-                            <div class="rv-meta">
-                                <div class="rv-name">Karan P.</div>
-                                <div class="rv-stars">
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="rv-text">Best hoodie I own. Been wearing it non-stop since it arrived. Wash is
-                            flattering and adds character. The dropped shoulder makes it look expensive.</p>
-                        <div class="rv-date">29 Jan 2026</div>
-                    </div>
-                </div>
-
-                <!-- Review 5 -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="rv-card">
-                        <div class="rv-header">
-                            <div class="rv-avatar" style="background:#5c4033;">D</div>
-                            <div class="rv-meta">
-                                <div class="rv-name">Dev R.</div>
-                                <div class="rv-stars">
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-half"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="rv-text">Clean design, no unnecessary branding. I hate logos plastered everywhere and
-                            this is the perfect minimal piece. Fabric weight is excellent for winters.</p>
-                        <div class="rv-date">24 Jan 2026</div>
-                    </div>
-                </div>
-
-                <!-- Review 6 -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="rv-card">
-                        <div class="rv-header">
-                            <div class="rv-avatar" style="background:#1c6b3a;">N</div>
-                            <div class="rv-meta">
-                                <div class="rv-name">Nikhil S.</div>
-                                <div class="rv-stars">
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="rv-text">Third purchase from URBANTIQ and the quality just keeps getting better. This
-                            hoodie in Washed Black is the perfect winter essential. Packaging was also excellent.</p>
-                        <div class="rv-date">19 Jan 2026</div>
-                    </div>
-                </div>
-
-                <!-- Review 7 -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="rv-card">
-                        <div class="rv-header">
-                            <div class="rv-avatar" style="background:#7c3d8f;">V</div>
-                            <div class="rv-meta">
-                                <div class="rv-name">Varun T.</div>
-                                <div class="rv-stars">
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="rv-text">Runs slightly larger than expected but that works perfectly for the oversized
-                            look. Very comfortable for all-day wear and the colour hasn't faded after multiple washes.
-                        </p>
-                        <div class="rv-date">15 Jan 2026</div>
-                    </div>
-                </div>
-
-                <!-- Review 8 -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="rv-card">
-                        <div class="rv-header">
-                            <div class="rv-avatar" style="background:#1d4ed8;">A</div>
-                            <div class="rv-meta">
-                                <div class="rv-name">Aditya N.</div>
-                                <div class="rv-stars">
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="rv-text">I was skeptical at this price point but WOW. This hoodie rivals pieces I've
-                            bought for 3× the price. Washed Black colour looks even better in person — deep and premium.
-                        </p>
-                        <div class="rv-date">9 Jan 2026</div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Pagination -->
-            <div class="rv-pagination">
-                <button class="rv-page-btn" aria-label="Previous page">
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-                <button class="rv-page-btn active">1</button>
-                <button class="rv-page-btn">2</button>
-                <button class="rv-page-btn">3</button>
-                <button class="rv-page-btn" aria-label="Next page">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ══ YOU MAY ALSO LIKE ═══════════════════════════════════ -->
-    <section class="sp-related-section">
-        <div class="container">
-            <div class="sp-section-header">
-                <h2 class="sp-section-title">You May Also Like</h2>
-                <a href="/product" class="sp-see-all">See All <i class="bi bi-arrow-right"></i></a>
-            </div>
-
-            <div class="row g-3 g-md-4">
-
-                <div class="col-6 col-md-3">
-                    <div class="sp-related-card">
-                        <div class="sp-rel-img">
-                            <img src="/images/user/hoodies.jpeg" alt="Classic Hoodie">
-                            <div class="sp-rel-actions">
-                                <button class="sp-rel-btn"><i class="bi bi-heart"></i></button>
-                                <button class="sp-rel-btn"><i class="bi bi-bag"></i></button>
-                            </div>
-                        </div>
-                        <div class="sp-rel-info">
-                            <div class="sp-rel-cat">Hoodies</div>
-                            <h5 class="sp-rel-name"><a href="/product/1">Classic Pullover</a></h5>
-                            <div class="sp-rel-price">₹749</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-3">
-                    <div class="sp-related-card">
-                        <div class="sp-rel-img">
-                            <img src="/images/user/oversized.jpeg" alt="Drop Shoulder Tee">
-                            <div class="sp-rel-actions">
-                                <button class="sp-rel-btn"><i class="bi bi-heart"></i></button>
-                                <button class="sp-rel-btn"><i class="bi bi-bag"></i></button>
-                            </div>
-                        </div>
-                        <div class="sp-rel-info">
-                            <div class="sp-rel-cat">Oversized</div>
-                            <h5 class="sp-rel-name"><a href="/product/1">Drop-Shoulder Tee</a></h5>
-                            <div class="sp-rel-price">₹549</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-3">
-                    <div class="sp-related-card">
-                        <div class="sp-rel-img">
-                            <img src="/images/user/pbaggy.jpeg" alt="Baggy Jeans">
-                            <div class="sp-rel-actions">
-                                <button class="sp-rel-btn"><i class="bi bi-heart"></i></button>
-                                <button class="sp-rel-btn"><i class="bi bi-bag"></i></button>
-                            </div>
-                        </div>
-                        <div class="sp-rel-info">
-                            <div class="sp-rel-cat">Jeans</div>
-                            <h5 class="sp-rel-name"><a href="/product/1">Baggy Jeans</a></h5>
-                            <div class="sp-rel-price">₹1,199</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-3">
-                    <div class="sp-related-card">
-                        <div class="sp-rel-img">
-                            <img src="/images/user/pcasual.jpeg" alt="Classic Shirt">
-                            <div class="sp-rel-actions">
-                                <button class="sp-rel-btn"><i class="bi bi-heart"></i></button>
-                                <button class="sp-rel-btn"><i class="bi bi-bag"></i></button>
-                            </div>
-                        </div>
-                        <div class="sp-rel-info">
-                            <div class="sp-rel-cat">Shirts</div>
-                            <h5 class="sp-rel-name"><a href="/product/1">Classic Shirt</a></h5>
-                            <div class="sp-rel-price">₹649</div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ══ FOOTER ══════════════════════════════════════════════ -->
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="row g-4">
                 <div class="col-12 col-md-6 col-lg-3 text-start">
                     <a href="/" class="footer-logo">URBANTIQ</a>
                     <p class="footer-desc">Premium men's fashion for the modern generation.</p>
-                    <div class="footer-social d-none d-md-flex">
-                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
-                    </div>
                 </div>
                 <div class="col-4 col-md-6 col-lg-3 text-start">
                     <h5 class="footer-heading">Shop</h5>
                     <ul class="footer-links">
                         <li><a href="/product">New Arrivals</a></li>
-                        <li><a href="/product">Hoodies</a></li>
-                        <li><a href="/product">Jeans</a></li>
-                        <li><a href="/product">Formals</a></li>
+                        <li><a href="/product">Clothing</a></li>
                     </ul>
                 </div>
                 <div class="col-4 col-md-6 col-lg-3 text-start">
@@ -545,8 +161,6 @@
                     <ul class="footer-links">
                         <li><a href="/contact">Contact</a></li>
                         <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Returns</a></li>
-                        <li><a href="#">Shipping</a></li>
                     </ul>
                 </div>
                 <div class="col-4 col-md-6 col-lg-3 text-start">
@@ -555,24 +169,14 @@
                         <li><a href="/login">Login</a></li>
                         <li><a href="/register">Signup</a></li>
                         <li><a href="/wishlist">Wishlist</a></li>
-                        <li><a href="/account-orders">Orders</a></li>
                     </ul>
-                </div>
-            </div>
-            <div
-                class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
-                <div class="copyright">&copy; 2026 URBANTIQ. All rights reserved.</div>
-                <div class="d-flex gap-3 mt-3 mt-md-0">
-                    <a href="#" class="text-muted small text-decoration-none">Terms</a>
-                    <a href="#" class="text-muted small text-decoration-none">Privacy</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/auth-guard.js"></script>
     <script src="/js/single-product.js"></script>
-
 </body>
-
 </html>
