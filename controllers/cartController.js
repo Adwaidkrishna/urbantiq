@@ -4,7 +4,7 @@ import Product from "../models/ProductModel.js";
 // Add to Cart
 export const addToCart = async (req, res) => {
   try {
-    const { productId, variantId, size, quantity } = req.body;
+    const { productId, variantId, size, quantity, override } = req.body;
     const userId = req.userId;
 
     // Check if product exists
@@ -28,15 +28,22 @@ export const addToCart = async (req, res) => {
     );
 
     if (itemIndex > -1) {
-      // Update quantity if it exists
-      cart.items[itemIndex].quantity += parseInt(quantity);
+      // Robust check for override (handles boolean true or string "true")
+      const shouldOverride = override === true || override === 'true';
+
+      if (shouldOverride) {
+        cart.items[itemIndex].quantity = parseInt(quantity, 10);
+      } else {
+        // Update quantity by incrementing if it exists (regular 'Add to Cart')
+        cart.items[itemIndex].quantity += parseInt(quantity, 10);
+      }
     } else {
       // Add new item
       cart.items.push({
         product: productId,
         variant: variantId,
         size: size,
-        quantity: parseInt(quantity)
+        quantity: parseInt(quantity, 10)
       });
     }
 

@@ -85,45 +85,63 @@
 
                 <!-- LEFT — Payment Options -->
                 <div class="col-12 col-lg-7">
-                    <div class="ck-card">
+                    <div class="ck-card ck-payment-card">
                         <div class="ck-card-title">Choose Payment Method</div>
 
-                        <!-- UPI -->
-                        <label class="ck-payment-option selected" id="opt-upi">
-                            <input type="radio" name="payMethod" value="upi" checked>
-                            <div class="ck-pay-radio"></div>
-                            <div class="ck-pay-icon"><i class="bi bi-phone"></i></div>
-                            <div>
-                                <div class="ck-pay-label">UPI</div>
-                                <div class="ck-pay-sub">GPay, PhonePe, Paytm, BHIM</div>
-                            </div>
-                        </label>
+                        <div class="ck-payment-list">
+                            <!-- UPI -->
+                            <label class="ck-payment-option selected" id="opt-upi">
+                                <input type="radio" name="payMethod" value="upi" checked>
+                                <div class="ck-pay-radio"></div>
+                                <div class="ck-pay-icon"><i class="bi bi-phone"></i></div>
+                                <div class="ck-pay-info">
+                                    <div class="ck-pay-label">UPI</div>
+                                    <div class="ck-pay-sub">GPay, PhonePe, Paytm, BHIM</div>
+                                </div>
+                            </label>
 
-                        <!-- COD -->
-                        <label class="ck-payment-option" id="opt-cod">
-                            <input type="radio" name="payMethod" value="cod">
-                            <div class="ck-pay-radio"></div>
-                            <div class="ck-pay-icon"><i class="bi bi-cash-stack"></i></div>
-                            <div>
-                                <div class="ck-pay-label">Cash on Delivery</div>
-                                <div class="ck-pay-sub">Pay when your order arrives</div>
-                            </div>
-                        </label>
+                            <!-- COD -->
+                            <label class="ck-payment-option" id="opt-cod">
+                                <input type="radio" name="payMethod" value="cod">
+                                <div class="ck-pay-radio"></div>
+                                <div class="ck-pay-icon"><i class="bi bi-cash-stack"></i></div>
+                                <div class="ck-pay-info">
+                                    <div class="ck-pay-label">Cash on Delivery</div>
+                                    <div class="ck-pay-sub">Pay when your order arrives</div>
+                                </div>
+                            </label>
+                        </div>
 
-                        <div style="display:flex;align-items:center;gap:7px;font-size:0.72rem;color:#86868b;margin-top:1rem;">
-                            <i class="bi bi-shield-lock-fill" style="color:#34c759;"></i>
+                        <div class="ck-secure-note">
+                            <i class="bi bi-shield-lock-fill"></i>
                             Payments are 100% encrypted and secure
                         </div>
 
                         <a href="/order-success" class="ck-action-btn mt-4">
-                            Pay Now <i class="bi bi-lock-fill" style="font-size:0.8rem;"></i>
+                            Pay <span id="payNowAmount">₹0</span> <i class="bi bi-lock-fill"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- RIGHT — Summary Mini -->
-                <div class="col-12 col-lg-4">
-                    <div class="ck-mini-summary">
+                <!-- RIGHT — Mini Cart Summary -->
+                <div class="col-12 col-lg-5 col-xl-4">
+                    <div class="ck-mini-summary-card">
+                        <div class="ck-mini-summary-title">Order Summary</div>
+                        
+                        <div id="miniSummaryList">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <div class="ck-mini-divider"></div>
+                        
+                        <div class="ck-mini-price-details">
+                            <div class="ck-price-row"><span>Subtotal</span><span id="miniSubtotal">₹0</span></div>
+                            <div class="ck-price-row"><span>Discount</span><span id="miniDiscount" class="text-success">−₹0</span></div>
+                            <div class="ck-price-row"><span>Delivery</span><span class="text-success">FREE</span></div>
+                        </div>
+
+                        <div class="ck-mini-divider"></div>
+
                         <div class="ck-mini-total-row">
                             <span>Total to Pay</span>
                             <span id="finalPaymentTotal">₹0</span>

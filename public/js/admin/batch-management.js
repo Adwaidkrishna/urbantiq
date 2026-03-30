@@ -122,6 +122,7 @@
                 <input type="number" class="form-control variant-qty text-center" 
                   data-size-id="${sz._id}" 
                   data-variant-id="${v._id}"
+                  data-size-label="${sz.size}"
                   min="0" max="${currentBatch.quantity}" 
                   value="${defVal}" 
                   style="width: 80px;" />
@@ -170,6 +171,7 @@
       if (q > 0) allocations.push({ 
         variantId: i.dataset.variantId, 
         sizeId: i.dataset.sizeId, 
+        size: i.dataset.sizeLabel,
         quantity: q 
       });
     });

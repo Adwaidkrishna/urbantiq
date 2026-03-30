@@ -17,6 +17,7 @@ import purchaseRoutes from "./routes/purchaseRoutes.js";
 import batchRoutes from "./routes/batchRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
 
@@ -29,18 +30,8 @@ app.use(cookieParser());
 
 app.use(express.static("public"));
 
-// Middleware to strip .html from URLs
-app.use((req, res, next) => {
-    if (req.path.endsWith('.html')) {
-        const newPath = req.path.slice(0, -5);
-        return res.redirect(301, newPath);
-    }
-    next();
-});
-
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/admin/pages", express.static("views/admin/pages"));
 app.use("/api/admin", adminCategoryRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api/admin", adminProductRoutes);
@@ -50,6 +41,7 @@ app.use("/api/admin", purchaseRoutes);
 app.use("/api/admin", batchRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/orders", orderRoutes);
 
 // User side pages
 app.use("/", userRoutes);

@@ -42,10 +42,12 @@ const purchaseItemSchema = new mongoose.Schema(
       enum: ["UNLINKED", "LINKED"],
       default: "UNLINKED",
     },
-    allocations: [//why allocations used here
+    allocations: [
       {
         variantId: { type: mongoose.Schema.Types.ObjectId, required: true },
+        size: { type: String, required: true }, // Size label (e.g., "S", "M")
         quantity: { type: Number, required: true },
+        remainingQuantity: { type: Number, required: true }, // Tracks available inventory in this batch
       }
     ],
   },

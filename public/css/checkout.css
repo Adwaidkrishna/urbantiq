@@ -736,6 +736,203 @@
 }
 
 /* ============================================
+   INTEGRATED REVIEW CARD (Unified Summary)
+   ============================================ */
+.ck-review-card {
+    padding: 0; /* Removing padding to handle internally with sections */
+    overflow: hidden;
+}
+
+.ck-review-section {
+    padding: 1.75rem 2rem;
+}
+
+.ck-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.ck-section-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.01em;
+}
+
+.ck-section-title i {
+    font-size: 1.1rem;
+    color: #1d1d1f;
+}
+
+.ck-edit-link {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #0066cc;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.ck-edit-link:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.ck-address-preview {
+    background: #fbfbfd;
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #f2f2f2;
+}
+
+.ck-addr-name {
+    font-weight: 800;
+    color: #1d1d1f;
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.ck-addr-text {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #48484a;
+    font-weight: 500;
+}
+
+.ck-section-divider {
+    height: 1px;
+    background: #f2f2f2;
+    margin: 0;
+}
+
+/* MOBILE REFINEMENT FOR REVIEW CARD */
+@media (max-width: 768px) {
+    .ck-review-section {
+        padding: 1.5rem 1.25rem;
+    }
+    
+    .ck-addr-name {
+        font-size: 0.92rem;
+    }
+    
+    .ck-addr-text {
+        font-size: 0.8rem;
+    }
+}
+
+/* ============================================
+   MINI SUMMARY CARD (Payment Page)
+   ============================================ */
+.ck-mini-summary-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    position: sticky;
+    top: 90px;
+}
+
+.ck-mini-summary-title {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.ck-mini-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.ck-mini-img {
+    width: 44px;
+    height: 54px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #fbfbfd;
+}
+
+.ck-mini-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ck-mini-name {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 1px;
+}
+
+.ck-mini-meta {
+    font-size: 0.68rem;
+    color: #86868b;
+}
+
+.ck-mini-price {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1d1d1f;
+}
+
+.ck-mini-divider {
+    height: 1px;
+    background: #f2f2f2;
+    margin: 1.25rem 0;
+}
+
+.ck-mini-price-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ck-mini-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-weight: 800;
+    color: #1d1d1f;
+}
+
+.ck-mini-total-row span:first-child {
+    font-size: 0.9rem;
+}
+
+.ck-mini-total-row span:last-child {
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+.ck-secure-note {
+    background: #fbfbfd;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.72rem;
+    color: #48484a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.ck-secure-note i {
+    color: #34c759;
+    font-size: 1rem;
+}
+
+/* ============================================
    ORDER SUCCESS PAGE
    ============================================ */
 .ck-success-wrap {
@@ -1132,3 +1329,138 @@ footer {
         order: -1;
     }
 }
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.ck-optional { font-weight: 400; text-transform: none; letter-spacing: 0; }
+.ck-summary-address-text { font-size: 0.875rem; color: #6e6e73; line-height: 1.7; margin: 0; }
+.ck-secure-note { display: flex; align-items: center; gap: 7px; font-size: 0.72rem; color: #86868b; margin-top: 1rem; }
+.ck-bold-summary-name { color: #1d1d1f; }
+.ck-edit-link { font-size: 0.78rem; font-weight: 700; color: #007aff; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-top: 0.75rem; }
+
+
+/* Validation */
+.ck-input-error {
+    border-color: #ff3b30 !important;
+    background-color: #fff9f9 !important;
+}
+
+.ck-error-msg {
+    animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   ORDER SUCCESS PAGE
+   ============================================ */
+.success-hero {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    max-width: 650px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: #34c759;
+    color: #fff;
+    font-size: 2.5rem;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(52, 199, 89, 0.2);
+    animation: success-pulse 1.8s infinite cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@keyframes success-pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(52, 199, 89, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); }
+}
+
+.order-id-badge {
+    display: inline-block;
+    background: #f5f5f7;
+    border: 1px solid #e5e5e7;
+    color: #1d1d1f;
+    padding: 10px 20px;
+    border-radius: 14px;
+    font-family: 'SF Mono', 'Courier New', Courier, monospace;
+    font-weight: 700;
+    margin: 1.5rem 0 1rem;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+}
+
+.delivery-msg {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: #6e6e73;
+    line-height: 1.6;
+}
+
+.delivery-msg .fw-700 {
+    color: #1d1d1f;
+}
+
+.action-btns-success {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 2.5rem;
+}
+
+.btn-view-order {
+    padding: 14px 28px;
+    background: #1d1d1f;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+}
+
+.btn-shop {
+    padding: 14px 28px;
+    border: 1.5px solid #e5e5e7;
+    color: #1d1d1f;
+    text-decoration: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #fff;
+}
+
+.btn-view-order:hover {
+    background: #000;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.btn-shop:hover {
+    background: #f5f5f7;
+    border-color: #d2d2d7;
+    transform: translateY(-2px);
+}
+
+.is-loading {
+    opacity: 0.8;
+    pointer-events: none;
+}
+

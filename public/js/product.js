@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function loadProducts() {
         const productGrid = document.getElementById("productGrid");
         if (!productGrid) return;
-        
+
         try {
             // Load wishlist first if logged in
             const status = await window.AuthGuard.fetchStatus();
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const res = await fetch("/api/products");
             const data = await res.json();
-            
+
             if (data.success) {
                 renderProducts(data.products);
             }
@@ -100,11 +100,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!productGrid || !template) return;
 
         productGrid.innerHTML = products.length ? "" : '<div class="col-12 text-center py-5">No products found</div>';
-        
+
         products.forEach(p => {
             const clone = template.content.cloneNode(true);
             const mainImg = (p.variants?.[0]?.images?.[0]) ? `/images/products/${p.variants[0].images[0]}` : '/images/user/phoodie.jpeg';
-            
+
             // Set data
             clone.querySelector(".p-card-link").href = `/product/${p._id}`;
             clone.querySelector("img").src = mainImg;
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const isNew = (new Date() - new Date(p.createdAt)) < 7 * 24 * 60 * 60 * 1000;
             if (isNew) {
                 const badge = clone.querySelector(".p-badge");
-                if(badge) {
+                if (badge) {
                     badge.textContent = "New";
                     badge.classList.remove("d-none");
                 }
