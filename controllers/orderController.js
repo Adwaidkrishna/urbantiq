@@ -193,32 +193,25 @@ export const cancelOrder = async (req, res) => {
       return res.status(401).json({ message: "Not authorized" });
     }
 
-    if (order.orderStatus !== "Pending" && order.orderStatus !== "Processing") {
+    if (order.orderStatus === "Cancelled") {
+      return res.status(400).json({ message: "Order is already cancelled" });
+    }
+
+    if (order.orderStatus === "Delivered" || order.orderStatus === "Shipped") {
       return res.status(400).json({ message: "Order cannot be cancelled at this stage" });
     }
+
+    // Rollback Inventory
+    await rollbackOrderStock(order);
 
     // Update status
     order.orderStatus = "Cancelled";
     const updatedOrder = await order.save();
 
-    // RE-INCREMENT INVENTORY (Restock)
-    for (const item of updatedOrder.items) {
-      await Product.updateOne(
-        { _id: new mongoose.Types.ObjectId(item.product) },
-        { $inc: { "variants.$[v].sizes.$[s].stock": item.quantity } },
-        {
-          arrayFilters: [
-            { "v._id": new mongoose.Types.ObjectId(item.variant) },
-            { "s.size": item.size }
-          ]
-        }
-      );
-    }
-
     res.json(updatedOrder);
   } catch (error) {
     console.error("Cancel Order Error:", error);
-    res.status(500).json({ message: "Error cancelling order" });
+    res.status(500).json({ message: error.message || "Error cancelling order" });
   }
 };
 
@@ -250,14 +243,72 @@ export const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
+    const previousStatus = order.orderStatus;
+
+    // Handle cancellation rollback for admin
+    if (status === "Cancelled" && previousStatus !== "Cancelled") {
+       await rollbackOrderStock(order);
+    }
+
     order.orderStatus = status;
     const updatedOrder = await order.save();
 
     res.json(updatedOrder);
   } catch (error) {
-    res.status(500).json({ message: "Error updating order status" });
+    console.error("Admin Status Update Error:", error);
+    res.status(500).json({ message: error.message || "Error updating order status" });
   }
 };
+
+/**
+ * Shared Helper: RESTORE STOCK TO PRODUCT AND BATCHES
+ */
+async function rollbackOrderStock(order) {
+  for (const item of order.items) {
+    // 1. Update Master Product Stock
+    await Product.updateOne(
+      { _id: new mongoose.Types.ObjectId(item.product) },
+      { $inc: { "variants.$[v].sizes.$[s].stock": item.quantity } },
+      {
+        arrayFilters: [
+          { "v._id": new mongoose.Types.ObjectId(item.variant) },
+          { "s.size": item.size }
+        ]
+      }
+    );
+
+    // 2. Rollback Batches (FIFO reversed)
+    // Find batches that are missing stock (remaining < initial quantity)
+    // We restore to the NEWEST batches first (reverse of placement deduction)
+    const batches = await PurchaseItem.find({
+      status: "LINKED",
+      "allocations.variantId": new mongoose.Types.ObjectId(item.variant),
+      "allocations.size": item.size
+    }).sort({ createdAt: -1 });
+
+    let qtyToRestore = item.quantity;
+
+    for (const batch of batches) {
+      if (qtyToRestore <= 0) break;
+
+      const alloc = batch.allocations.find(a => 
+        a.variantId.toString() === item.variant.toString() && a.size === item.size
+      );
+
+      if (alloc && alloc.remainingQuantity < alloc.quantity) {
+        const spaceInBatch = alloc.quantity - alloc.remainingQuantity;
+        const addAmount = Math.min(spaceInBatch, qtyToRestore);
+
+        await PurchaseItem.updateOne(
+          { _id: batch._id, "allocations._id": alloc._id },
+          { $inc: { "allocations.$.remainingQuantity": addAmount } }
+        );
+
+        qtyToRestore -= addAmount;
+      }
+    }
+  }
+}
 
 // @desc    Validate stock before order placement (Pre-flight check)
 // @route   POST /api/orders/validate-stock
