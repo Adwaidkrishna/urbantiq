@@ -160,9 +160,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const catName = item.product.category?.name || 'Fashion';
 
             // Use offerPrice if available, otherwise use regular price
-            const itemPrice = (item.product.offerPrice && item.product.offerPrice < item.product.price) 
-                              ? item.product.offerPrice 
-                              : item.product.price;
+            const itemPrice = (item.product.offerPrice && item.product.offerPrice < item.product.price)
+                ? item.product.offerPrice
+                : item.product.price;
             const itemTotalPrice = (itemPrice * item.quantity).toLocaleString();
 
             const div = document.createElement('div');
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         items.forEach(item => {
             if (!item.product) return; // Skip if product was deleted
-            
+
             const p = item.product;
             subtotal += p.price * item.quantity;
             if (p.offerPrice && p.offerPrice < p.price) {
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (options.length) {
         const totalAmount = localStorage.getItem('checkoutTotal') || "0";
         const formattedAmt = `₹${Number(totalAmount).toLocaleString()}`;
-        
+
         const totalDisplay = document.getElementById("finalPaymentTotal");
         if (totalDisplay) totalDisplay.textContent = formattedAmt;
 
@@ -272,19 +272,13 @@ document.addEventListener("DOMContentLoaded", function () {
         payNowBtn.addEventListener("click", async function (e) {
             e.preventDefault();
             const originalBtnHtml = payNowBtn.innerHTML;
-            payNowBtn.innerHTML = `Placing Order... <span class="spinner-border spinner-border-sm ms-2"></span>`;
-            payNowBtn.classList.add('is-loading');
-            payNowBtn.style.pointerEvents = 'none';
 
             const checkedInput = document.querySelector('input[name="payMethod"]:checked');
             if (!checkedInput) {
-                payNowBtn.innerHTML = originalBtnHtml;
-                payNowBtn.classList.remove('is-loading');
-                payNowBtn.style.pointerEvents = 'auto';
                 alert("Please select a payment method.");
                 return;
             }
-            // Map frontend values to DB enum values: "COD" or "Online"
+
             const rawMethod = checkedInput.value.toLowerCase();
             const payMethod = rawMethod === 'cod' ? 'COD' : 'Online';
             const address = JSON.parse(localStorage.getItem('checkoutAddress'));
@@ -292,37 +286,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("Shipping address missing. Please go back and fill your details.");
                 return;
             }
-            const total = localStorage.getItem('checkoutTotal');
 
             try {
+                // 1. Initial Loading State
+                payNowBtn.innerHTML = `Validating... <span class="spinner-border spinner-border-sm ms-2"></span>`;
+                payNowBtn.classList.add('is-loading');
+                payNowBtn.style.pointerEvents = 'none';
+
                 const cartRes = await fetch("/api/cart");
                 const cartData = await cartRes.json();
 
                 if (!cartData.items || cartData.items.length === 0) {
-                    alert("Your cart is empty.");
-                    return;
+                    throw new Error("Your cart is empty.");
                 }
 
-                // Compute price totals from cart
+                // 2. Compute price totals & map items
                 let subtotal = 0;
                 let finalTotal = 0;
-                cartData.items.forEach(item => {
-                    if (!item.product) return; // Skip deleted products
-                    const basePrice = item.product.price || 0;
-                    const offerPrice = item.product.offerPrice;
-                    const itemPrice = (offerPrice && offerPrice < basePrice) ? offerPrice : basePrice;
-                    subtotal += basePrice * item.quantity;
-                    finalTotal += itemPrice * item.quantity;
-                });
-                const discount = subtotal - finalTotal;
-
-                // Map items with correct price field, filtering out deleted products
                 const orderItems = cartData.items
-                    .filter(item => item.product) // Skip deleted products
+                    .filter(item => item.product && item.variant)
                     .map(item => {
                         const basePrice = item.product.price || 0;
                         const offerPrice = item.product.offerPrice;
                         const itemPrice = (offerPrice && offerPrice < basePrice) ? offerPrice : basePrice;
+                        subtotal += basePrice * item.quantity;
+                        finalTotal += itemPrice * item.quantity;
                         return {
                             product: item.product._id || item.product,
                             variant: item.variant._id || item.variant,
@@ -332,65 +320,121 @@ document.addEventListener("DOMContentLoaded", function () {
                         };
                     });
 
-                if (orderItems.length === 0) {
-                    payNowBtn.innerHTML = originalBtnHtml;
-                    payNowBtn.classList.remove('is-loading');
-                    payNowBtn.style.pointerEvents = 'auto';
-                    alert("Your cart is empty or contains unavailable items.");
-                    return;
-                }
+                const discount = subtotal - finalTotal;
 
-                // ─── VALIDATE STOCK BEFORE PLACING ORDER ──────────────────────────
+                // 3. Validate stock
                 const validateRes = await fetch("/api/orders/validate-stock", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ items: orderItems })
                 });
 
-                const validateData = await validateRes.json();
                 if (!validateRes.ok) {
-                    payNowBtn.innerHTML = originalBtnHtml;
-                    payNowBtn.classList.remove('is-loading');
-                    payNowBtn.style.pointerEvents = 'auto';
-                    alert(validateData.message || "One or more items are out of stock.");
-                    return;
+                    const validateData = await validateRes.json();
+                    throw new Error(validateData.message || "One or more items are out of stock.");
                 }
 
-                const response = await fetch("/api/orders", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        items: orderItems,
-                        shippingAddress: address,
-                        paymentMethod: payMethod,
-                        totalPrice: subtotal,
-                        discount: discount,
-                        shippingCharges: 0,
-                        finalAmount: finalTotal
-                    })
-                });
+                // 4. Handle based on Payment Method
+                if (payMethod === 'Online') {
+                    payNowBtn.innerHTML = `Initializing Payment... <span class="spinner-border spinner-border-sm ms-2"></span>`;
 
-                const orderResult = await response.json();
-                if (response.ok) {
-                    localStorage.removeItem('checkoutAddress');
-                    localStorage.removeItem('checkoutTotal');
-                    // Add a tiny delay to show the "success" feel
-                    setTimeout(() => {
-                        window.location.href = `/order-success?id=${orderResult.orderId}`;
-                    }, 800);
+                    // Create Razorpay Order
+                    const rzpOrderRes = await fetch("/api/payment/create-order", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ amount: finalTotal })
+                    });
+                    const rzpOrderData = await rzpOrderRes.json();
+
+                    if (!rzpOrderRes.ok) throw new Error(rzpOrderData.message || "Failed to initialize Razorpay order");
+
+                    const options = {
+                        key: "rzp_test_SYJDs3aCK4Cn6M", // Final Key ID
+                        amount: rzpOrderData.order.amount,
+                        currency: "INR",
+                        name: "URBANTIQ",
+                        description: "Purchase Payment",
+                        order_id: rzpOrderData.order.id,
+                        handler: async function (response) {
+                            try {
+                                payNowBtn.innerHTML = `Verifying... <span class="spinner-border spinner-border-sm ms-2"></span>`;
+                                // Verify Payment on Server
+                                const verifyRes = await fetch("/api/payment/verify", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify(response)
+                                });
+
+                                if (!verifyRes.ok) throw new Error("Payment verification failed");
+
+                                // Place Order in DB after successful payment
+                                await finalizeOrder(orderItems, address, payMethod, subtotal, discount, finalTotal);
+                            } catch (err) {
+                                alert(err.message);
+                                resetBtn(payNowBtn, originalBtnHtml);
+                            }
+                        },
+                        modal: {
+                            ondismiss: function () {
+                                resetBtn(payNowBtn, originalBtnHtml);
+                            }
+                        },
+                        prefill: {
+                            name: address.fullName,
+                            email: address.email,
+                            contact: address.phone
+                        },
+                        theme: {
+                            color: "#000000"
+                        }
+                    };
+
+                    const rzp = new window.Razorpay(options);
+                    rzp.open();
                 } else {
-                    payNowBtn.innerHTML = originalBtnHtml;
-                    payNowBtn.classList.remove('is-loading');
-                    payNowBtn.style.pointerEvents = 'auto';
-                    alert(orderResult.message || "Failed to place order");
+                    // COD Flow
+                    payNowBtn.innerHTML = `Placing Order... <span class="spinner-border spinner-border-sm ms-2"></span>`;
+                    await finalizeOrder(orderItems, address, payMethod, subtotal, discount, finalTotal);
                 }
+
             } catch (err) {
-                payNowBtn.innerHTML = originalBtnHtml;
-                payNowBtn.classList.remove('is-loading');
-                payNowBtn.style.pointerEvents = 'auto';
-                console.error("Order placement error:", err);
-                alert("Error placing order. Please try again.");
+                console.error("Order process error:", err);
+                alert(err.message || "Something went wrong. Please try again.");
+                resetBtn(payNowBtn, originalBtnHtml);
             }
         });
+
+        async function finalizeOrder(items, address, payMethod, subtotal, discount, finalTotal) {
+            const response = await fetch("/api/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    items,
+                    shippingAddress: address,
+                    paymentMethod: payMethod,
+                    totalPrice: subtotal,
+                    discount: discount,
+                    shippingCharges: 0,
+                    finalAmount: finalTotal
+                })
+            });
+
+            const orderResult = await response.json();
+            if (response.ok) {
+                localStorage.removeItem('checkoutAddress');
+                localStorage.removeItem('checkoutTotal');
+                setTimeout(() => {
+                    window.location.href = `/order-success?id=${orderResult.orderId}`;
+                }, 800);
+            } else {
+                throw new Error(orderResult.message || "Failed to place order");
+            }
+        }
+
+        function resetBtn(btn, originalHtml) {
+            btn.innerHTML = originalHtml;
+            btn.classList.remove('is-loading');
+            btn.style.pointerEvents = 'auto';
+        }
     }
 });

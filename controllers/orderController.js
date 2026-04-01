@@ -66,8 +66,8 @@ export const placeOrder = async (req, res) => {
           const deductAmount = Math.min(alloc.remainingQuantity, remainingQtyToDeduct);
 
           const batchUpdate = await PurchaseItem.updateOne(
-            { 
-              _id: batch._id, 
+            {
+              _id: batch._id,
               allocations: { $elemMatch: { _id: alloc._id, remainingQuantity: { $gte: deductAmount } } }
             },
             { $inc: { "allocations.$.remainingQuantity": -deductAmount } }
@@ -90,7 +90,7 @@ export const placeOrder = async (req, res) => {
       const productUpdate = await Product.updateOne(
         { _id: productId },
         { $inc: { "variants.$[v].sizes.$[s].stock": -requestedQty } },
-        { 
+        {
           arrayFilters: [
             { "v._id": new mongoose.Types.ObjectId(variantId) },
             { "s.size": sizeStr }
@@ -125,7 +125,7 @@ export const placeOrder = async (req, res) => {
     });
 
     const savedOrder = await order.save();
-    
+
     // Clear user cart
     await Cart.findOneAndUpdate({ user: req.userId }, { items: [] });
 
@@ -246,8 +246,8 @@ export const updateOrderStatus = async (req, res) => {
     const previousStatus = order.orderStatus;
 
     // Handle cancellation rollback for admin
-    if (status === "Cancelled" && previousStatus !== "Cancelled") {
-       await rollbackOrderStock(order);
+    if (status === "Cancelled" && previousStatus !== "Cancelled") {//why here two conditions explain because 
+      await rollbackOrderStock(order);
     }
 
     order.orderStatus = status;
@@ -291,7 +291,7 @@ async function rollbackOrderStock(order) {
     for (const batch of batches) {
       if (qtyToRestore <= 0) break;
 
-      const alloc = batch.allocations.find(a => 
+      const alloc = batch.allocations.find(a =>
         a.variantId.toString() === item.variant.toString() && a.size === item.size
       );
 
@@ -315,6 +315,12 @@ async function rollbackOrderStock(order) {
 // @access  Private
 export const validateStock = async (req, res) => {
   try {
+    console.log("Validate Stock Headers:", req.headers);
+    console.log("Validate Stock Body:", req.body);
+
+    if (!req.body) {
+        return res.status(500).json({ message: "Request body is missing on server" });
+    }
     const { items } = req.body;
     if (!items || items.length === 0) return res.status(400).json({ message: "No items to validate" });
 
@@ -324,6 +330,10 @@ export const validateStock = async (req, res) => {
       const sizeStr = item.size;
       const qty = Number(item.quantity);
 
+      if (!productId || !variantId || !sizeStr) {
+          return res.status(400).json({ message: "Invalid product or variant data in cart" });
+      }
+
       const product = await Product.findById(productId);
       if (!product) return res.status(400).json({ message: `Product not found` });
 
@@ -331,9 +341,9 @@ export const validateStock = async (req, res) => {
       const sizeObj = variant?.sizes.find(s => s.size === sizeStr);
 
       if (!sizeObj || sizeObj.stock < qty) {
-        return res.status(400).json({ 
-          success: false, 
-          message: `Out of stock: ${product.name} (${sizeStr}) only has ${sizeObj ? sizeObj.stock : 0} left.` 
+        return res.status(400).json({
+          success: false,
+          message: `Out of stock: ${product.name} (${sizeStr}) only has ${sizeObj ? sizeObj.stock : 0} left.`
         });
       }
 
@@ -342,7 +352,7 @@ export const validateStock = async (req, res) => {
         status: "LINKED",
         allocations: {
           $elemMatch: {
-            variantId: new mongoose.Types.ObjectId(variantId),
+            variantId: new mongoose.Types.ObjectId(variantId.toString()),
             size: sizeStr,
             remainingQuantity: { $gt: 0 }
           }
@@ -350,15 +360,15 @@ export const validateStock = async (req, res) => {
       });
 
       console.log(`Pre-check: Found ${batches.length} batches for Variant ${variantId} Size ${sizeStr}`);
-      
+
       if (batches.length === 0) {
-          // Diagnostic: Let's see what batches DO exist for this product variant at all
-          const anyBatches = await PurchaseItem.find({ "allocations.variantId": new mongoose.Types.ObjectId(variantId) });
-          console.log(`Diagnostic: Total batches (Linked or Unlinked) for this variant: ${anyBatches.length}`);
-          if (anyBatches.length > 0) {
-              console.log(`Sample Batch Status: ${anyBatches[0].status}`);
-              console.log(`Sample Batch Allocations:`, JSON.stringify(anyBatches[0].allocations));
-          }
+        // Diagnostic: Let's see what batches DO exist for this product variant at all
+        const anyBatches = await PurchaseItem.find({ "allocations.variantId": new mongoose.Types.ObjectId(variantId) });
+        console.log(`Diagnostic: Total batches (Linked or Unlinked) for this variant: ${anyBatches.length}`);
+        if (anyBatches.length > 0) {
+          console.log(`Sample Batch Status: ${anyBatches[0].status}`);
+          console.log(`Sample Batch Allocations:`, JSON.stringify(anyBatches[0].allocations));
+        }
       }
 
       const availableInBatches = batches.reduce((acc, batch) => {
@@ -367,16 +377,16 @@ export const validateStock = async (req, res) => {
       }, 0);
 
       if (availableInBatches < qty) {
-        return res.status(400).json({ 
-          success: false, 
-          message: `Inventory sync issue: ${product.name} batches insufficient.` 
+        return res.status(400).json({
+          success: false,
+          message: `Inventory sync issue: ${product.name} batches insufficient.`
         });
       }
     }
 
     res.json({ success: true, message: "Stock validated" });
   } catch (error) {
-    console.error("Validate Stock Error:", error);
-    res.status(500).json({ message: "Internal validation error" });
+    console.error("Validate Stock Error Stack:", error.stack);
+    res.status(500).json({ message: `Internal validation error: ${error.message}` });
   }
 };

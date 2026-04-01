@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Add event listeners for update buttons
         document.querySelectorAll('.update-status-btn').forEach(btn => {
-            btn.addEventListener('click', async function() {
+            btn.addEventListener('click', async function () {
                 const id = this.getAttribute('data-id');
                 const row = this.closest('tr');
                 const status = row.querySelector('.status-select').value;
