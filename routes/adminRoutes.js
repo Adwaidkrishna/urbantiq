@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 
-import { adminLogin } from "../controllers/adminController.js";
+import { adminLogin, adminLogout, getAdminProfile, updateAdminProfile, changeAdminPassword } from "../controllers/adminController.js";
 import adminAuthMiddleware from "../middleware/adminMiddleware.js"
 
 
@@ -50,5 +50,11 @@ router.get("/edit-supplier/:id", adminAuthMiddleware, (req, res) => {
 });
 
 router.post("/login", adminLogin);
+router.get("/logout", adminLogout);
+
+// Admin Profile API routes
+router.get("/profile", adminAuthMiddleware, getAdminProfile);
+router.put("/profile", adminAuthMiddleware, updateAdminProfile);
+router.put("/profile/change-password", adminAuthMiddleware, changeAdminPassword);
 
 export default router;

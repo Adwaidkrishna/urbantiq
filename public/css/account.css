@@ -1095,4 +1095,152 @@ body.account-body {
     }
 }
 
+/* ══ iOS PREMIUM PASSWORD INPUTS ════════ */
+.ac-ios-form {
+    padding-top: 0.5rem;
+}
 
+.ac-ios-input-group {
+    position: relative;
+}
+
+.ac-ios-input-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #86868b;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ac-ios-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.ac-ios-field {
+    width: 100%;
+    padding: 14px 45px 14px 16px;
+    border: 1.5px solid #e5e5ea;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: #1d1d1f;
+    background: #fff;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+    outline: none;
+    margin-bottom: 0;
+}
+
+.ac-ios-field::placeholder {
+    color: #c7c7cc;
+    transition: opacity 0.2s;
+}
+
+.ac-ios-field:focus {
+    border-color: #000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transform: scale(1.005);
+}
+
+.ac-ios-field:focus::placeholder {
+    opacity: 0.5;
+}
+
+/* Valid / Error Borders */
+.ac-ios-field.is-valid {
+    border-color: #34c759;
+}
+.ac-ios-field.is-invalid {
+    border-color: #ff3b30;
+}
+
+/* Eye Toggle absolute right inside input wrap */
+.btn-eye-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #86868b;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    outline: none;
+    z-index: 10;
+}
+
+.btn-eye-toggle:hover {
+    background: #f2f2f7;
+    color: #1d1d1f;
+}
+
+.btn-eye-toggle i {
+    font-size: 1.1rem;
+}
+
+/* Validation Feedback text below input */
+.ac-ios-feedback {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 6px;
+    min-height: 18px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.ac-ios-feedback.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ac-ios-feedback.success {
+    color: #34c759;
+}
+
+.ac-ios-feedback.error {
+    color: #ff3b30;
+}
+
+/* iOS Pill Button */
+.ac-ios-btn-save {
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.ac-ios-btn-save:hover:not(:disabled) {
+    background: #1d1d1f;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.ac-ios-btn-save:active:not(:disabled) {
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ac-ios-btn-save:disabled {
+    background: #e5e5ea;
+    color: #86868b;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

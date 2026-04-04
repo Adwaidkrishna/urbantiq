@@ -1,8 +1,108 @@
 document.addEventListener("DOMContentLoaded", function () {
     // 1. CHECKOUT DETAILS — Capture and Store Shipping Info
-    const detailsBtn = document.querySelector('a.ck-action-btn[href="/checkout-summary"]');
+    const detailsBtn = document.querySelector('#continueToSummaryBtn') || document.querySelector('a.ck-action-btn[href="/checkout-summary"]');
     if (detailsBtn) {
-        // Pre-fill if exists
+
+        // Load saved addresses from account and auto-fill
+        let selectedSavedAddressId = null;
+
+        async function loadSavedAddresses() {
+            try {
+                const res = await fetch("/api/user-profile/addresses/default");
+                const data = await res.json();
+
+                const allRes = await fetch("/api/user-profile/addresses");
+                const allData = await allRes.json();
+                const addresses = allData.addresses || [];
+
+                // Auto-fill name/email from user profile
+                if (data.name) {
+                    const nameEl = document.getElementById("fullName");
+                    if (nameEl && !nameEl.value) nameEl.value = data.name;
+                }
+                if (data.email) {
+                    const emailEl = document.getElementById("email");
+                    if (emailEl && !emailEl.value) emailEl.value = data.email;
+                }
+
+                if (addresses.length > 0) {
+                    const section = document.getElementById("savedAddrSection");
+                    const listEl  = document.getElementById("savedAddrList");
+                    if (section) section.style.display = "block";
+
+                    listEl.innerHTML = addresses.map(addr => `
+                        <label class="saved-addr-option d-flex align-items-start gap-3 p-3 border rounded-3 cursor-pointer ${addr.isDefault ? 'selected-addr' : ''}" 
+                               style="cursor:pointer; background:${addr.isDefault ? '#f5f5f7' : '#fff'}; border-color:${addr.isDefault ? '#000 !important' : '#dee2e6'} !important;"
+                               data-id="${addr._id}">
+                            <input type="radio" name="savedAddr" value="${addr._id}" ${addr.isDefault ? 'checked' : ''} style="margin-top:3px; accent-color:#000;">
+                            <div>
+                                <div class="fw-bold small">${addr.fullName} <span class="badge bg-light text-dark ms-1" style="font-size:0.65rem;">${addr.label}</span> ${addr.isDefault ? '<span class="badge bg-dark ms-1" style="font-size:0.6rem;">Default</span>' : ''}</div>
+                                <div class="text-muted small mt-1">${addr.addressLine1}${addr.addressLine2 ? ', ' + addr.addressLine2 : ''}, ${addr.city}, ${addr.state} — ${addr.postalCode}</div>
+                                <div class="text-muted small">${addr.phone}</div>
+                            </div>
+                        </label>
+                    `).join("");
+
+                    // Click to apply saved address
+                    listEl.querySelectorAll(".saved-addr-option").forEach(card => {
+                        card.addEventListener("click", () => {
+                            const addr = addresses.find(a => a._id === card.dataset.id);
+                            if (!addr) return;
+                            selectedSavedAddressId = addr._id;
+                            // Fill the hidden form fields
+                            fillFormFromAddress(addr);
+                            // Visually highlight
+                            listEl.querySelectorAll(".saved-addr-option").forEach(c => {
+                                c.style.background = "#fff";
+                                c.style.borderColor = "#dee2e6";
+                            });
+                            card.style.background = "#f5f5f7";
+                        });
+                    });
+
+                    // Auto-apply default
+                    const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
+                    if (defaultAddr) {
+                        selectedSavedAddressId = defaultAddr._id;
+                        fillFormFromAddress(defaultAddr);
+                    }
+
+                    // "Enter a different address" — clear form and scroll
+                    document.getElementById("useNewAddrBtn")?.addEventListener("click", () => {
+                        selectedSavedAddressId = null;
+                        clearForm();
+                        document.getElementById("manualAddrForm")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    });
+                }
+            } catch (err) {
+                // No addresses or not logged in — just show manual form
+            }
+        }
+
+        function fillFormFromAddress(addr) {
+            const fields = {
+                fullName: addr.fullName,
+                phone:    addr.phone,
+                addr1:    addr.addressLine1,
+                addr2:    addr.addressLine2 || "",
+                city:     addr.city,
+                state:    addr.state,
+                pincode:  addr.postalCode
+            };
+            for (const [id, val] of Object.entries(fields)) {
+                const el = document.getElementById(id);
+                if (el) el.value = val;
+            }
+        }
+
+        function clearForm() {
+            ["fullName","phone","addr1","addr2","city","state","pincode"].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = "";
+            });
+        }
+
+        // Pre-fill from localStorage if returning to page
         const savedAddr = JSON.parse(localStorage.getItem('checkoutAddress') || '{}');
         if (savedAddr.fullName) {
             document.getElementById("fullName").value = savedAddr.fullName;
@@ -16,21 +116,38 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("country").value = savedAddr.country;
         }
 
-        detailsBtn.addEventListener("click", function (e) {
+        loadSavedAddresses();
+
+        detailsBtn.addEventListener("click", async function (e) {
             e.preventDefault();
             if (validateForm()) {
                 const addressData = {
-                    fullName: document.getElementById("fullName").value.trim(),
-                    email: document.getElementById("email").value.trim(),
-                    phone: document.getElementById("phone").value.trim(),
+                    fullName:     document.getElementById("fullName").value.trim(),
+                    email:        document.getElementById("email").value.trim(),
+                    phone:        document.getElementById("phone").value.trim(),
                     addressLine1: document.getElementById("addr1").value.trim(),
                     addressLine2: document.getElementById("addr2").value.trim(),
-                    city: document.getElementById("city").value.trim(),
-                    state: document.getElementById("state").value.trim(),
-                    postalCode: document.getElementById("pincode").value.trim(),
-                    country: document.getElementById("country").value.trim()
+                    city:         document.getElementById("city").value.trim(),
+                    state:        document.getElementById("state").value.trim(),
+                    postalCode:   document.getElementById("pincode").value.trim(),
+                    country:      document.getElementById("country").value.trim()
                 };
                 localStorage.setItem('checkoutAddress', JSON.stringify(addressData));
+
+                // Save to account if checkbox is checked and it's not a saved address
+                const saveCheckbox = document.getElementById("setDefault");
+                if (saveCheckbox?.checked && !selectedSavedAddressId) {
+                    try {
+                        await fetch("/api/user-profile/addresses", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ ...addressData, label: "Home", isDefault: true })
+                        });
+                    } catch (err) {
+                        // Silent fail — address save is optional
+                    }
+                }
+
                 window.location.href = "/checkout-summary";
             }
         });

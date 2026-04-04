@@ -78,15 +78,14 @@
                         <section class="admin-form-section">
                             <div class="admin-form-section-header"><h5 class="admin-form-section-title">Personal Information</h5></div>
                             <div class="admin-form-section-body">
-                                <form action="#">
+                                <form id="adminProfileForm">
                                     <div class="form-row-admin form-row-2">
-                                        <div class="form-group-admin"><label class="form-label-admin">First Name</label><input type="text" class="form-control-admin" value="Adwaid"></div>
-                                        <div class="form-group-admin"><label class="form-label-admin">Last Name</label><input type="text" class="form-control-admin" value="S."></div>
+                                        <div class="form-group-admin"><label class="form-label-admin">First Name</label><input type="text" class="form-control-admin" id="adminFirstName"></div>
+                                        <div class="form-group-admin"><label class="form-label-admin">Last Name</label><input type="text" class="form-control-admin" id="adminLastName"></div>
                                     </div>
-                                    <div class="form-group-admin"><label class="form-label-admin">Email Address</label><input type="email" class="form-control-admin" value="adwaid@urbantiq.com"></div>
-                                    <div class="form-group-admin"><label class="form-label-admin">Phone Number</label><input type="tel" class="form-control-admin" value="+1 555-010-01"></div>
-                                    <div class="form-group-admin"><label class="form-label-admin">Role</label><input type="text" class="form-control-admin" value="Super Admin" disabled style="opacity: 0.6;"></div>
-                                    <button type="submit" class="btn-admin-primary w-100 mt-3">Update Information</button>
+                                    <div class="form-group-admin"><label class="form-label-admin">Email Address</label><input type="email" class="form-control-admin" id="adminEmail"></div>
+                                    <div class="form-group-admin"><label class="form-label-admin">Phone Number</label><input type="tel" class="form-control-admin" id="adminPhone"></div>
+                                    <button type="submit" class="btn-admin-primary w-100 mt-3" id="btnUpdateProfile">Update Information</button>
                                 </form>
                             </div>
                         </section>
@@ -96,11 +95,11 @@
                         <section class="admin-form-section">
                             <div class="admin-form-section-header"><h5 class="admin-form-section-title">Account Security</h5></div>
                             <div class="admin-form-section-body">
-                                <form action="#">
-                                    <div class="form-group-admin"><label class="form-label-admin">Current Password</label><input type="password" class="form-control-admin" placeholder="••••••••"></div>
-                                    <div class="form-group-admin"><label class="form-label-admin">New Password</label><input type="password" class="form-control-admin" placeholder="••••••••"></div>
-                                    <div class="form-group-admin"><label class="form-label-admin">Confirm New Password</label><input type="password" class="form-control-admin" placeholder="••••••••"></div>
-                                    <button type="submit" class="btn-admin-primary w-100 mt-3">Change Password</button>
+                                <form id="adminSecurityForm">
+                                    <div class="form-group-admin"><label class="form-label-admin">Current Password</label><input type="password" id="currentPassword" class="form-control-admin" placeholder="••••••••"></div>
+                                    <div class="form-group-admin"><label class="form-label-admin">New Password</label><input type="password" id="newPassword" class="form-control-admin" placeholder="••••••••"></div>
+                                    <div class="form-group-admin"><label class="form-label-admin">Confirm New Password</label><input type="password" id="confirmPassword" class="form-control-admin" placeholder="••••••••"></div>
+                                    <button type="submit" class="btn-admin-primary w-100 mt-3" id="btnUpdatePassword">Change Password</button>
                                 </form>
                                 <div class="section-divider"></div>
                                 <div class="d-flex justify-content-center">

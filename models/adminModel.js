@@ -7,12 +7,22 @@ const adminSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-
     password: {
         type: String,
         required: true
+    },
+    firstName: {
+        type: String,
+        default: ""
+    },
+    lastName: {
+        type: String,
+        default: ""
+    },
+    phone: {
+        type: String,
+        default: ""
     }
-
 }, { timestamps: true });
 
 const Admin = mongoose.model("Admin", adminSchema);

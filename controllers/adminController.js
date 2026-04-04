@@ -40,3 +40,55 @@ export const adminLogin = async (req, res) => {
     }
 
 };
+
+export const adminLogout = (req, res) => {
+    res.clearCookie("adminToken", { path: "/" });
+    res.redirect("/api/admin/login");
+};
+
+export const getAdminProfile = async (req, res) => {
+    try {
+        const admin = await Admin.findById(req.adminId).select("-password");
+        if (!admin) return res.status(404).json({ success: false, message: "Admin not found" });
+        res.json({ success: true, admin });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export const updateAdminProfile = async (req, res) => {
+    const { firstName, lastName, email, phone } = req.body;
+    try {
+        const admin = await Admin.findById(req.adminId);
+        if (!admin) return res.status(404).json({ success: false, message: "Admin not found" });
+
+        if (firstName) admin.firstName = firstName;
+        if (lastName) admin.lastName = lastName;
+        if (email) admin.email = email;
+        if (phone !== undefined) admin.phone = phone;
+
+        await admin.save();
+        res.json({ success: true, message: "Profile updated successfully", admin });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export const changeAdminPassword = async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    try {
+        const admin = await Admin.findById(req.adminId);
+        if (!admin) return res.status(404).json({ success: false, message: "Admin not found" });
+
+        const isMatch = await bcrypt.compare(currentPassword, admin.password);
+        if (!isMatch) return res.status(400).json({ success: false, message: "Incorrect current password" });
+
+        const salt = await bcrypt.genSalt(10);
+        admin.password = await bcrypt.hash(newPassword, salt);
+        await admin.save();
+
+        res.json({ success: true, message: "Password updated successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};

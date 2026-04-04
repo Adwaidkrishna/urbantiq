@@ -105,6 +105,19 @@
                 <div class="ck-card">
                     <div class="ck-card-title">Delivery Address</div>
 
+                    <!-- Saved Addresses Picker -->
+                    <div id="savedAddrSection" style="display:none; margin-bottom: 1.5rem;">
+                        <div class="text-muted small fw-bold text-uppercase mb-2" style="letter-spacing:0.05em;">Your Saved Addresses</div>
+                        <div id="savedAddrList" class="d-flex flex-column gap-2"></div>
+                        <div class="mt-3">
+                            <button type="button" class="btn btn-link p-0 text-dark fw-bold text-decoration-none small" id="useNewAddrBtn">
+                                <i class="bi bi-plus-circle me-1"></i> Enter a different address
+                            </button>
+                        </div>
+                        <hr style="border-color: #f2f2f2; margin: 1.5rem 0;">
+                    </div>
+
+                    <div id="manualAddrForm">
                     <div class="ck-form-group">
                         <label class="ck-label" for="addr1">Address Line 1</label>
                         <input type="text" id="addr1" class="ck-input" placeholder="House no., Street name">
@@ -147,16 +160,17 @@
                         </div>
                     </div>
 
-                    <div class="ck-default-addr">
-                        <label class="ck-checkbox-container">
-                            <input type="checkbox" id="setDefault">
-                            <span class="ck-checkmark"></span>
-                            <span class="ck-checkbox-label">Set as Default Address</span>
-                        </label>
-                        <p class="ck-checkbox-desc">This address will be saved for future orders.</p>
-                    </div>
+                        <div class="ck-default-addr">
+                            <label class="ck-checkbox-container">
+                                <input type="checkbox" id="setDefault">
+                                <span class="ck-checkmark"></span>
+                                <span class="ck-checkbox-label">Save this address to my account</span>
+                            </label>
+                            <p class="ck-checkbox-desc">This address will be saved for future orders.</p>
+                        </div>
+                    </div><!-- end manualAddrForm -->
 
-                    <a href="/checkout-summary" class="ck-action-btn">
+                    <a href="/checkout-summary" class="ck-action-btn" id="continueToSummaryBtn">
                         Continue to Summary <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
