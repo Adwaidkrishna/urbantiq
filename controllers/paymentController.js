@@ -1,61 +1,43 @@
-import razorpay from "../config/razorpay.js";
-import crypto from "crypto";
+/**
+ * controllers/paymentController.js
+ * ─────────────────────────────────────────────────────────
+ * Thin controller — delegates to paymentService.
+ * ─────────────────────────────────────────────────────────
+ */
 
-// @desc    Create a Razorpay order
+import { createRazorpayOrder, verifyRazorpaySignature } from "../services/paymentService.js";
+
+// @desc    Create a Razorpay order for checkout
 // @route   POST /api/payment/create-order
 // @access  Private
-export const createPaymentOrder = async (req, res) => {
-    try {
-        const { amount } = req.body;
-
-        const options = {
-            amount: amount * 100, // amount in the smallest currency unit (paise for INR)
-            currency: "INR",
-            receipt: `receipt_${Date.now()}`
-        };
-
-        // console.log("Sending to Razorpay:", options);
-        const order = await razorpay.orders.create(options);
-
-        res.status(200).json({
-            success: true,
-            order
-        });
-    } catch (error) {
-        console.error("Razorpay error creating payment order");
-        res.status(500).json({ success: false, message: error.description || "Error creating payment order" });
-    }
+export const createPaymentOrder = async (req, res, next) => {
+  try {
+    const { amount } = req.body;
+    const order = await createRazorpayOrder(amount, "order");
+    res.status(200).json({ success: true, order });
+  } catch (error) {
+    next(error);
+  }
 };
 
-// @desc    Verify Razorpay payment
+// @desc    Verify Razorpay payment signature
 // @route   POST /api/payment/verify
 // @access  Private
-export const verifyPayment = async (req, res) => {
-    try {
-        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+export const verifyPayment = async (req, res, next) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+    const isValid = verifyRazorpaySignature(
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature
+    );
 
-        const body = razorpay_order_id + "|" + razorpay_payment_id;
-
-        const expectedSignature = crypto
-            .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-            .update(body.toString())
-            .digest("hex");
-
-        const isSignatureValid = expectedSignature === razorpay_signature;
-
-        if (isSignatureValid) {
-            res.status(200).json({
-                success: true,
-                message: "Payment verified successfully"
-            });
-        } else {
-            res.status(400).json({
-                success: false,
-                message: "Invalid payment signature"
-            });
-        }
-    } catch (error) {
-        console.error("Razorpay Verify Payment Error:", error);
-        res.status(500).json({ success: false, message: "Error verifying payment" });
+    if (!isValid) {
+      return res.status(400).json({ success: false, message: "Invalid payment signature" });
     }
+
+    res.status(200).json({ success: true, message: "Payment verified successfully" });
+  } catch (error) {
+    next(error);
+  }
 };
