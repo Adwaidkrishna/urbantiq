@@ -145,11 +145,22 @@ window.AuthGuard = (() => {
         const icon = type === 'success' ? 'bi-check-circle-fill' : (type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill');
         const toast = document.createElement("div");
         toast.className = `toast-notification toast-${type}`;
-        toast.innerHTML = `<i class="bi ${icon}"></i> <span>${message}</span>`;
+        toast.innerHTML = `
+            <i class="bi ${icon}"></i> 
+            <div class="toast-label">
+                <span class="toast-text">${message}</span>
+            </div>
+        `;
 
         container.appendChild(toast);
-        setTimeout(() => toast.remove(), 3200); // 400 in + 2600 wait + 200 out approx
+
+        // Auto remove with exit animation
+        setTimeout(() => {
+            toast.style.animation = "toast-out 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards";
+            setTimeout(() => toast.remove(), 500);
+        }, 3500);
     }
+
 
     /* ── auto-run navbar init on every page ──────────────── */
     document.addEventListener("DOMContentLoaded", () => {

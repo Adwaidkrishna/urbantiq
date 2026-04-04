@@ -30,6 +30,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         <option value="Shipped" ${order.orderStatus === 'Shipped' ? 'selected' : ''}>Shipped</option>
                         <option value="Delivered" ${order.orderStatus === 'Delivered' ? 'selected' : ''}>Delivered</option>
                         <option value="Cancelled" ${order.orderStatus === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        <option value="Return Requested" ${order.orderStatus === 'Return Requested' ? 'selected' : ''}>Return Requested</option>
+                        <option value="Returned" ${order.orderStatus === 'Returned' ? 'selected' : ''}>Returned (Refund)</option>
+                        <option value="Return Rejected" ${order.orderStatus === 'Return Rejected' ? 'selected' : ''}>Return Rejected</option>
                     </select>
                 </td>
                 <td class="td-secondary">${order.paymentMethod}</td>
@@ -49,7 +52,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 const id = this.getAttribute('data-id');
                 const row = this.closest('tr');
                 const status = row.querySelector('.status-select').value;
-                await updateStatus(id, status);
+                const originalText = this.textContent;
+                this.textContent = "Updating...";
+                this.disabled = true;
+                const success = await updateStatus(id, status);
+                this.textContent = originalText;
+                this.disabled = false;
+                if (success) {
+                    this.parentElement.innerHTML = `<span class="text-success small fw-bold">Success!</span>`;
+                    setTimeout(() => {
+                        fetchAdminOrders();
+                    }, 1000);
+                }
             });
         });
     }
@@ -62,12 +76,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify({ status })
             });
             if (res.ok) {
-                alert("Order status updated!");
+                return true;
             } else {
-                alert("Failed to update status.");
+                const data = await res.json();
+                console.error("Status update error:", data.message);
+                return false;
             }
         } catch (err) {
             console.error(err);
+            return false;
         }
     }
 });

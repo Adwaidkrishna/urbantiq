@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const finalQty = parseInt(document.getElementById('qtyDisplay').textContent) || 1;
 
             if (!variantId || !size) {
-                alert("Please select a color and size");
+                window.AuthGuard.showToast("Please select a color and size", "error");
                 return;
             }
 
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
                     window.location.href = '/checkout-details';
                 } else {
-                    alert(data.message || "Something went wrong.");
+                    window.AuthGuard.showToast(data.message || "Something went wrong.", "error");
                 }
             } catch (err) {
                 window.location.href = '/checkout-details';
@@ -210,7 +210,7 @@ function renderProduct(product) {
     const titleEl = document.querySelector(".sp-title");
     if (titleEl) titleEl.textContent = product.name;
     const catEl = document.querySelector(".sp-category");
-    if (catEl) catEl.textContent = (product.category && product.category.name) ? product.category.name : 'Uncategorized';
+    if (catEl) catEl.textContent = (product.category && product.category.name) ? product.category.name : 'Fashion';
 
     // Price
     const priceEl = document.querySelector(".sp-price");

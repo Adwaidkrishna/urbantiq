@@ -108,7 +108,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>`;
         } else if (lowerStatus === 'delivered') {
             document.getElementById('invoiceSection').style.display = 'block';
-            actionsEl.innerHTML = `<button class="btn-outline-black px-5">Request Return</button>`;
+            actionsEl.innerHTML = `<button class="btn-outline-black px-5" id="returnOrderBtn">Request Return</button>`;
+            document.getElementById('returnOrderBtn').addEventListener('click', () => requestReturn(order._id));
+        } else if (lowerStatus === 'return requested') {
+            actionsEl.innerHTML = `<button class="btn-outline-black px-5" disabled><i class="bi bi-clock-history me-2"></i> Return Under Review</button>`;
+        } else if (lowerStatus === 'return rejected') {
+            actionsEl.innerHTML = `<div class="text-danger small mb-2"><i class="bi bi-exclamation-triangle-fill me-1"></i> Return request was rejected.</div><button class="btn-outline-black px-5" disabled>Return Rejected</button>`;
         } else {
             actionsEl.innerHTML = '';
         }
@@ -130,6 +135,26 @@ document.addEventListener("DOMContentLoaded", () => {
             } catch (err) {
                 console.error("Error cancelling order:", err);
                 showAlertModal("Error", "Failed to cancel order due to a network error.", false);
+            }
+        });
+    }
+
+    function requestReturn(id) {
+        showConfirmModal("Request Return", "Are you sure you want to request a return for this order? Our team will review your request shortly.", async () => {
+            try {
+                const res = await fetch(`/api/orders/${id}/return-request`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    showAlertModal("Request Failed", data.message || "Failed to submit return request.", false);
+                }
+            } catch (err) {
+                console.error("Error requesting return:", err);
+                showAlertModal("Error", "Failed to submit return request due to a network error.", false);
             }
         });
     }
@@ -203,6 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
             case "pending": return "badge-processing";
             case "cancelled": return "badge-cancelled";
             case "returned": return "badge-returned";
+            case "return requested": return "badge-processing";
+            case "return rejected": return "badge-cancelled";
             default: return "badge-processing";
         }
     }
@@ -242,7 +269,33 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <div>
                         <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Order Returned</div>
-                        <div class="text-secondary small">Your return request has been processed.</div>
+                        <div class="text-secondary small">Your return request has been processed and amount credited to your wallet.</div>
+                    </div>
+                </div>
+            </div>`;
+        } else if (lowerState === 'return requested') {
+            timelineHtml = `
+            <div class="mt-4 pt-4 border-top">
+                <div class="d-flex align-items-center gap-3 text-primary px-1">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; min-width:44px;">
+                        <i class="bi bi-clock-history fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Return Under Review</div>
+                        <div class="text-secondary small">Your request is being reviewed by our quality team.</div>
+                    </div>
+                </div>
+            </div>`;
+        } else if (lowerState === 'return rejected') {
+            timelineHtml = `
+            <div class="mt-4 pt-4 border-top">
+                <div class="d-flex align-items-center gap-3 text-secondary px-1">
+                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; min-width:44px;">
+                        <i class="bi bi-exclamation-circle fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Return Rejected</div>
+                        <div class="text-secondary small">Your return request did not meet our policy requirements.</div>
                     </div>
                 </div>
             </div>`;

@@ -985,3 +985,114 @@ body.account-body {
 .text-debit {
     color: var(--ac-text-main);
 }
+/* ══ WALLET TRANSACTIONS UI ════════════════ */
+.transaction-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--ac-border);
+    transition: background 0.2s;
+}
+
+.transaction-row:last-child {
+    border-bottom: none;
+}
+
+.trans-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.trans-icon-circle {
+    width: 48px;
+    height: 48px;
+    background: #f2f2f7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--ac-text-main);
+    flex-shrink: 0;
+}
+
+.trans-icon-circle.credit {
+    background: #e6fcf5;
+    color: #40c057;
+}
+
+.trans-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.trans-date {
+    font-size: 0.8rem;
+    color: var(--ac-text-muted);
+    font-weight: 500;
+}
+
+.trans-amount {
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+}
+
+.text-credit {
+    color: #2b8a3e;
+}
+
+.text-debit {
+    color: #c92a2a;
+}
+
+/* ══ MODAL REFINEMENTS ═════════════════════ */
+#addMoneyModal .modal-content {
+    background: #ffffff;
+    border-radius: 28px;
+}
+
+#addMoneyModal .form-control:focus {
+    background: #f2f2f7 !important;
+    box-shadow: none;
+    border: 1px solid #000 !important;
+}
+
+.fs-7 {
+    font-size: 0.75rem;
+}
+
+.btn-light {
+    background: #f2f2f7;
+    border: none;
+    color: #1d1d1f;
+    transition: all 0.2s;
+}
+
+.btn-light:hover {
+    background: #e5e5ea;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.15em;
+}
+
+@media (max-width: 768px) {
+    .transaction-row {
+        padding: 1rem;
+    }
+    
+    .trans-icon-circle {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+
+

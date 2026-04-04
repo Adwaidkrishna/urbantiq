@@ -44,7 +44,7 @@ const orderSchema = new mongoose.Schema({
   },
   paymentMethod: {
     type: String,
-    enum: ["COD", "Online"],
+    enum: ["COD", "Online", "Wallet"],
     required: true
   },
   paymentStatus: {
@@ -54,7 +54,7 @@ const orderSchema = new mongoose.Schema({
   },
   orderStatus: {
     type: String,
-    enum: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled", "Returned"],
+    enum: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled", "Return Requested", "Returned", "Return Rejected"],
     default: "Pending"
   },
   totalPrice: {

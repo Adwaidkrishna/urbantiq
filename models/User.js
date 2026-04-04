@@ -29,6 +29,11 @@ const userSchema = new mongoose.Schema({
   isVerified: {
     type: Boolean,
     default: false
+  },
+
+  wallet: {
+    type: Number,
+    default: 0
   }
 
 }, { timestamps: true });

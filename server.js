@@ -19,6 +19,7 @@ import cartRoutes from "./routes/cartRoutes.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import userProfileRoutes from "./routes/userProfileRoutes.js";
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/user-profile", userProfileRoutes);
 
 // User side pages
 app.use("/", userRoutes);

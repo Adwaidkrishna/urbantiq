@@ -98,7 +98,33 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
+        if (onPaymentPage) {
+            fetchWalletBalance();
+        }
         fetchCartSummary(onPaymentPage);
+    }
+
+    async function fetchWalletBalance() {
+        try {
+            const res = await fetch("/api/user-profile/wallet");
+            const data = await res.json();
+            const balanceDisp = document.getElementById("walletBalanceDisplay");
+            if (balanceDisp) balanceDisp.textContent = `₹${(data.balance || 0).toLocaleString()}`;
+            
+            const walletInput = document.querySelector('input[value="wallet"]');
+            const total = Number(localStorage.getItem('checkoutTotal') || 0);
+            
+            if (data.balance < total) {
+                const walletOpt = document.getElementById("opt-wallet");
+                walletOpt.classList.add("disabled");
+                walletOpt.title = "Insufficient balance";
+                walletInput.disabled = true;
+                walletOpt.style.opacity = '0.6';
+                walletOpt.style.pointerEvents = 'none';
+            }
+        } catch (err) {
+            console.error("Error fetching wallet balance", err);
+        }
     }
 
     async function fetchCartSummary(isPaymentPage = false) {
@@ -155,7 +181,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const variantId = item.variant?._id || item.variant;
             const variant = item.product.variants?.find(v => (v._id || v).toString() === variantId.toString());
-            // Fix: Added /images/products/ prefix for correct image rendering
             const imageUrl = variant && variant.images.length > 0 ? `/images/products/${variant.images[0]}` : '/images/user/phoodie.jpeg';
             const catName = item.product.category?.name || 'Fashion';
 
@@ -248,6 +273,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (payBtn) {
                     if (radio.value === 'cod') {
                         payBtn.innerHTML = `Place Order <i class="bi bi-check-circle-fill"></i>`;
+                    } else if (radio.value === 'wallet') {
+                        payBtn.innerHTML = `Pay using Wallet <i class="bi bi-wallet2"></i>`;
                     } else {
                         payBtn.innerHTML = `Pay <span id="payNowAmount">${formattedAmt}</span> <i class="bi bi-lock-fill"></i>`;
                     }
@@ -260,6 +287,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (initialRadio && payBtn) {
             if (initialRadio.value === 'cod') {
                 payBtn.innerHTML = `Place Order <i class="bi bi-check-circle-fill"></i>`;
+            } else if (initialRadio.value === 'wallet') {
+                payBtn.innerHTML = `Pay using Wallet <i class="bi bi-wallet2"></i>`;
             } else {
                 payBtn.innerHTML = `Pay <span id="payNowAmount">${formattedAmt}</span> <i class="bi bi-lock-fill"></i>`;
             }
@@ -275,15 +304,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const checkedInput = document.querySelector('input[name="payMethod"]:checked');
             if (!checkedInput) {
-                alert("Please select a payment method.");
+                AuthGuard.showToast("Please select a payment method.", "error");
                 return;
             }
 
             const rawMethod = checkedInput.value.toLowerCase();
-            const payMethod = rawMethod === 'cod' ? 'COD' : 'Online';
+            const payMethod = rawMethod === 'cod' ? 'COD' : (rawMethod === 'wallet' ? 'Wallet' : 'Online');
             const address = JSON.parse(localStorage.getItem('checkoutAddress'));
             if (!address) {
-                alert("Shipping address missing. Please go back and fill your details.");
+                AuthGuard.showToast("Shipping address missing. Please go back.", "error");
                 return;
             }
 
@@ -370,7 +399,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 // Place Order in DB after successful payment
                                 await finalizeOrder(orderItems, address, payMethod, subtotal, discount, finalTotal);
                             } catch (err) {
-                                alert(err.message);
+                                AuthGuard.showToast(err.message, "error");
                                 resetBtn(payNowBtn, originalBtnHtml);
                             }
                         },
@@ -391,6 +420,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     const rzp = new window.Razorpay(options);
                     rzp.open();
+                } else if (payMethod === 'Wallet') {
+                    // Wallet Flow
+                    payNowBtn.innerHTML = `Processing Wallet Payment... <span class="spinner-border spinner-border-sm ms-2"></span>`;
+                    await finalizeOrder(orderItems, address, payMethod, subtotal, discount, finalTotal);
                 } else {
                     // COD Flow
                     payNowBtn.innerHTML = `Placing Order... <span class="spinner-border spinner-border-sm ms-2"></span>`;
@@ -399,7 +432,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             } catch (err) {
                 console.error("Order process error:", err);
-                alert(err.message || "Something went wrong. Please try again.");
+                AuthGuard.showToast(err.message || "Something went wrong. Please try again.", "error");
                 resetBtn(payNowBtn, originalBtnHtml);
             }
         });

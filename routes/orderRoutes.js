@@ -2,7 +2,7 @@ import express from "express";
 import authMiddleware from "../middleware/authMiddleware.js";
 import adminAuthMiddleware from "../middleware/adminMiddleware.js";
 import { 
-  placeOrder, getMyOrders, getOrderById, cancelOrder,
+  placeOrder, getMyOrders, getOrderById, cancelOrder, requestReturn,
   getAllOrders, updateOrderStatus, validateStock 
 } from "../controllers/orderController.js";
 
@@ -12,6 +12,7 @@ const router = express.Router();
 router.get("/my-orders", authMiddleware, getMyOrders);
 router.get("/:id", authMiddleware, getOrderById);
 router.put("/:id/cancel", authMiddleware, cancelOrder);
+router.put("/:id/return-request", authMiddleware, requestReturn);
 router.post("/validate-stock", authMiddleware, validateStock);
 router.post("/", authMiddleware, placeOrder);
 

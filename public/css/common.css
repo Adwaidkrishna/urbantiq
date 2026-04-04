@@ -401,52 +401,79 @@ footer {
     }
 }
 /* ============================================
-   TOAST NOTIFICATIONS
+   TOAST NOTIFICATIONS (Enhanced)
    ============================================ */
 .toast-container {
     position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
+    top: 24px;
+    right: 24px;
+    z-index: 10000;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     pointer-events: none;
 }
 
 .toast-notification {
-    background: rgba(29, 29, 31, 0.95);
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+    color: #1d1d1f;
+    min-width: 320px;
+    max-width: 420px;
+    padding: 16px 20px;
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
     display: flex;
     align-items: center;
-    gap: 12px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    animation: toast-in 0.4s cubic-bezier(0.16, 1, 0.3, 1), toast-out 0.4s 2.6s forwards;
+    gap: 16px;
     pointer-events: all;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 5px solid #1d1d1f;
+    animation: toast-in 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
+.toast-notification.toast-success { border-left-color: #34c759; }
+.toast-notification.toast-error { border-left-color: #ff3b30; }
+.toast-notification.toast-info { border-left-color: #007aff; }
+
 .toast-notification i {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
+    flex-shrink: 0;
 }
 
 .toast-success i { color: #34c759; }
-.toast-info i { color: #007aff; }
 .toast-error i { color: #ff3b30; }
+.toast-info i { color: #007aff; }
+
+.toast-label {
+    display: flex;
+    flex-direction: column;
+}
+
+.toast-text {
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
 
 @keyframes toast-in {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from { transform: translateX(50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes toast-out {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(20px); opacity: 0; }
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(50px); opacity: 0; }
 }
+
+@media (max-width: 576px) {
+    .toast-container {
+        top: auto;
+        bottom: 24px;
+        left: 20px;
+        right: 20px;
+    }
+    .toast-notification {
+        min-width: unset;
+        width: 100%;
+    }
+}
+

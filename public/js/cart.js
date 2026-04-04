@@ -30,17 +30,22 @@ document.addEventListener("DOMContentLoaded", async function () {
         
         if (items.length === 0) {
             metaEl.textContent = "No items in your cart";
+            container.classList.remove("col-lg-8");
+            container.classList.add("col-12");
             container.innerHTML = `
-                <div class="text-center py-5">
-                    <i class="bi bi-cart-x" style="font-size: 3rem; color: #ccc;"></i>
-                    <h3 class="mt-3">Your cart is empty</h3>
-                    <p class="text-muted">Looks like you haven't added anything yet.</p>
-                    <a href="/product" class="btn btn-dark mt-3">Start Shopping</a>
+                <div class="cart-empty-state">
+                    <img src="/images/site/empty-cart-stroke.png" alt="Empty Cart" class="empty-cart-img">
+                    <h2 class="empty-title">Your cart is empty</h2>
+                    <p class="empty-text">Looks like you haven't added anything yet. Explore our latest collections and find your style.</p>
+                    <a href="/product" class="btn-start-shopping">Start Shopping</a>
                 </div>
             `;
             summaryCol.style.display = "none";
             return;
         }
+
+        container.classList.remove("col-12");
+        container.classList.add("col-lg-8");
 
         metaEl.textContent = `${items.length} item${items.length > 1 ? 's' : ''} in your cart`;
         summaryCol.style.display = "block";

@@ -3,6 +3,8 @@ import Order from "../models/Ordermodel.js";
 import Cart from "../models/Cart.js";
 import Product from "../models/ProductModel.js";
 import PurchaseItem from "../models/PurchaseItemModel.js";
+import User from "../models/User.js";
+import WalletTransaction from "../models/WalletTransaction.js";
 
 // @desc    Place a new order
 // @route   POST /api/orders
@@ -111,7 +113,27 @@ export const placeOrder = async (req, res) => {
       });
     }
 
-    // Step 7: Create order
+    // Step 7: Handle Wallet Payment Deduction
+    if (paymentMethod === "Wallet") {
+      const user = await User.findById(req.userId);
+      if (!user) throw new Error("User not found");
+      if (user.wallet < finalAmount) {
+        throw new Error(`Insufficient wallet balance. You need ₹${finalAmount - user.wallet} more.`);
+      }
+
+      user.wallet -= finalAmount;
+      await user.save();
+
+      const transaction = new WalletTransaction({
+        user: req.userId,
+        amount: finalAmount,
+        type: "DEBIT",
+        description: `Payment for Order`,
+      });
+      await transaction.save();
+    }
+
+    // Step 8: Create order
     const order = new Order({
       user: req.userId,
       items: orderItems,
@@ -125,6 +147,15 @@ export const placeOrder = async (req, res) => {
     });
 
     const savedOrder = await order.save();
+
+    // Link transaction to order if it was a wallet payment
+    if (paymentMethod === "Wallet") {
+        await WalletTransaction.findOneAndUpdate(
+            { user: req.userId, description: "Payment for Order", orderId: { $exists: false } },
+            { orderId: savedOrder._id },
+            { sort: { createdAt: -1 } }
+        );
+    }
 
     // Clear user cart
     await Cart.findOneAndUpdate({ user: req.userId }, { items: [] });
@@ -161,7 +192,7 @@ export const getMyOrders = async (req, res) => {
 export const getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
-      .populate("items.product", "name images categories");
+      .populate("items.product", "name variants categories");
 
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
@@ -204,6 +235,24 @@ export const cancelOrder = async (req, res) => {
     // Rollback Inventory
     await rollbackOrderStock(order);
 
+    // Refund to Wallet if Paid
+    if (order.paymentStatus === "Paid") {
+      const user = await User.findById(req.userId);
+      if (user) {
+        user.wallet += order.finalAmount;
+        await user.save();
+
+        const transaction = new WalletTransaction({
+          user: req.userId,
+          amount: order.finalAmount,
+          type: "CREDIT",
+          description: `Refund for Cancelled Order: ${order._id}`,
+          orderId: order._id
+        });
+        await transaction.save();
+      }
+    }
+
     // Update status
     order.orderStatus = "Cancelled";
     const updatedOrder = await order.save();
@@ -214,6 +263,41 @@ export const cancelOrder = async (req, res) => {
     res.status(500).json({ message: error.message || "Error cancelling order" });
   }
 };
+
+// @desc    Request a return for an order
+// @route   PUT /api/orders/:id/return-request
+// @access  Private
+export const requestReturn = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (order.user.toString() !== req.userId) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    if (order.orderStatus !== "Delivered") {
+      return res.status(400).json({ message: "Returns can only be requested for Delivered orders" });
+    }
+
+    order.orderStatus = "Return Requested";
+    // We can add a "returnReason" if we update the model, but for now we'll just update the status.
+    const updatedOrder = await order.save();
+
+    res.json({
+      success: true,
+      message: "Return request submitted successfully",
+      status: updatedOrder.orderStatus
+    });
+  } catch (error) {
+    console.error("Return Request Error:", error);
+    res.status(500).json({ message: error.message || "Error requesting return" });
+  }
+};
+
 
 // --- ADMIN FUNCTIONS ---
 
@@ -246,8 +330,49 @@ export const updateOrderStatus = async (req, res) => {
     const previousStatus = order.orderStatus;
 
     // Handle cancellation rollback for admin
-    if (status === "Cancelled" && previousStatus !== "Cancelled") {//why here two conditions explain because 
+    if (status === "Cancelled" && previousStatus !== "Cancelled") {
       await rollbackOrderStock(order);
+
+      // Refund to Wallet if Paid
+      if (order.paymentStatus === "Paid") {
+        const user = await User.findById(order.user);
+        if (user) {
+          user.wallet += order.finalAmount;
+          await user.save();
+
+          const transaction = new WalletTransaction({
+            user: user._id,
+            amount: order.finalAmount,
+            type: "CREDIT",
+            description: `Refund for Cancelled Order (Admin): ${order._id}`,
+            orderId: order._id
+          });
+          await transaction.save();
+        }
+      }
+    }
+
+    // Handle Return refund
+    if (status === "Returned" && previousStatus !== "Returned") {
+      await rollbackOrderStock(order);
+      
+      // Always refund for returns if paid
+      if (order.paymentStatus === "Paid") {
+        const user = await User.findById(order.user);
+        if (user) {
+          user.wallet += order.finalAmount;
+          await user.save();
+
+          const transaction = new WalletTransaction({
+            user: user._id,
+            amount: order.finalAmount,
+            type: "CREDIT",
+            description: `Refund for Returned Order: ${order._id}`,
+            orderId: order._id
+          });
+          await transaction.save();
+        }
+      }
     }
 
     order.orderStatus = status;
@@ -315,8 +440,8 @@ async function rollbackOrderStock(order) {
 // @access  Private
 export const validateStock = async (req, res) => {
   try {
-    console.log("Validate Stock Headers:", req.headers);
-    console.log("Validate Stock Body:", req.body);
+    // console.log("Validate Stock Headers:", req.headers);
+    // console.log("Validate Stock Body:", req.body);
 
     if (!req.body) {
         return res.status(500).json({ message: "Request body is missing on server" });
@@ -359,16 +484,18 @@ export const validateStock = async (req, res) => {
         }
       });
 
-      console.log(`Pre-check: Found ${batches.length} batches for Variant ${variantId} Size ${sizeStr}`);
+      // console.log(`Pre-check: Found ${batches.length} batches for Variant ${variantId} Size ${sizeStr}`);
 
       if (batches.length === 0) {
         // Diagnostic: Let's see what batches DO exist for this product variant at all
         const anyBatches = await PurchaseItem.find({ "allocations.variantId": new mongoose.Types.ObjectId(variantId) });
+        /*
         console.log(`Diagnostic: Total batches (Linked or Unlinked) for this variant: ${anyBatches.length}`);
         if (anyBatches.length > 0) {
           console.log(`Sample Batch Status: ${anyBatches[0].status}`);
           console.log(`Sample Batch Allocations:`, JSON.stringify(anyBatches[0].allocations));
         }
+        */
       }
 
       const availableInBatches = batches.reduce((acc, batch) => {
