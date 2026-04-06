@@ -113,7 +113,7 @@
                                 <span class="cart-free-ship">FREE</span>
                             </div>
                             <div class="cart-price-row cart-platform-fee">
-                                <span>Platform Fee <span class="cart-fee-note" title="Small fee to help us run the platform">Why?</span></span>
+                                <span>Platform Fee <i class="bi bi-info-circle ms-1 opacity-50" title="Small fee to help us run the platform" style="font-size: 0.75rem; cursor:help;"></i></span>
                                 <span>₹25</span>
                             </div>
                         </div>
@@ -125,15 +125,14 @@
                             <span class="cart-total-val" id="summaryTotal">₹0</span>
                         </div>
 
-                        <div class="cart-savings-tag" id="summarySavingsTag">
+                        <div class="cart-savings-tag" id="summarySavingsTag" style="display:none;">
                             <i class="bi bi-tag-fill"></i>
                             You save <span id="summarySavings">₹0</span> on this order!
                         </div>
 
                         <!-- Checkout -->
                         <a href="/checkout-details" class="cart-checkout-btn">
-                            Proceed to Checkout
-                            <i class="bi bi-arrow-right"></i>
+                            Proceed to Checkout <i class="bi bi-arrow-right ms-2"></i>
                         </a>
 
                         <div class="cart-trust-strip">
@@ -174,6 +173,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/auth-guard.js"></script>
     <script src="/js/cart.js"></script>

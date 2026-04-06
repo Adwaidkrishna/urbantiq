@@ -131,8 +131,20 @@
 
                 <!-- RIGHT — Order Summary -->
                 <div class="col-12 col-lg-4">
-                    <div class="ck-summary-card">
                         <div class="ck-summary-title">Price Details</div>
+                        
+                        <!-- Coupon Section -->
+                        <div class="ck-coupon-wrap mb-4">
+                            <div class="ck-coupon-label">
+                                <i class="bi bi-ticket-perforated"></i> Have a Promo Code?
+                            </div>
+                            <div class="ck-coupon-row">
+                                <input type="text" id="couponInput" class="ck-coupon-input" placeholder="Enter code">
+                                <button type="button" id="applyCouponBtn" class="ck-coupon-btn">Apply</button>
+                            </div>
+                            <div id="couponResult" class="small mt-2" style="display: none;"></div>
+                        </div>
+
                         <div class="ck-price-list">
                             <div class="ck-price-row"><span>Subtotal</span><span>₹0</span></div>
                             <div class="ck-price-row"><span>Offer Discount</span><span class="ck-discount-val">−₹0</span></div>

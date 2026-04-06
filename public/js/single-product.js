@@ -1,28 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Quantity logic
-    let qty = 1;
     const display = document.getElementById('qtyDisplay');
     const qtyPlus = document.getElementById('qtyPlus');
     const qtyMinus = document.getElementById('qtyMinus');
 
     if (qtyPlus && display) {
         qtyPlus.addEventListener('click', () => {
+            let current = parseInt(display.textContent) || 1;
             const activeSize = document.querySelector('.sp-size.active');
             const maxStock = activeSize ? parseInt(activeSize.dataset.stock) : 99;
-            if (qty < maxStock) {
-                qty++;
-                display.textContent = qty;
+            if (current < maxStock) {
+                display.textContent = current + 1;
             } else {
-                window.AuthGuard.showToast("Cannot exceed available stock", "error");
+                if (window.AuthGuard && window.AuthGuard.showToast) {
+                    window.AuthGuard.showToast("Cannot exceed available stock", "error");
+                }
             }
         });
     }
     if (qtyMinus && display) {
         qtyMinus.addEventListener('click', () => {
-            qty = Math.max(qty - 1, 1);
-            display.textContent = qty;
+            let current = parseInt(display.textContent) || 1;
+            display.textContent = Math.max(current - 1, 1);
         });
     }
+
 
     // Extraction helper
     function getProductId() {
@@ -350,8 +351,8 @@ function renderVariantImagesAndSizes(variant, product = null) {
                             stockLabel.style.color = '#ff3b30';
                         }
                         // Reset qty to 1 when changing size
-                        qty = 1;
-                        if(display) display.textContent = qty;
+                        const currentDisplay = document.getElementById('qtyDisplay');
+                        if(currentDisplay) currentDisplay.textContent = "1";
                     });
                 }
 

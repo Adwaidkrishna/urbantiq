@@ -72,6 +72,15 @@ const orderSchema = new mongoose.Schema({
   finalAmount: {
     type: Number,
     required: true
+  },
+  couponCode: {
+    type: String,
+    default: null
+  },
+  transactionId: {
+    type: String,
+    unique: true,
+    sparse: true
   }
 }, { timestamps: true });
 

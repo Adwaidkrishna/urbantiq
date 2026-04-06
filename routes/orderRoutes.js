@@ -3,7 +3,7 @@ import authMiddleware from "../middleware/authMiddleware.js";
 import adminAuthMiddleware from "../middleware/adminMiddleware.js";
 import { 
   placeOrder, getMyOrders, getOrderById, cancelOrder, requestReturn,
-  getAllOrders, updateOrderStatus, validateStock 
+  getAllOrders, updateOrderStatus, validateStock, getTransactions
 } from "../controllers/orderController.js";
 
 const router = express.Router();
@@ -19,5 +19,6 @@ router.post("/", authMiddleware, placeOrder);
 // ADMIN ROUTES (Protected)
 router.get("/admin/all", adminAuthMiddleware, getAllOrders);
 router.put("/admin/:id/status", adminAuthMiddleware, updateOrderStatus);
+router.get("/admin/transactions", adminAuthMiddleware, getTransactions);
 
 export default router;

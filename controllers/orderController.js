@@ -5,17 +5,30 @@ import Product from "../models/ProductModel.js";
 import PurchaseItem from "../models/PurchaseItemModel.js";
 import User from "../models/User.js";
 import WalletTransaction from "../models/WalletTransaction.js";
+import Coupon from "../models/Coupon.js";
 
 // @desc    Place a new order
 // @route   POST /api/orders
 // @access  Private
 export const placeOrder = async (req, res) => {
   try {
-    const { items, shippingAddress, paymentMethod, totalPrice, discount, shippingCharges, finalAmount } = req.body;
+    const { items, shippingAddress, paymentMethod, totalPrice, discount, shippingCharges, finalAmount, couponCode, transactionId } = req.body;
 
     // Step 2: Validate input
     if (!items || items.length === 0) throw new Error("No items in order");
     if (!shippingAddress) throw new Error("Shipping address is required");
+
+    // Optional: Validate Coupon one last time
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode.toUpperCase(), isActive: true });
+      if (!coupon) throw new Error("Applied coupon is no longer valid.");
+      if (new Date() > new Date(coupon.expiryDate)) throw new Error("Applied coupon has expired.");
+      if (coupon.usedCount >= coupon.usageLimit) throw new Error("Coupon usage limit reached.");
+      
+      // Increment usedCount
+      coupon.usedCount += 1;
+      await coupon.save();
+    }
 
     const orderItems = [];
 
@@ -143,7 +156,9 @@ export const placeOrder = async (req, res) => {
       discount,
       shippingCharges,
       finalAmount,
-      paymentStatus: paymentMethod === "COD" ? "Pending" : "Paid"
+      couponCode,
+      paymentStatus: paymentMethod === "COD" ? "Pending" : "Paid",
+      transactionId
     });
 
     const savedOrder = await order.save();
@@ -382,6 +397,21 @@ export const updateOrderStatus = async (req, res) => {
   } catch (error) {
     console.error("Admin Status Update Error:", error);
     res.status(500).json({ message: error.message || "Error updating order status" });
+  }
+};
+
+// @desc    Get all transactions (Admin)
+// @route   GET /api/admin/transactions
+// @access  Private/Admin
+export const getTransactions = async (req, res) => {
+  try {
+    const transactions = await Order.find({})
+      .populate("user", "name email")
+      .select("transactionId _id paymentMethod finalAmount createdAt paymentStatus orderStatus")
+      .sort("-createdAt");
+    res.json(transactions);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching transactions" });
   }
 };
 

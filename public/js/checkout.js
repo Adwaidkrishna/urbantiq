@@ -28,7 +28,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (addresses.length > 0) {
                     const section = document.getElementById("savedAddrSection");
                     const listEl  = document.getElementById("savedAddrList");
+                    const manualForm = document.getElementById("manualAddrForm");
+
                     if (section) section.style.display = "block";
+                    if (manualForm) manualForm.style.display = "none";
 
                     listEl.innerHTML = addresses.map(addr => `
                         <label class="saved-addr-option d-flex align-items-start gap-3 p-3 border rounded-3 cursor-pointer ${addr.isDefault ? 'selected-addr' : ''}" 
@@ -49,6 +52,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             const addr = addresses.find(a => a._id === card.dataset.id);
                             if (!addr) return;
                             selectedSavedAddressId = addr._id;
+
+                            // Hide manual form when saved address is picked
+                            const manualForm = document.getElementById("manualAddrForm");
+                            if (manualForm) manualForm.style.display = "none";
+
                             // Fill the hidden form fields
                             fillFormFromAddress(addr);
                             // Visually highlight
@@ -71,7 +79,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.getElementById("useNewAddrBtn")?.addEventListener("click", () => {
                         selectedSavedAddressId = null;
                         clearForm();
-                        document.getElementById("manualAddrForm")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        const manualForm = document.getElementById("manualAddrForm");
+                        if (manualForm) {
+                            manualForm.style.display = "block";
+                            manualForm.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }
                     });
                 }
             } catch (err) {
@@ -199,11 +211,13 @@ document.addEventListener("DOMContentLoaded", function () {
         input.parentElement.appendChild(div);
     }
 
-    // 2. CHECKOUT SUMMARY — Populate with stored info and cart
     const onSummaryPage = window.location.pathname.includes('checkout-summary');
     const onPaymentPage = window.location.pathname.includes('checkout-payment');
 
+    // 2. CHECKOUT SUMMARY — Populate with stored info and cart
     if (onSummaryPage || onPaymentPage) {
+        let appliedCoupon = JSON.parse(localStorage.getItem('appliedCoupon') || 'null');
+
         if (onSummaryPage) {
             const addr = JSON.parse(localStorage.getItem('checkoutAddress') || '{}');
             const summaryName = document.getElementById("summaryName");
@@ -212,6 +226,52 @@ document.addEventListener("DOMContentLoaded", function () {
             if (addr.fullName) {
                 summaryName.textContent = addr.fullName;
                 summaryAddress.innerHTML = `${addr.addressLine1}<br>${addr.city}, ${addr.state} - ${addr.postalCode}`;
+            }
+
+            // Coupon Logic
+            const couponInput = document.getElementById('couponInput');
+            const applyBtn = document.getElementById('applyCouponBtn');
+            const resultDiv = document.getElementById('couponResult');
+
+            if (applyBtn) {
+                applyBtn.addEventListener('click', async () => {
+                    const code = couponInput.value.trim().toUpperCase();
+                    if (!code) return;
+
+                    try {
+                        applyBtn.disabled = true;
+                        applyBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+
+                        const subtotal = Number(document.querySelector('.ck-price-list .ck-price-row:nth-child(1) span:last-child').textContent.replace('₹', '').replace(',', ''));
+                        
+                        const res = await fetch("/api/coupons/validate", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ code, subtotal })
+                        });
+
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            appliedCoupon = data;
+                            localStorage.setItem('appliedCoupon', JSON.stringify(data));
+                            
+                            resultDiv.style.display = 'block';
+                            resultDiv.className = 'small mt-2 text-success fw-bold';
+                            resultDiv.innerHTML = `<i class="bi bi-check-circle-fill"></i> Coupon "${data.code}" applied! (₹${data.discount.toLocaleString()} saved)`;
+                            
+                            fetchCartSummary(false); // Re-render to update total
+                        } else {
+                            resultDiv.style.display = 'block';
+                            resultDiv.className = 'small mt-2 text-danger';
+                            resultDiv.innerHTML = `<i class="bi bi-exclamation-circle-fill"></i> ${data.message || 'Invalid coupon'}`;
+                        }
+                    } catch (err) {
+                        console.error("Coupon error", err);
+                    } finally {
+                        applyBtn.disabled = false;
+                        applyBtn.textContent = 'Apply';
+                    }
+                });
             }
         }
 
@@ -329,13 +389,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updatePriceSummary(items) {
-        // Correctly calculate subtotal and discount
         let subtotal = 0;
         let totalDiscount = 0;
 
         items.forEach(item => {
-            if (!item.product) return; // Skip if product was deleted
-
+            if (!item.product) return;
             const p = item.product;
             subtotal += p.price * item.quantity;
             if (p.offerPrice && p.offerPrice < p.price) {
@@ -343,13 +401,41 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        const finalTotal = subtotal - totalDiscount;
+        // 2. Add Coupon Discount from localStorage
+        const couponData = JSON.parse(localStorage.getItem('appliedCoupon') || 'null');
+        let couponDiscount = 0;
+        if (couponData && couponData.success) {
+            // Re-calculate discount based on current subtotal in case items changed
+            if (couponData.discountType === "Percentage (%)") {
+                couponDiscount = Math.round((subtotal * couponData.value) / 100);
+            } else {
+                couponDiscount = couponData.value;
+            }
+        }
+
+        const finalTotal = subtotal - totalDiscount - couponDiscount;
 
         const subtotalEl = document.querySelector('.ck-price-list .ck-price-row:nth-child(1) span:last-child');
         if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString()}`;
 
         const discountEl = document.querySelector('.ck-discount-val');
         if (discountEl) discountEl.textContent = `−₹${totalDiscount.toLocaleString()}`;
+
+        // Create/Update Coupon Discount Row
+        let couponRow = document.getElementById('coupon-row-summary');
+        if (couponDiscount > 0) {
+            if (!couponRow) {
+                const list = document.querySelector('.ck-price-list');
+                couponRow = document.createElement('div');
+                couponRow.id = 'coupon-row-summary';
+                couponRow.className = 'ck-price-row';
+                list.appendChild(couponRow);
+            }
+            couponRow.innerHTML = `<span>Coupon Code (${couponData.code})</span><span class="text-success fw-bold">−₹${couponDiscount.toLocaleString()}</span>`;
+            couponRow.style.display = 'flex';
+        } else if (couponRow) {
+            couponRow.style.display = 'none';
+        }
 
         const totalValEl = document.querySelector('.ck-total-val');
         if (totalValEl) totalValEl.textContent = `₹${finalTotal.toLocaleString()}`;
@@ -448,7 +534,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // 2. Compute price totals & map items
                 let subtotal = 0;
-                let finalTotal = 0;
+                let cartDiscount = 0;
                 const orderItems = cartData.items
                     .filter(item => item.product && item.variant)
                     .map(item => {
@@ -456,7 +542,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const offerPrice = item.product.offerPrice;
                         const itemPrice = (offerPrice && offerPrice < basePrice) ? offerPrice : basePrice;
                         subtotal += basePrice * item.quantity;
-                        finalTotal += itemPrice * item.quantity;
+                        cartDiscount += (basePrice - itemPrice) * item.quantity;
                         return {
                             product: item.product._id || item.product,
                             variant: item.variant._id || item.variant,
@@ -466,7 +552,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         };
                     });
 
-                const discount = subtotal - finalTotal;
+                const couponData = JSON.parse(localStorage.getItem('appliedCoupon') || 'null');
+                const couponAmount = couponData?.success ? couponData.discount : 0;
+                const totalDiscount = cartDiscount + couponAmount;
+                const finalAmountToPay = (subtotal - cartDiscount) - couponAmount;
 
                 // 3. Validate stock
                 const validateRes = await fetch("/api/orders/validate-stock", {
@@ -488,7 +577,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const rzpOrderRes = await fetch("/api/payment/create-order", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ amount: finalTotal })
+                        body: JSON.stringify({ amount: finalAmountToPay })
                     });
                     const rzpOrderData = await rzpOrderRes.json();
 
@@ -514,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 if (!verifyRes.ok) throw new Error("Payment verification failed");
 
                                 // Place Order in DB after successful payment
-                                await finalizeOrder(orderItems, address, payMethod, subtotal, discount, finalTotal);
+                                await finalizeOrder(orderItems, address, payMethod, subtotal, totalDiscount, finalAmountToPay, response.razorpay_payment_id);
                             } catch (err) {
                                 AuthGuard.showToast(err.message, "error");
                                 resetBtn(payNowBtn, originalBtnHtml);
@@ -540,11 +629,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else if (payMethod === 'Wallet') {
                     // Wallet Flow
                     payNowBtn.innerHTML = `Processing Wallet Payment... <span class="spinner-border spinner-border-sm ms-2"></span>`;
-                    await finalizeOrder(orderItems, address, payMethod, subtotal, discount, finalTotal);
+                    await finalizeOrder(orderItems, address, payMethod, subtotal, totalDiscount, finalAmountToPay, `WTN-${Date.now().toString().slice(-8)}`);
                 } else {
                     // COD Flow
                     payNowBtn.innerHTML = `Placing Order... <span class="spinner-border spinner-border-sm ms-2"></span>`;
-                    await finalizeOrder(orderItems, address, payMethod, subtotal, discount, finalTotal);
+                    await finalizeOrder(orderItems, address, payMethod, subtotal, totalDiscount, finalAmountToPay);
                 }
 
             } catch (err) {
@@ -554,7 +643,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        async function finalizeOrder(items, address, payMethod, subtotal, discount, finalTotal) {
+        async function finalizeOrder(items, address, payMethod, subtotal, discount, finalTotal, transactionId = null) {
+            const couponData = JSON.parse(localStorage.getItem('appliedCoupon') || 'null');
             const response = await fetch("/api/orders", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -565,7 +655,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     totalPrice: subtotal,
                     discount: discount,
                     shippingCharges: 0,
-                    finalAmount: finalTotal
+                    finalAmount: finalTotal,
+                    couponCode: couponData ? couponData.code : null,
+                    transactionId
                 })
             });
 
@@ -573,6 +665,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (response.ok) {
                 localStorage.removeItem('checkoutAddress');
                 localStorage.removeItem('checkoutTotal');
+                localStorage.removeItem('appliedCoupon');
                 setTimeout(() => {
                     window.location.href = `/order-success?id=${orderResult.orderId}`;
                 }, 800);

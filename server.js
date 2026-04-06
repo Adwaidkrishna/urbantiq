@@ -20,6 +20,7 @@ import wishlistRoutes from "./routes/wishlistRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import userProfileRoutes from "./routes/userProfileRoutes.js";
+import couponRoutes from "./routes/couponRoutes.js";
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/user-profile", userProfileRoutes);
+app.use("/api/coupons", couponRoutes);
 
 // User side pages
 app.use("/", userRoutes);

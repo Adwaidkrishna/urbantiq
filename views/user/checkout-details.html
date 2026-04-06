@@ -83,8 +83,9 @@
             <div class="ck-form-center">
 
                 <div class="ck-card">
-                    <div class="ck-card-title">Personal Information</div>
+                    <div class="ck-card-title">Delivery Details</div>
 
+                    <div class="ck-section-subtitle mb-3 mt-4">Personal Information</div>
                     <div class="ck-form-row">
                         <div class="ck-form-group">
                             <label class="ck-label" for="fullName">Full Name</label>
@@ -100,10 +101,10 @@
                         <label class="ck-label" for="phone">Phone Number</label>
                         <input type="tel" id="phone" class="ck-input" placeholder="+91 98765 43210">
                     </div>
-                </div>
 
-                <div class="ck-card">
-                    <div class="ck-card-title">Delivery Address</div>
+                    <hr class="my-4 opacity-50">
+
+                    <div class="ck-section-subtitle mb-3">Shipping Address</div>
 
                     <!-- Saved Addresses Picker -->
                     <div id="savedAddrSection" style="display:none; margin-bottom: 1.5rem;">
@@ -114,51 +115,50 @@
                                 <i class="bi bi-plus-circle me-1"></i> Enter a different address
                             </button>
                         </div>
-                        <hr style="border-color: #f2f2f2; margin: 1.5rem 0;">
                     </div>
 
                     <div id="manualAddrForm">
-                    <div class="ck-form-group">
-                        <label class="ck-label" for="addr1">Address Line 1</label>
-                        <input type="text" id="addr1" class="ck-input" placeholder="House no., Street name">
-                    </div>
-
-                    <div class="ck-form-group">
-                        <label class="ck-label" for="addr2">Address Line 2 <span
-                                class="ck-optional">(optional)</span></label>
-                        <input type="text" id="addr2" class="ck-input" placeholder="Apartment, landmark">
-                    </div>
-
-                    <div class="ck-form-row">
                         <div class="ck-form-group">
-                            <label class="ck-label" for="city">City</label>
-                            <input type="text" id="city" class="ck-input" placeholder="Kochi">
+                            <label class="ck-label" for="addr1">Address Line 1</label>
+                            <input type="text" id="addr1" class="ck-input" placeholder="House no., Street name">
                         </div>
-                        <div class="ck-form-group">
-                            <label class="ck-label" for="state">State</label>
-                            <input type="text" id="state" class="ck-input" placeholder="Kerala">
-                        </div>
-                    </div>
 
-                    <div class="ck-form-row">
                         <div class="ck-form-group">
-                            <label class="ck-label" for="pincode">Pincode</label>
-                            <input type="text" id="pincode" class="ck-input" placeholder="682 001" maxlength="6">
+                            <label class="ck-label" for="addr2">Address Line 2 <span
+                                    class="ck-optional">(optional)</span></label>
+                            <input type="text" id="addr2" class="ck-input" placeholder="Apartment, landmark">
                         </div>
-                        <div class="ck-form-group">
-                            <label class="ck-label" for="country">Country</label>
-                            <div class="ck-select-wrap">
-                                <select id="country" class="ck-select">
-                                    <option selected>India</option>
-                                    <option>United States</option>
-                                    <option>United Kingdom</option>
-                                    <option>UAE</option>
-                                    <option>Canada</option>
-                                    <option>Australia</option>
-                                </select>
+
+                        <div class="ck-form-row">
+                            <div class="ck-form-group">
+                                <label class="ck-label" for="city">City</label>
+                                <input type="text" id="city" class="ck-input" placeholder="Kochi">
+                            </div>
+                            <div class="ck-form-group">
+                                <label class="ck-label" for="state">State</label>
+                                <input type="text" id="state" class="ck-input" placeholder="Kerala">
                             </div>
                         </div>
-                    </div>
+
+                        <div class="ck-form-row">
+                            <div class="ck-form-group">
+                                <label class="ck-label" for="pincode">Pincode</label>
+                                <input type="text" id="pincode" class="ck-input" placeholder="682 001" maxlength="6">
+                            </div>
+                            <div class="ck-form-group">
+                                <label class="ck-label" for="country">Country</label>
+                                <div class="ck-select-wrap">
+                                    <select id="country" class="ck-select">
+                                        <option selected>India</option>
+                                        <option>United States</option>
+                                        <option>United Kingdom</option>
+                                        <option>UAE</option>
+                                        <option>Canada</option>
+                                        <option>Australia</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="ck-default-addr">
                             <label class="ck-checkbox-container">
