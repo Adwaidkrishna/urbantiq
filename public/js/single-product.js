@@ -192,6 +192,7 @@ async function loadSingleProduct() {
         if (data.success && data.product) {
             renderProduct(data.product);
             checkWishlistStatus(productId);
+            loadReviews(productId);
         } else {
             console.error("Product not found");
             const titleEl = document.querySelector('.sp-title');
@@ -200,6 +201,84 @@ async function loadSingleProduct() {
     } catch (err) {
         console.error("Error fetching product:", err);
     }
+}
+
+async function loadReviews(productId) {
+    try {
+        const res = await fetch(`/api/reviews/${productId}`);
+        const data = await res.json();
+
+        if (data.success && data.reviews) {
+            renderReviews(data.reviews);
+        }
+    } catch (err) {
+        console.error("Error fetching reviews:", err);
+    }
+}
+
+function renderStars(rating, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    container.innerHTML = "";
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    
+    for (let i = 1; i <= 5; i++) {
+        if (i <= fullStars) {
+            container.innerHTML += '<i class="bi bi-star-fill"></i>';
+        } else if (i === fullStars + 1 && hasHalfStar) {
+            container.innerHTML += '<i class="bi bi-star-half"></i>';
+        } else {
+            container.innerHTML += '<i class="bi bi-star"></i>';
+        }
+    }
+}
+
+function renderReviews(reviews) {
+    const listContainer = document.getElementById('reviewsList');
+    if (!listContainer) return;
+
+    if (reviews.length === 0) {
+        listContainer.innerHTML = `
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-chat-left-dots fs-1 mb-3 d-block"></i>
+                <p>No reviews yet for this product. Be the first to review it from your orders!</p>
+            </div>`;
+        return;
+    }
+
+    listContainer.innerHTML = reviews.map(review => {
+        const date = new Date(review.createdAt).toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+        
+        let stars = "";
+        for (let i = 1; i <= 5; i++) {
+            stars += `<i class="bi bi-star-fill ${i <= review.rating ? 'text-warning' : 'text-light'}"></i>`;
+        }
+
+        return `
+            <div class="review-item mb-4 pb-4 border-bottom">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <div class="fw-bold fs-6 mb-1">${review.user?.name || "Verified Buyer"}</div>
+                        <div class="text-warning small mb-2">${stars}</div>
+                    </div>
+                    <span class="text-muted small">${date}</span>
+                </div>
+                <div class="review-comment text-secondary" style="font-size: 0.95rem; line-height: 1.6;">
+                    ${review.comment || '<span class="fst-italic text-muted">No comment provided.</span>'}
+                </div>
+                <div class="mt-2">
+                    <span class="badge bg-light text-success border border-success-subtle fw-normal" style="font-size: 0.7rem;">
+                        <i class="bi bi-patch-check-fill me-1"></i> Verified Purchase
+                    </span>
+                </div>
+            </div>`;
+    }).join("");
 }
 
 function renderProduct(product) {
@@ -238,6 +317,23 @@ function renderProduct(product) {
     // Description
     const descEl = document.querySelector(".sp-desc");
     if (descEl) descEl.innerHTML = product.description;
+    
+    // Ratings Summary
+    const avgRating = product.averageRating || 0;
+    const reviewCount = product.reviewCount || 0;
+    
+    renderStars(avgRating, 'productAvgRatingStars');
+    const avgText = document.getElementById('productAvgRatingText');
+    if (avgText) avgText.textContent = avgRating.toFixed(1);
+    const countText = document.getElementById('productReviewCountText');
+    if (countText) countText.textContent = `(${reviewCount} reviews)`;
+
+    // Main Review Summary Section
+    const sumRating = document.getElementById('reviewsSummaryRating');
+    if (sumRating) sumRating.textContent = avgRating.toFixed(1);
+    renderStars(avgRating, 'reviewsSummaryStars');
+    const sumCount = document.getElementById('reviewsSummaryCount');
+    if (sumCount) sumCount.textContent = `Based on ${reviewCount} reviews`;
 
     // Variants (Colors, Sizes, Images)
     if (product.variants && product.variants.length > 0) {

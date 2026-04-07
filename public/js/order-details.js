@@ -65,16 +65,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Items
         const itemsContainer = document.getElementById('displayOrderItems');
+        const isDelivered = order.orderStatus.toLowerCase() === 'delivered';
+        
         itemsContainer.innerHTML = order.items.map((item, index) => {
             const variant = item.product?.variants?.find(v => (v._id || v).toString() === (item.variant || "").toString()) || item.product?.variants?.[0];
             const img = variant?.images?.length > 0 ? `/images/products/${variant.images[0]}` : '/images/user/phoodie.jpeg';
             
             return `
-                <div class="item-row">
-                    <img src="${img}" class="item-thumb" alt="Product">
-                    <div class="item-details">
-                        <span class="item-name">${item.product?.name || '<span class="text-danger" style="font-style:italic; font-weight:normal;">Product Unavailable</span>'}</span>
-                        <span class="item-meta">
+                <div class="item-row d-flex align-items-center py-3 border-bottom">
+                    <img src="${img}" class="item-thumb me-3" alt="Product" style="width: 80px; height: 80px; object-fit: cover; border-radius: 12px;">
+                    <div class="item-details flex-grow-1">
+                        <span class="item-name fw-bold d-block mb-1">${item.product?.name || '<span class="text-danger" style="font-style:italic; font-weight:normal;">Product Unavailable</span>'}</span>
+                        <span class="item-meta text-muted small">
                             Size: ${item.size} &nbsp;&middot;&nbsp; Qty: ${item.quantity}
                             ${variant?.color ? `
                             &nbsp;&middot;&nbsp;
@@ -82,10 +84,26 @@ document.addEventListener("DOMContentLoaded", () => {
                             ` : ''}
                         </span>
                     </div>
-                    <span class="item-price">₹${(item.price * item.quantity).toLocaleString("en-IN")}</span>
+                    <div class="d-flex flex-column align-items-end gap-2">
+                        <span class="item-price fw-bold">₹${(item.price * item.quantity).toLocaleString("en-IN")}</span>
+                        ${isDelivered ? (
+                            item.reviewed 
+                                ? `<button class="btn btn-sm btn-light border rounded-pill px-3 py-1 disabled" style="font-size: 0.75rem;"><i class="bi bi-check2-circle me-1"></i> Reviewed</button>`
+                                : `<button class="btn btn-sm btn-dark rounded-pill px-3 py-1 write-review-btn" data-product-id="${item.product._id}" data-item-id="${item._id}" style="font-size: 0.75rem;"><i class="bi bi-pencil-square me-1"></i> Write Review</button>`
+                        ) : ''}
+                    </div>
                 </div>
             `;
         }).join('');
+
+        // Attach event listeners for Write Review buttons
+        document.querySelectorAll('.write-review-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const productId = btn.dataset.productId;
+                const orderItemId = btn.dataset.itemId;
+                openReviewModal(productId, order._id, orderItemId);
+            });
+        });
 
         // Summary
         document.getElementById('displaySubtotal').textContent = `₹${order.totalPrice.toLocaleString()}`;
@@ -118,6 +136,88 @@ document.addEventListener("DOMContentLoaded", () => {
             actionsEl.innerHTML = '';
         }
     }
+
+    // --- Review Flow Logic ---
+
+    function openReviewModal(productId, orderId, orderItemId) {
+        document.getElementById('reviewProductId').value = productId;
+        document.getElementById('reviewOrderId').value = orderId;
+        // Let's add a hidden field for orderItemId if needed, or just include it in the submit logic
+        document.getElementById('reviewForm').dataset.orderItemId = orderItemId;
+        document.getElementById('selectedRating').value = "0";
+        document.getElementById('reviewComment').value = "";
+        
+        // Reset stars
+        document.querySelectorAll('.review-star').forEach(star => {
+            star.classList.replace('bi-star-fill', 'bi-star');
+        });
+
+        const reviewModal = new bootstrap.Modal(document.getElementById('reviewModal'));
+        reviewModal.show();
+    }
+
+    // Star Selection Interaction
+    document.querySelectorAll('.review-star').forEach(star => {
+        star.addEventListener('click', () => {
+            const rating = parseInt(star.dataset.rating);
+            document.getElementById('selectedRating').value = rating;
+            
+            document.querySelectorAll('.review-star').forEach((s, idx) => {
+                if (idx < rating) {
+                    s.classList.replace('bi-star', 'bi-star-fill');
+                } else {
+                    s.classList.replace('bi-star-fill', 'bi-star');
+                }
+            });
+        });
+    });
+
+    // Review Form Submission
+    document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const productId = document.getElementById('reviewProductId').value;
+        const orderId = document.getElementById('reviewOrderId').value;
+        const orderItemId = document.getElementById('reviewForm').dataset.orderItemId;
+        const rating = parseInt(document.getElementById('selectedRating').value);
+        const comment = document.getElementById('reviewComment').value;
+        const submitBtn = document.getElementById('submitReviewBtn');
+
+        if (!rating) {
+            showAlertModal("Rating Required", "Please select a rating before submitting your review.", false);
+            return;
+        }
+
+        try {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Submitting...";
+
+            const res = await fetch("/api/reviews", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ productId, orderId, orderItemId, rating, comment })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                const modalEl = document.getElementById('reviewModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+                
+                showAlertModal("Review Published", "Thank you for your feedback!", true);
+                setTimeout(() => window.location.reload(), 2000);
+            } else {
+                showAlertModal("Submission Failed", data.message || "Failed to submit review.", false);
+            }
+        } catch (err) {
+            console.error("Error submitting review:", err);
+            showAlertModal("Error", "A network error occurred. Please try again.", false);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit Review";
+        }
+    });
 
     function cancelOrder(id) {
         showConfirmModal("Cancel Order", "Are you sure you want to cancel this order? This action cannot be undone.", async () => {

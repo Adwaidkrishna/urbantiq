@@ -146,7 +146,47 @@
                 <div class="text-center mt-5" id="orderActions">
                     <!-- Dynamic buttons -->
                 </div>
+            </div>
+        </div>
 
+        <!-- Review Modal -->
+        <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-bold" id="reviewModalTitle">Write a Review</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form id="reviewForm">
+                            <input type="hidden" id="reviewProductId">
+                            <input type="hidden" id="reviewOrderId">
+                            
+                            <div class="mb-4 text-center">
+                                <label class="d-block text-muted small fw-bold text-uppercase mb-2">Your Rating</label>
+                                <div class="rating-stars fs-2 text-warning" id="ratingStars" style="cursor: pointer;">
+                                    <i class="bi bi-star review-star" data-rating="1"></i>
+                                    <i class="bi bi-star review-star" data-rating="2"></i>
+                                    <i class="bi bi-star review-star" data-rating="3"></i>
+                                    <i class="bi bi-star review-star" data-rating="4"></i>
+                                    <i class="bi bi-star review-star" data-rating="5"></i>
+                                </div>
+                                <input type="hidden" id="selectedRating" value="0">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="reviewComment" class="form-label text-muted small fw-bold text-uppercase">Comment (Optional)</label>
+                                <textarea class="form-control border-0 bg-light p-3" id="reviewComment" rows="4" placeholder="What did you think about this product?" style="border-radius: 12px; resize: none;"></textarea>
+                            </div>
+
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-dark w-100 rounded-pill py-3 fw-bold shadow-sm" id="submitReviewBtn">
+                                    Submit Review
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
