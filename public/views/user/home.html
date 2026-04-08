@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBANTIQ | Modern Men's Fashion</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">URBANTIQ</a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/product">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register">Signup</a></li>
+                </ul>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="search-container d-none d-lg-flex">
+                    <i class="bi bi-search text-muted me-2" style="font-size: 1rem;"></i>
+                    <input type="text" class="search-input" placeholder="Search products...">
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="/wishlist" class="icon-btn" title="Wishlist">
+                        <i class="bi bi-heart"></i>
+                        <span class="wishlist-badge">0</span>
+                    </a>
+                    <a href="/cart" class="icon-btn" title="Cart">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-badge">0</span>
+                    </a>
+                    <a href="/account" class="icon-btn" title="Profile">
+                        <i class="bi bi-person"></i>
+                    </a>
+                </div>
+                <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container text-center">
+            <div class="collection-badge mx-auto">
+                <i class="bi bi-stars" style="color: #0066cc;"></i>
+                Spring Collection 2026
+            </div>
+            <h1 class="hero-title">Redefine Your Style</h1>
+            <p class="hero-subtitle">Discover our curated collection of premium men's fashion.</p>
+            <div class="d-flex justify-content-center gap-3 align-items-center">
+                <a href="/product" class="btn btn-pill btn-black">Shop Now <i class="bi bi-chevron-right"></i></a>
+                <a href="/sale" class="btn fw-600 text-decoration-none text-dark">View Deals</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Shop by Category -->
+    <section class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Shop by Category</h2>
+            <a href="/product" class="text-primary text-decoration-none fw-600">View All <i class="bi bi-chevron-right"></i></a>
+        </div>
+        <div class="row g-4" id="homeCategories"></div>
+    </section>
+
+    <!-- New Arrivals -->
+    <section class="container py-5">
+        <div class="mb-4 d-flex justify-content-between align-items-end">
+            <div>
+                <h2 class="section-title mb-1">Discover New Arrivals</h2>
+                <p class="text-muted m-0">Handpicked essentials for the modern man</p>
+            </div>
+            <a href="/product" class="text-primary text-decoration-none fw-600">View All <i class="bi bi-chevron-right"></i></a>
+        </div>
+        <div class="row g-3 g-md-4" id="newArrivalsGrid"></div>
+    </section>
+
+    <!-- Top Selling Section -->
+    <section class="container py-5">
+        <div class="mb-4 d-flex justify-content-between align-items-end">
+            <div>
+                <h2 class="section-title mb-1">Top Selling Products</h2>
+                <p class="text-muted m-0">Our most popular items this season</p>
+            </div>
+        </div>
+        <div class="row g-3 g-md-4" id="topSellingGrid"></div>
+    </section>
+
+    <!-- Season Clearance -->
+    <section class="container parallax-section my-5">
+        <div class="parallax-card">
+            <div class="parallax-content text-center">
+                <span class="parallax-eyebrow">Limited Time</span>
+                <h2 class="parallax-title">Season Clearance</h2>
+                <p class="parallax-subtitle">Up to 70% Off on Selected Items</p>
+                <a href="/sale" class="parallax-cta">Shop the Sale <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-3 text-start">
+                    <a href="/" class="footer-logo">URBANTIQ</a>
+                    <p class="footer-desc">Premium men’s fashion for the modern generation.</p>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start">
+                    <h5 class="footer-heading">Shop</h5>
+                    <ul class="footer-links">
+                        <li><a href="/product">New Arrivals</a></li>
+                        <li><a href="/product">Shirts</a></li>
+                        <li><a href="/product">Jeans</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start">
+                    <h5 class="footer-heading">Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start">
+                    <h5 class="footer-heading">Account</h5>
+                    <ul class="footer-links">
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Signup</a></li>
+                        <li><a href="/wishlist">Wishlist</a></li>
+                        <li><a href="/cart">Cart</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom d-flex justify-content-between align-items-center mt-4">
+                <div class="copyright">&copy; 2026 URBANTIQ. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/common/auth-guard.js"></script>
+    <script src="/js/common/script.js"></script>
+    <script src="/js/common/homeCategories.js"></script>
+</body>
+
+</html>

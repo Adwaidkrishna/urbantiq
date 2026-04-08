@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Root route serves home page
 router.get("/", (req, res) => {
-  res.sendFile(path.resolve("views/user/home.html"));
+  res.sendFile(path.resolve("public/views/user/home.html"));
 });
 
 // List of public pages that don't require authentication
@@ -47,20 +47,20 @@ const protectedPages = [
 // Route for public pages
 publicPages.forEach((page) => {
   router.get(`/${page}`, (req, res) => {
-    res.sendFile(path.resolve(`views/user/${page}.html`));
+    res.sendFile(path.resolve(`public/views/user/${page}.html`));
   });
 });
 
 // Route for protected pages with authMiddleware
 protectedPages.forEach((page) => {
   router.get(`/${page}`, authMiddleware, (req, res) => {
-    res.sendFile(path.resolve(`views/user/${page}.html`));
+    res.sendFile(path.resolve(`public/views/user/${page}.html`));
   });
 });
 
 // Dynamic route for single product details (public — auth guard handled on frontend)
 router.get("/product/:id", (req, res) => {
-  res.sendFile(path.resolve("views/user/single-product.html"));
+  res.sendFile(path.resolve("public/views/user/single-product.html"));
 });
 
 export default router;

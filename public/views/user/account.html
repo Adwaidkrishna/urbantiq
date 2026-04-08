@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings | URBANTIQ</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/account.css">
+</head>
+
+<body class="account-body">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">URBANTIQ</a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/product">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="search-container d-none d-lg-flex">
+                    <i class="bi bi-search text-muted me-2" style="font-size: 1rem;"></i>
+                    <input type="text" class="search-input" placeholder="Search products...">
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="/wishlist" class="icon-btn" title="Wishlist">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                    <a href="/cart" class="icon-btn" title="Cart">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-badge">0</span>
+                    </a>
+                    <a href="/account" class="icon-btn active-nav-icon" title="Profile">
+                        <i class="bi bi-person"></i>
+                    </a>
+                </div>
+                <button class="navbar-toggler border-0 p-2" type="button"><span
+                        class="navbar-toggler-icon"></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="account-page-wrap">
+        <div class="container">
+            <div class="account-container">
+
+                <!-- 🧑 Profile Header -->
+                <header class="profile-header">
+                    <div class="avatar-wrap">
+                        <img src="/images/user/auth-bg.png" alt="Profile" class="avatar-img">
+                    </div>
+                    <h1 class="profile-name">...</h1>
+                    <p class="profile-email">...</p>
+                </header>
+
+                <div class="ac-settings-stack">
+
+                    <!-- 📋 SECTION 1: Personal Information -->
+                    <h2 class="account-section-title">Personal Information</h2>
+                    <div class="account-group">
+                        <div class="ac-row" onclick="toggleOption('nameExpand', this)">
+                            <div class="ac-row-left">
+                                <div class="ac-row-icon"><i class="bi bi-person"></i></div>
+                                <span class="ac-row-label">Name</span>
+                            </div>
+                            <div class="ac-row-right">
+                                <span class="ac-row-value">...</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </div>
+                        <div id="nameExpand" class="ac-expandable">
+                            <div class="ac-input-group">
+                                <label>Full Name</label>
+                                <input type="text" id="inputName" class="ac-field" value="">
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="ac-btn-save" id="btnSaveName">Save</button>
+                                <button class="ac-btn-cancel" onclick="toggleOption('nameExpand')">Cancel</button>
+                            </div>
+                        </div>
+
+                        <div class="ac-row" onclick="toggleOption('emailExpand', this)">
+                            <div class="ac-row-left">
+                                <div class="ac-row-icon"><i class="bi bi-envelope"></i></div>
+                                <span class="ac-row-label">Email</span>
+                            </div>
+                            <div class="ac-row-right">
+                                <span class="ac-row-value">...</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </div>
+                        <div id="emailExpand" class="ac-expandable">
+                            <div class="ac-input-group">
+                                <label>Email Address</label>
+                                <input type="email" id="inputEmail" class="ac-field" value="" disabled>
+                            </div>
+                            <p class="text-muted small mb-3">Email address cannot be changed directly for security
+                                reasons.</p>
+                            <!-- <button class="ac-btn-save" id="btnUpdateEmail">Update Email</button> -->
+                        </div>
+
+                        <div class="ac-row" onclick="toggleOption('phoneExpand', this)">
+                            <div class="ac-row-left">
+                                <div class="ac-row-icon"><i class="bi bi-telephone"></i></div>
+                                <span class="ac-row-label">Phone</span>
+                            </div>
+                            <div class="ac-row-right">
+                                <span class="ac-row-value">+91 98765 43210</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </div>
+                        <div id="phoneExpand" class="ac-expandable">
+                            <div class="ac-input-group">
+                                <label>Phone Number</label>
+                                <input type="text" id="inputPhone" class="ac-field" value="">
+                            </div>
+                            <button class="ac-btn-save" id="btnSavePhone">Save</button>
+                        </div>
+
+                        <div class="ac-row" onclick="toggleOption('passExpand', this)">
+                            <div class="ac-row-left">
+                                <div class="ac-row-icon"><i class="bi bi-key"></i></div>
+                                <span class="ac-row-label">Change Password</span>
+                            </div>
+                            <div class="ac-row-right">
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </div>
+                        <div id="passExpand" class="ac-expandable">
+                            <div class="ac-ios-form">
+                                <div class="ac-ios-input-group">
+                                    <label>Current Password</label>
+                                    <div class="ac-ios-input-wrap">
+                                        <input type="password" id="currentPass" class="ac-ios-field"
+                                            placeholder="••••••••">
+                                        <button type="button" class="btn-eye-toggle" id="toggleCurrentPass">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="ac-ios-feedback" id="feedbackCurrentPass"></div>
+                                </div>
+
+                                <div class="mt-2 mb-3">
+                                    <a href="/login?reset=true" class="text-muted small fw-bold text-decoration-none">
+                                        <i class="bi bi-question-circle me-1"></i> Forgot current password?
+                                    </a>
+                                </div>
+
+                                <div class="ac-ios-input-group mt-3">
+                                    <label>New Password</label>
+                                    <div class="ac-ios-input-wrap">
+                                        <input type="password" id="newPass" class="ac-ios-field" placeholder="••••••••">
+                                        <button type="button" class="btn-eye-toggle" id="toggleNewPass">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="ac-ios-feedback" id="feedbackNewPass"></div>
+                                </div>
+
+                                <div class="ac-ios-input-group mt-3">
+                                    <label>Confirm New Password</label>
+                                    <div class="ac-ios-input-wrap">
+                                        <input type="password" id="confirmPass" class="ac-ios-field"
+                                            placeholder="••••••••">
+                                        <button type="button" class="btn-eye-toggle" id="toggleConfirmPass">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="ac-ios-feedback" id="feedbackConfirmPass"></div>
+                                </div>
+                            </div>
+                            <button class="ac-ios-btn-save w-100 mt-4" id="btnSavePass" disabled>Update
+                                Password</button>
+                        </div>
+                    </div>
+
+                    <!-- 📋 SECTION 2: Orders & Activity -->
+                    <h2 class="account-section-title">Orders & Activity</h2>
+                    <div class="account-group">
+                        <a href="/account-orders" class="ac-row">
+                            <div class="ac-row-left">
+                                <div class="ac-row-icon"><i class="bi bi-box-seam"></i></div>
+                                <span class="ac-row-label">My Orders</span>
+                            </div>
+                            <div class="ac-row-right">
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="/account-cancellations" class="ac-row">
+                            <div class="ac-row-left">
+                                <div class="ac-row-icon"><i class="bi bi-x-circle"></i></div>
+                                <span class="ac-row-label">Cancellations</span>
+                            </div>
+                            <div class="ac-row-right">
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="/account-returns" class="ac-row">
+                            <div class="ac-row-left">
+                                <div class="ac-row-icon"><i class="bi bi-arrow-counterclockwise"></i></div>
+                                <span class="ac-row-label">Returns</span>
+                            </div>
+                            <div class="ac-row-right">
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- 📋 SECTION 3: Address & Wallet -->
+                    <h2 class="account-section-title">Finance & Delivery</h2>
+                    <div class="account-group">
+                        <a href="/account-address" class="ac-row">
+                            <div class="ac-row-left">
+                                <div class="ac-row-icon"><i class="bi bi-geo-alt"></i></div>
+                                <span class="ac-row-label">Address Book</span>
+                            </div>
+                            <div class="ac-row-right">
+                                <span class="ac-row-value">Default: Home</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </a>
+                        <a href="/account-wallet" class="ac-row">
+                            <div class="ac-row-left">
+                                <div class="ac-row-icon"><i class="bi bi-wallet2"></i></div>
+                                <span class="ac-row-label">Wallet</span>
+                            </div>
+                            <div class="ac-row-right">
+                                <span class="ac-row-value">₹0.00</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- 📋 SECTION 4: Logout -->
+                    <div class="account-group">
+                        <button id="logoutBtn" class="ac-row justify-content-center w-100"
+                            style="background:none;border:none;cursor:pointer;">
+                            <span class="ac-row-label text-danger">Logout</span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <a href="/" class="footer-logo">URBANTIQ</a>
+                    <p class="footer-desc">Premium men’s fashion for the modern generation. Engineering style with
+                        clinical precision.</p>
+                    <div class="footer-social d-none d-md-flex">
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    </div>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Shop</h5>
+                    <ul class="footer-links">
+                        <li><a href="/product">New Arrivals</a></li>
+                        <li><a href="/product">Shirts</a></li>
+                        <li><a href="/product">Jeans</a></li>
+                        <li><a href="/product">Suits</a></li>
+                        <li><a href="/product">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Account</h5>
+                    <ul class="footer-links">
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Signup</a></li>
+                        <li><a href="/wishlist">Wishlist</a></li>
+                        <li><a href="/cart">Cart</a></li>
+                        <li><a href="/account-orders">Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                <div class="copyright text-start">&copy; 2026 URBANTIQ. All rights reserved.</div>
+                <div class="footer-legal d-flex gap-3 mt-3 mt-md-0">
+                    <a href="#" class="text-muted small text-decoration-none">Terms</a>
+                    <a href="#" class="text-muted small text-decoration-none">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/common/auth-guard.js"></script>
+    <script src="/js/user/account.js"></script>
+</body>
+
+</html>

@@ -1,18 +1,10 @@
-/* public/js/register.js
-   URBANTIQ · Auth & Form Behaviors
-   ------------------------------------------ */
-
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ─── UTILITIES ───────────────────────────────────────────────
-
-    /**
-     * Toggles password visibility for a specific input field
-     */
-    const setupEyeToggle = (buttonId, inputId) => {
+    //Toggles password visibility for a specific input field
+    const setupEyeToggle = (buttonId, inputId) => {//resuable function
         const btn = document.getElementById(buttonId);
         const input = document.getElementById(inputId);
-        if (!btn || !input) return;
+        if (!btn || !input) return; //element doesn't exist, stop the function.
 
         btn.addEventListener('click', () => {
             const icon = btn.querySelector('i');
@@ -23,9 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    /**
-     * Validation Rules Helper
-     */
+    //Validation Rules Helper
+     
     const checkRules = (value) => {
         return {
             'rule-8char': value.length >= 8,
@@ -36,9 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    /**
-     * Updates UI based on satisfied rules
-     */
+    
+    //Updates UI based on satisfied rules
+     
     const updateValidationUI = (rulesRes) => {
         let metCount = 0;
         for (const [id, met] of Object.entries(rulesRes)) {
@@ -180,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = passwordInput.value;
 
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Creating account...';
+            submitBtn.textContent = 'Sending otp';
 
             try {
                 const response = await fetch("/api/auth/register", {
@@ -189,13 +180,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ name, email, password })
                 });
 
-                if (response.redirected) {
-                    window.location.href = response.url;
+                const data = await response.json();
+
+                if (data.redirect) {
+                    window.location.href = data.redirect;
                 } else {
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Create Account';
-                    const data = await response.json();
-                    if (data.message) alert(data.message);
+                    const errorBox = document.getElementById("registerError");
+
+                    errorBox.textContent = data.message;
+
+                    errorBox.classList.remove("d-none");
                 }
             } catch (err) {
                 console.error("Error:", err);

@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | URBANTIQ</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/info.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">URBANTIQ</a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/product">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/register">Signup</a></li>
+                </ul>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="search-container d-none d-lg-flex">
+                    <i class="bi bi-search text-muted me-2" style="font-size: 1rem;"></i>
+                    <input type="text" class="search-input" placeholder="Search products...">
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="/wishlist" class="icon-btn" title="Wishlist">
+                        <i class="bi bi-heart"></i>
+                    </a>
+                    <a href="/cart" class="icon-btn" title="Cart">
+                        <i class="bi bi-cart3"></i>
+                        <span class="cart-badge">0</span>
+                    </a>
+                    <a href="/account" class="icon-btn" title="Profile">
+                        <i class="bi bi-person"></i>
+                    </a>
+                </div>
+                <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="contact-hero">
+        <div class="container">
+            <span class="section-title-sm">Connect With Us</span>
+            <h1 class="section-title-large">Get in Touch</h1>
+            <p class="lead text-muted">We’d love to hear from you. Our team is always here to help.</p>
+        </div>
+    </header>
+
+    <!-- Contact Layout -->
+    <section class="info-section pt-0">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Left — Contact Form -->
+                <div class="col-lg-7">
+                    <div class="contact-form-wrap">
+                        <h2 class="h4 fw-800 mb-4">Send a Message</h2>
+                        <form action="#">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="fullName" class="form-label">Full Name</label>
+                                        <input type="text" id="fullName" class="form-control" placeholder="John Doe">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" id="email" class="form-control"
+                                            placeholder="john@example.com">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="subject" class="form-label">Subject</label>
+                                        <input type="text" id="subject" class="form-control"
+                                            placeholder="Order Inquiry">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <label for="message" class="form-label">Message</label>
+                                        <textarea id="message" class="form-control" rows="5"
+                                            placeholder="How can we help?"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-black btn-pill w-100 py-3 fw-700">Send
+                                        Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right — Contact Info Card -->
+                <div class="col-lg-5">
+                    <div class="contact-info-card">
+                        <h2 class="h4 fw-800 mb-4">Contact Information</h2>
+
+                        <div class="info-item">
+                            <div class="info-icon"><i class="bi bi-envelope"></i></div>
+                            <div class="info-content">
+                                <span class="info-label">Email</span>
+                                <span class="info-text">support@urbantiq.com</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon"><i class="bi bi-telephone"></i></div>
+                            <div class="info-content">
+                                <span class="info-label">Phone</span>
+                                <span class="info-text">+91 98765 43210</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon"><i class="bi bi-geo-alt"></i></div>
+                            <div class="info-content">
+                                <span class="info-label">Store Address</span>
+                                <span class="info-text">42, MG Road, Ernakulam<br>Kochi, Kerala — 682 001</span>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon"><i class="bi bi-clock"></i></div>
+                            <div class="info-content">
+                                <span class="info-label">Working Hours</span>
+                                <span class="info-text">Mon – Sat: 10:00 AM – 8:00 PM<br>Sun: Closed</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-top">
+                            <span class="info-label mb-3 d-block">Follow Us</span>
+                            <div class="d-flex gap-3">
+                                <a href="#" class="icon-btn"><i class="bi bi-instagram"></i></a>
+                                <a href="#" class="icon-btn"><i class="bi bi-twitter-x"></i></a>
+                                <a href="#" class="icon-btn"><i class="bi bi-facebook"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Placeholder -->
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <i class="bi bi-map-fill mb-3 d-block" style="font-size: 3rem;"></i>
+                    <p class="fw-600 m-0">Interactive Map Placeholder</p>
+                    <p class="small text-muted">Map API integration will appear here</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <a href="/" class="footer-logo">URBANTIQ</a>
+                    <p class="footer-desc">Premium men’s fashion for the modern generation. Engineering style with
+                        clinical precision.</p>
+                    <div class="footer-social d-none d-md-flex">
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    </div>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Shop</h5>
+                    <ul class="footer-links">
+                        <li><a href="/product">New Arrivals</a></li>
+                        <li><a href="/product">Shirts</a></li>
+                        <li><a href="/product">Jeans</a></li>
+                        <li><a href="/product">Suits</a></li>
+                        <li><a href="/product">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Support</h5>
+                    <ul class="footer-links">
+                        <li><a href="/contact">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Policy</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-4 col-md-6 col-lg-3 text-start text-md-start text-lg-start">
+                    <h5 class="footer-heading">Account</h5>
+                    <ul class="footer-links">
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Signup</a></li>
+                        <li><a href="/wishlist">Wishlist</a></li>
+                        <li><a href="/cart">Cart</a></li>
+                        <li><a href="/account-orders">Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                <div class="copyright text-start">
+                    &copy; 2026 URBANTIQ. All rights reserved.
+                </div>
+                <div class="footer-legal d-flex gap-3 mt-3 mt-md-0">
+                    <a href="#" class="text-muted small text-decoration-none">Terms</a>
+                    <a href="#" class="text-muted small text-decoration-none">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/common/auth-guard.js"></script>
+</body>
+
+</html>

@@ -9,7 +9,7 @@ import adminAuthMiddleware from "../middleware/adminMiddleware.js"
 const router = express.Router();
 
 router.get("/login", (req, res) => {
-  res.sendFile(path.resolve("views/admin/login.html"));
+  res.sendFile(path.resolve("public/views/admin/login.html"));
 });
 
 // Each admin route serves its own standalone HTML page
@@ -35,18 +35,18 @@ const adminPages = [
 
 adminPages.forEach((page) => {
   router.get(`/${page}`, adminAuthMiddleware, (req, res) => {
-    res.sendFile(path.resolve(`views/admin/${page}.html`));
+    res.sendFile(path.resolve(`public/views/admin/${page}.html`));
   });
 });
 
 // Edit category page — dynamic ID param
 router.get("/edit-category/:id", adminAuthMiddleware, (req, res) => {
-  res.sendFile(path.resolve("views/admin/edit-category.html"));
+  res.sendFile(path.resolve("public/views/admin/edit-category.html"));
 });
 
 // Edit supplier page — dynamic ID param
 router.get("/edit-supplier/:id", adminAuthMiddleware, (req, res) => {
-  res.sendFile(path.resolve("views/admin/edit-supplier.html"));
+  res.sendFile(path.resolve("public/views/admin/edit-supplier.html"));
 });
 
 router.post("/login", adminLogin);
