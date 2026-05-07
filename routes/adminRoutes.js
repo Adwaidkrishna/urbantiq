@@ -2,6 +2,9 @@ import express from "express";
 import path from "path";
 
 import { adminLogin, adminLogout, getAdminProfile, updateAdminProfile, changeAdminPassword } from "../controllers/adminController.js";
+import { getDashboardStats } from "../controllers/dashboardController.js";
+import { getSalesReport } from "../controllers/salesController.js";
+import { globalSearch } from "../controllers/searchController.js";
 import adminAuthMiddleware from "../middleware/adminMiddleware.js"
 
 
@@ -48,6 +51,11 @@ router.get("/edit-category/:id", adminAuthMiddleware, (req, res) => {
 router.get("/edit-supplier/:id", adminAuthMiddleware, (req, res) => {
   res.sendFile(path.resolve("public/views/admin/edit-supplier.html"));
 });
+
+// Dashboard API
+router.get("/dashboard/stats", adminAuthMiddleware, getDashboardStats);
+router.get("/sales-report-data", adminAuthMiddleware, getSalesReport);
+router.get("/global-search", adminAuthMiddleware, globalSearch);
 
 router.post("/login", adminLogin);
 router.get("/logout", adminLogout);

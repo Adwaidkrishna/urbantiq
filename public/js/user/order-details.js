@@ -109,6 +109,18 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('displaySubtotal').textContent = `₹${order.totalPrice.toLocaleString()}`;
         document.getElementById('displayDiscount').textContent = `- ₹${order.discount.toLocaleString()}`;
         document.getElementById('displayTotal').textContent = `₹${order.finalAmount.toLocaleString()}`;
+        
+        const paymentMethodEl = document.getElementById('displayPaymentMethod');
+        if (paymentMethodEl) {
+            paymentMethodEl.textContent = order.paymentMethod || 'N/A';
+            if (order.paymentMethod === 'COD') {
+                paymentMethodEl.innerHTML = `<span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2 py-1 rounded-pill">Cash on Delivery</span>`;
+            } else if (order.paymentMethod === 'Online') {
+                paymentMethodEl.innerHTML = `<span class="badge bg-success bg-opacity-10 text-success border border-success-subtle px-2 py-1 rounded-pill">Online Payment</span>`;
+            } else if (order.paymentMethod === 'Wallet') {
+                paymentMethodEl.innerHTML = `<span class="badge bg-info bg-opacity-10 text-info border border-info-subtle px-2 py-1 rounded-pill">Wallet</span>`;
+            }
+        }
 
         // Actions (iOS Style Layout)
         const actionsEl = document.getElementById('orderActions');

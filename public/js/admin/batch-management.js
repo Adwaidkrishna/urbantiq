@@ -1,204 +1,227 @@
 (function () {
+  // Elements
   const prodSearch = document.getElementById('product-search');
   const prodSelect = document.getElementById('select-product');
   const batchSelect = document.getElementById('select-batch');
-  const batchInfo = document.getElementById('batch-info-container');
-  const allocContainer = document.getElementById('variants-allocation-container');
-  const variantsList = document.getElementById('variants-list');
+  const variantTableArea = document.getElementById('variant-table-area');
+  const variantTableBody = document.getElementById('variant-table-body');
+  const nextBtn1 = document.getElementById('next-step-1');
+  const selectedCountEl = document.getElementById('selected-count');
+  const totalStockEl = document.getElementById('total-stock');
+  const selectAllCheck = document.getElementById('select-all-variants');
+
+  // Navigation
+  const stepNodes = [document.getElementById('step-node-1'), document.getElementById('step-node-2'), document.getElementById('step-node-3')];
+  const stepViews = [document.getElementById('step-view-1'), document.getElementById('step-view-2'), document.getElementById('step-view-3')];
+  const nextBtn2 = document.getElementById('next-step-2');
+  const prevBtn2 = document.getElementById('prev-step-2');
+  const prevBtn3 = document.getElementById('prev-step-3');
   const submitBtn = document.getElementById('submit-btn');
-  const form = document.getElementById('link-batch-form');
 
   let products = [];
   let unlinkedBatches = [];
-  let currentBatch = null;
+  let state = {
+    productId: '',
+    selectedVariants: [], // [{variantId, sizeId, stock, quantity}]
+    batchId: '',
+    batchObj: null
+  };
 
   async function loadData() {
     try {
-      const [prodRes, batchRes] = await Promise.all([
+      const [pRes, bRes] = await Promise.all([
         fetch('/api/admin/products/list'),
         fetch('/api/admin/batches/unlinked')
       ]);
-      products = await prodRes.json();
-      unlinkedBatches = await batchRes.json();
-
+      products = await pRes.json();
+      unlinkedBatches = await bRes.json();
       renderProducts(products);
       renderBatches(unlinkedBatches);
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      console.error(e);
     }
   }
 
   function renderProducts(list) {
     prodSelect.innerHTML = '<option value="">-- Select Product --</option>';
     list.forEach(p => {
-      // Calculate total stock to determine status
-      let totalStock = 0;
-      if (p.variants) {
-        p.variants.forEach(v => {
-          if (v.sizes) v.sizes.forEach(s => totalStock += (Number(s.stock) || 0));
-        });
-      }
-      const statusLabel = totalStock > 0 ? "Linked" : "Unlinked";
-      prodSelect.innerHTML += `<option value="${p._id}">${p.name} (${statusLabel})</option>`;
+      prodSelect.innerHTML += `<option value="${p._id}">${p.name}</option>`;
     });
   }
 
   function renderBatches(list) {
     batchSelect.innerHTML = '<option value="">-- Select Batch --</option>';
     list.forEach(b => {
-      batchSelect.innerHTML += `<option value="${b._id}">${b.batchId || '-'} : ${b.productName} (${b.quantity} qty)</option>`;
+      batchSelect.innerHTML += `<option value="${b._id}" data-batch='${JSON.stringify(b)}'>${b.batchId || '-'} : ${b.productName} (${b.quantity} units)</option>`;
     });
   }
 
+  // Navigation Logic
+  const navigateToStep = (idx) => {
+    stepViews.forEach((v, i) => {
+      v.classList.toggle('d-none', i !== idx);
+      if (i < idx) { stepNodes[i].classList.add('completed'); stepNodes[i].classList.remove('active'); }
+      else if (i === idx) { stepNodes[i].classList.add('active'); stepNodes[i].classList.remove('completed'); }
+      else { stepNodes[i].classList.remove('active', 'completed'); }
+    });
+    
+    if (idx === 2) updateFinalVerification();
+  };
+
+  function updateFinalVerification() {
+    document.getElementById('final-batch-name').innerText = state.batchObj ? state.batchObj.batchId : '-';
+    document.getElementById('final-variant-count').innerText = state.selectedVariants.length;
+  }
+
+  // Step 1: Product & Variant Selection
   prodSearch.addEventListener('input', (e) => {
     const q = e.target.value.toLowerCase();
     renderProducts(products.filter(p => p.name.toLowerCase().includes(q)));
-    resetAllocation();
   });
 
   prodSelect.addEventListener('change', () => {
-    resetAllocation();
-    evaluateState();
-  });
-
-  batchSelect.addEventListener('change', (e) => {
-    const bId = e.target.value;
-    currentBatch = unlinkedBatches.find(b => b._id === bId);
-
-    if (currentBatch) {
-      batchInfo.style.display = 'block';
-      document.getElementById('batch-info-qty').innerText = `Total Qty: ${currentBatch.quantity}`;
-      document.getElementById('batch-info-item').innerText = `Item: ${currentBatch.productName}`;
-      document.getElementById('max-allocate').innerText = currentBatch.quantity;
+    const pId = prodSelect.value;
+    state.productId = pId;
+    if (pId) {
+      const product = products.find(p => p._id === pId);
+      renderVariantTable(product);
+      variantTableArea.classList.remove('d-none');
     } else {
-      batchInfo.style.display = 'none';
+      variantTableArea.classList.add('d-none');
+      nextBtn1.disabled = true;
     }
-    evaluateState();
   });
 
-  function resetAllocation() {
-    allocContainer.style.display = 'none';
-    variantsList.innerHTML = '';
-    document.getElementById('total-allocated').innerText = '0';
-    document.getElementById('total-allocated').style.color = '#de350b';
-    document.getElementById('allocation-icon').innerText = '';
-    submitBtn.disabled = true;
+  function renderVariantTable(product) {
+    variantTableBody.innerHTML = '';
+    selectAllCheck.checked = false;
+    
+    if (!product.variants) return;
+
+    product.variants.forEach(variant => {
+      variant.sizes.forEach(sz => {
+        const row = document.createElement('tr');
+        row.className = 'variant-row';
+        const stock = sz.stock || 0;
+        const stockClass = stock <= 0 ? 'stock-none' : (stock < 10 ? 'stock-low' : 'stock-ok');
+
+        row.innerHTML = `
+          <td><input type="checkbox" class="var-check form-check-input" data-vid="${variant._id}" data-sid="${sz._id}" data-size="${sz.size}" data-stock="${stock}"></td>
+          <td>${variant.colorName || variant.color}</td>
+          <td><span class="fw-bold">${sz.size}</span></td>
+          <td class="text-center">
+            <span class="stock-badge ${stockClass}">${stock} in stock</span>
+          </td>
+          <td class="text-end" style="width: 140px;">
+            <input type="number" class="qty-input form-control form-control-sm text-end d-none" placeholder="Qty" min="1">
+          </td>
+        `;
+
+        const check = row.querySelector('.var-check');
+        const input = row.querySelector('.qty-input');
+
+        check.onchange = () => {
+          row.classList.toggle('selected', check.checked);
+          input.classList.toggle('d-none', !check.checked);
+          if (!check.checked) input.value = '';
+          updateAggregation();
+        };
+
+        input.oninput = () => updateAggregation();
+
+        variantTableBody.appendChild(row);
+      });
+    });
   }
 
-  function evaluateState() {
-    const pId = prodSelect.value;
+  selectAllCheck.onchange = () => {
+    const checks = variantTableBody.querySelectorAll('.var-check');
+    checks.forEach(c => {
+      const input = c.closest('tr').querySelector('.qty-input');
+      c.checked = selectAllCheck.checked;
+      c.closest('tr').classList.toggle('selected', c.checked);
+      input.classList.toggle('d-none', !c.checked);
+      if (!c.checked) input.value = '';
+    });
+    updateAggregation();
+  };
 
-    if (!pId || !currentBatch) {
-      resetAllocation();
+  function updateAggregation() {
+    state.selectedVariants = [];
+    let totalToLink = 0;
+    const checks = variantTableBody.querySelectorAll('.var-check:checked');
+    
+    checks.forEach(c => {
+      const input = c.closest('tr').querySelector('.qty-input');
+      const qty = parseInt(input.value) || 0;
+      state.selectedVariants.push({
+        variantId: c.dataset.vid,
+        sizeId: c.dataset.sid,
+        size: c.dataset.size,
+        quantity: qty
+      });
+      totalToLink += qty;
+    });
+
+    selectedCountEl.innerText = state.selectedVariants.length;
+    totalStockEl.innerText = totalToLink;
+    
+    nextBtn1.disabled = state.selectedVariants.length === 0;
+  }
+
+  nextBtn1.addEventListener('click', () => navigateToStep(1));
+
+  // Step 2: Batch Selection
+  batchSelect.addEventListener('change', () => {
+    state.batchId = batchSelect.value;
+    if (state.batchId) {
+      state.batchObj = JSON.parse(batchSelect.options[batchSelect.selectedIndex].dataset.batch);
+      nextBtn2.disabled = false;
+    } else {
+      nextBtn2.disabled = true;
+    }
+  });
+
+  nextBtn2.addEventListener('click', () => {
+    const totalAllocated = state.selectedVariants.reduce((sum, v) => sum + v.quantity, 0);
+    if (totalAllocated !== state.batchObj.quantity) {
+      alert(`Error: Total allocated quantity (${totalAllocated}) must match batch quantity (${state.batchObj.quantity})`);
       return;
     }
+    navigateToStep(2);
+  });
 
-    const prod = products.find(p => p._id === pId);
-    allocContainer.style.display = 'block';
-    variantsList.innerHTML = '';
+  prevBtn2.addEventListener('click', () => navigateToStep(0));
+  prevBtn3.addEventListener('click', () => navigateToStep(1));
 
-    let firstInputAdded = false;
-
-    if (prod && prod.variants) {
-      prod.variants.forEach(v => {
-        if (v.sizes) {
-          v.sizes.forEach(sz => {
-            const defVal = !firstInputAdded ? currentBatch.quantity : 0;
-            // Auto fill first variant
-            if (!firstInputAdded) firstInputAdded = true;
-
-            const label = `${v.colorName || v.color} - ${sz.size}`;
-            const isLinked = (sz.stock || 0) > 0;
-            const statusBadge = isLinked 
-              ? `<span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-2 ms-2" style="font-size: 0.65rem;">LINKED</span>`
-              : `<span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary-subtle px-2 ms-2" style="font-size: 0.65rem;">UNLINKED</span>`;
-
-            variantsList.innerHTML += `
-              <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
-                <div>
-                  <span style="font-weight:500;">${label} ${statusBadge}</span>
-                  <div style="font-size: 0.75rem; color: #666;">Current: ${sz.stock || 0} units</div>
-                </div>
-                <input type="number" class="form-control variant-qty text-center" 
-                  data-size-id="${sz._id}" 
-                  data-variant-id="${v._id}"
-                  data-size-label="${sz.size}"
-                  min="0" max="${currentBatch.quantity}" 
-                  value="${defVal}" 
-                  style="width: 80px;" />
-              </div>
-            `;
-          });
-        }
-      });
-    }
-
-    document.querySelectorAll('.variant-qty').forEach(input => {
-      input.addEventListener('input', checkValidation);
-    });
-    checkValidation(); // initial check for auto-fill
-  }
-
-  function checkValidation() {
-    let sum = 0;
-    document.querySelectorAll('.variant-qty').forEach(i => sum += Number(i.value || 0));
-
-    const qtySpan = document.getElementById('total-allocated');
-    const iconSpan = document.getElementById('allocation-icon');
-    qtySpan.innerText = sum;
-
-    if (currentBatch && sum === currentBatch.quantity) {
-      qtySpan.style.color = '#00875a'; // Green
-      iconSpan.innerHTML = '✅';
-      submitBtn.disabled = false;
-    } else {
-      qtySpan.style.color = '#de350b'; // Red
-      iconSpan.innerHTML = '';
-      submitBtn.disabled = true;
-    }
-  }
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (submitBtn.disabled || !currentBatch) return;
+  // Step 3: Submission
+  submitBtn.addEventListener('click', async () => {
+    if (state.selectedVariants.length === 0 || !state.batchId) return;
 
     submitBtn.innerText = 'LINKING...';
     submitBtn.disabled = true;
 
-    const allocations = [];
-    document.querySelectorAll('.variant-qty').forEach(i => {
-      const q = Number(i.value || 0);
-      if (q > 0) allocations.push({ 
-        variantId: i.dataset.variantId, 
-        sizeId: i.dataset.sizeId, 
-        size: i.dataset.sizeLabel,
-        quantity: q 
-      });
-    });
-
     try {
-      const res = await fetch(`/api/admin/batches/${currentBatch._id}/link`, {
+      const res = await fetch(`/api/admin/batches/${state.batchId}/link`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ allocations })
+        body: JSON.stringify({ allocations: state.selectedVariants })
       });
-      const data = await res.json();
 
       if (res.ok) {
-        alert('Batch Linked Successfully! Stock has been updated.');
-        batchSelect.value = '';
-        currentBatch = null;
-        loadData(); // reload unlinked batches
-        resetAllocation();
-        batchInfo.style.display = 'none';
+        alert('Batch implementation successful!');
+        window.location.reload();
       } else {
-        alert(data.message || 'Error linking batch');
+        const d = await res.json();
+        alert(d.message || 'Error linking batch');
+        submitBtn.innerText = 'Confirm & Implement Batch';
+        submitBtn.disabled = false;
       }
-    } catch (err) {
-      console.error(err);
-      alert('Network Error');
-    } finally {
-      submitBtn.innerText = 'LINK BATCH TO STOCK';
+    } catch (e) {
+      console.error(e);
+      alert('Network error');
+      submitBtn.innerText = 'Confirm & Implement Batch';
+      submitBtn.disabled = false;
     }
   });
 

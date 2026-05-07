@@ -39,15 +39,17 @@ app.use(cookieParser());
 
 app.use(express.static("public"));
 
+// ==========================================
+// 1. PUBLIC API ROUTES
+// ==========================================
 app.use("/api/auth", authRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/admin", adminCategoryRoutes);
 app.use("/api", categoryRoutes);
-app.use("/api/admin", adminProductRoutes);
 app.use("/api", productRoutes);
-app.use("/api/admin/suppliers", supplierRoutes);
-app.use("/api/admin", purchaseRoutes);
-app.use("/api/admin", batchRoutes);
+
+// ==========================================
+// 2. PROTECTED USER API ROUTES 
+// (Auth guards applied inside individual route files)
+// ==========================================
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/orders", orderRoutes);
@@ -56,8 +58,21 @@ app.use("/api/user-profile", userProfileRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/reviews", reviewRoutes);
 
+// ==========================================
+// 3. PROTECTED ADMIN API & PAGE ROUTES 
+// (Admin Auth guards applied inside individual route files)
+// ==========================================
+// Note: /api/admin/login remains publicly accessible
+app.use("/api/admin", adminRoutes);
+app.use("/api/admin", adminCategoryRoutes);
+app.use("/api/admin", adminProductRoutes);
+app.use("/api/admin/suppliers", supplierRoutes);
+app.use("/api/admin", purchaseRoutes);
+app.use("/api/admin", batchRoutes);
 
-// User side pages
+// ==========================================
+// 4. USER-SIDE PAGES
+// ==========================================
 app.use("/", userRoutes);
 
 const PORT = process.env.PORT || 5000;

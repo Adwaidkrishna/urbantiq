@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     function updateSummary(subtotal, discount, count) {
-        const total = subtotal - discount + 25;
+        const total = subtotal - discount;
 
         const summaryCount = document.getElementById("summaryCount");
         const summarySubtotal = document.getElementById("summarySubtotal");

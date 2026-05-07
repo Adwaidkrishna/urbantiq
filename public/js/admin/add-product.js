@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
             card.querySelectorAll(".size-row").forEach(row => {
                 vData.sizes.push({
                     size: row.querySelector(".size-name").value,
-                    stock: parseInt(row.querySelector(".size-stock").value) || 0
+                    stock: 0 // Stock is handled exclusively by Batch Implementation
                 });
             });
             variants.push(vData);
@@ -241,6 +241,35 @@ document.addEventListener("DOMContentLoaded", function () {
             if (files.length > 0) {
                 processFilesForCropping(files, 0, card, previewGrid);
             }
+        });
+
+        // Copy images to all variants
+        card.querySelector(".copy-images-btn").addEventListener("click", function() {
+            const sourceFiles = card.croppedFiles || [];
+            if (sourceFiles.length === 0) {
+                alert("Please upload images to this variant first.");
+                return;
+            }
+
+            if (!confirm(`Copy these ${sourceFiles.length} images to all other variants? This will overwrite their existing images.`)) {
+                return;
+            }
+
+            document.querySelectorAll(".variant-card").forEach(otherCard => {
+                if (otherCard === card) return;
+
+                // Sync the files
+                otherCard.croppedFiles = [...sourceFiles];
+                const otherGrid = otherCard.querySelector(".image-preview-grid");
+                otherGrid.innerHTML = "";
+
+                // Display previews
+                otherCard.croppedFiles.forEach(file => {
+                    const url = URL.createObjectURL(file);
+                    showImagePreviewUI(otherGrid, url, file, otherCard);
+                });
+            });
+            alert("Images copied to all variants!");
         });
 
         variantContainer.appendChild(clone);

@@ -1,0 +1,196 @@
+/**
+ * admin-inventory.css — URBANTIQ Admin
+ * Specific styles for the stock analysis/inventory page
+ */
+
+/* ─── Skeleton loader ─────────────────────────────────── */
+@keyframes shimmer {
+    0%   { background-position: -600px 0; }
+    100% { background-position: 600px 0; }
+}
+
+.skeleton {
+    background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);
+    background-size: 600px 100%;
+    animation: shimmer 1.4s infinite linear;
+    border-radius: 8px;
+    color: transparent !important;
+    pointer-events: none;
+    user-select: none;
+}
+
+.skeleton * { visibility: hidden; }
+
+/* ─── Premium Icon Backgrounds ────────────────────────── */
+.stat-icon-box {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.bg-primary-soft { background: rgba(0, 102, 204, 0.1); color: #0066cc; }
+.bg-danger-soft  { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+.bg-orange-soft  { background: rgba(255, 159, 0, 0.1); color: #ff9f00; }
+.bg-purple-soft  { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+.stat-icon-box svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ─── Table Thumbnails ───────────────────────────────── */
+.product-item-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.product-img-tiny {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+}
+
+/* ─── Filter Bar ─────────────────────────────────────── */
+.filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    background: #fff;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+    max-width: 320px;
+}
+
+.search-box svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.search-box input:focus {
+    border-color: #111827;
+}
+
+/* ── Expandable Rows ─────────────────────────────────── */
+.admin-table tbody tr.main-row {
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.admin-table tbody tr.main-row:hover {
+    background: #f9fafb !important;
+}
+
+.variant-detail-row {
+    background: #fcfcfd !important;
+    display: none; /* Toggled via JS */
+}
+
+.variant-detail-row.show {
+    display: table-row;
+}
+
+.variant-wrapper {
+    padding: 20px 40px;
+    border-left: 4px solid #111827;
+}
+
+.variant-header {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.variant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.variant-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.variant-color-strip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.color-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid #e5e7eb;
+}
+
+.size-badge-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.size-stock-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.size-label { color: #6b7280; }
+.stock-value { font-weight: 700; color: #111827; }
+.stock-value.low { color: #ff9f00; }
+.stock-value.out { color: #ef4444; }
+
+/* ── Dashboard error banner ─────────────────────────── */
+#inventoryError {
+    display: none;
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    color: #b91c1c;
+    margin-bottom: 1.5rem;
+}

@@ -1,4 +1,11 @@
+let selectedSize = null;
+let selectedSizeStock = 0;
+let isProductInitialized = false;
+
 document.addEventListener("DOMContentLoaded", function () {
+    if (isProductInitialized) return;
+    isProductInitialized = true;
+
     const display = document.getElementById('qtyDisplay');
     const qtyPlus = document.getElementById('qtyPlus');
     const qtyMinus = document.getElementById('qtyMinus');
@@ -6,8 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (qtyPlus && display) {
         qtyPlus.addEventListener('click', () => {
             let current = parseInt(display.textContent) || 1;
-            const activeSize = document.querySelector('.sp-size.active');
-            const maxStock = activeSize ? parseInt(activeSize.dataset.stock) : 99;
+            const maxStock = selectedSizeStock || 99;
             if (current < maxStock) {
                 display.textContent = current + 1;
             } else {
@@ -77,14 +83,25 @@ document.addEventListener("DOMContentLoaded", function () {
             const productId = getProductId();
             const activeVariantBtn = document.querySelector('.sp-color.active');
             const variantId = activeVariantBtn ? activeVariantBtn.dataset.id : null;
-            const activeSizeBtn = document.querySelector('.sp-size.active');
-            const size = activeSizeBtn ? activeSizeBtn.textContent : null;
+            
+            const size = selectedSize;
+            console.log("Final size (Add to Cart):", size);
 
             // Ensure we read the EXACT quantity currently displayed in the UI
             const finalQty = parseInt(document.getElementById('qtyDisplay').textContent) || 1;
 
             if (!variantId || !size) {
                 window.AuthGuard.showToast("Please select a color and size", "error");
+                return;
+            }
+
+            if (selectedSizeStock <= 0) {
+                window.AuthGuard.showToast("This item is currently out of stock", "error");
+                return;
+            }
+
+            if (finalQty > selectedSizeStock) {
+                window.AuthGuard.showToast(`Only ${selectedSizeStock} items available in stock`, "error");
                 return;
             }
 
@@ -125,8 +142,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const productId = getProductId();
             const activeVariantBtn = document.querySelector('.sp-color.active');
             const variantId = activeVariantBtn ? activeVariantBtn.dataset.id : null;
-            const activeSizeBtn = document.querySelector('.sp-size.active');
-            const size = activeSizeBtn ? activeSizeBtn.textContent : null;
+            
+            const size = selectedSize;
+            console.log("Final size (Order Now):", size);
 
             // Ensure we read the EXACT quantity currently displayed in the UI
             const finalQty = parseInt(document.getElementById('qtyDisplay').textContent) || 1;
@@ -136,12 +154,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            if (selectedSizeStock <= 0) {
+                window.AuthGuard.showToast("This item is currently out of stock", "error");
+                return;
+            }
+
+            if (finalQty > selectedSizeStock) {
+                window.AuthGuard.showToast(`Only ${selectedSizeStock} items available in stock`, "error");
+                return;
+            }
+
             try {
                 const res = await fetch("/api/cart/add", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    // Set override to true so the cart uses EXACTLY the quantity select here
-                    body: JSON.stringify({ productId, variantId, size, quantity: finalQty, override: true })
+                    // clearCart ensures the checkout contains ONLY this item (Buy Now behavior)
+                    body: JSON.stringify({ productId, variantId, size, quantity: finalQty, override: true, clearCart: true })
                 });
                 const data = await res.json();
                 if (data.success) {
@@ -193,6 +221,7 @@ async function loadSingleProduct() {
             renderProduct(data.product);
             checkWishlistStatus(productId);
             loadReviews(productId);
+            loadRelatedProducts(data.product.category?._id, productId);
         } else {
             console.error("Product not found");
             const titleEl = document.querySelector('.sp-title');
@@ -424,10 +453,13 @@ function renderVariantImagesAndSizes(variant, product = null) {
         sizeRow.innerHTML = "";
 
         if (variant.sizes && variant.sizes.length > 0) {
+            // First, reset the selection global if we are changing variants
+            let defaultSizeFound = false;
+
             variant.sizes.forEach((s, idx) => {
                 const btn = document.createElement("button");
                 const hasStock = s.stock > 0;
-                btn.className = `sp-size ${idx === 0 && hasStock ? 'active' : ''}`;
+                btn.className = "sp-size";
                 btn.textContent = s.size;
                 btn.dataset.stock = s.stock;
 
@@ -440,7 +472,12 @@ function renderVariantImagesAndSizes(variant, product = null) {
                     btn.addEventListener('click', () => {
                         document.querySelectorAll('.sp-size').forEach(b => b.classList.remove('active'));
                         btn.classList.add('active');
-                        // Update stock label only if below 3
+                        
+                        // Update global state
+                        selectedSize = s.size;
+                        selectedSizeStock = s.stock;
+                        
+                        // Update stock label
                         const stockLabel = document.getElementById('stockLabel');
                         if (stockLabel) {
                             stockLabel.textContent = s.stock < 3 ? `Only ${s.stock} left!` : "";
@@ -450,10 +487,18 @@ function renderVariantImagesAndSizes(variant, product = null) {
                         const currentDisplay = document.getElementById('qtyDisplay');
                         if(currentDisplay) currentDisplay.textContent = "1";
                     });
+
+                    // Auto-select the first available size with stock as the default
+                    if (!defaultSizeFound) {
+                        btn.classList.add('active');
+                        selectedSize = s.size;
+                        selectedSizeStock = s.stock;
+                        defaultSizeFound = true;
+                    }
                 }
 
-                // Initial load: show stock label only if below 3
-                if (idx === 0 && hasStock) {
+                // Initial UI state for stock label if this matches the currently active default
+                if (selectedSize === s.size) {
                     const stLabel = document.getElementById('stockLabel');
                     if (stLabel) {
                         stLabel.textContent = s.stock < 3 ? `Only ${s.stock} left!` : "";
@@ -463,8 +508,67 @@ function renderVariantImagesAndSizes(variant, product = null) {
 
                 sizeRow.appendChild(btn);
             });
+
+            // If no size was ever found with stock
+            if (!defaultSizeFound) {
+                selectedSize = null;
+                selectedSizeStock = 0;
+            }
+
         } else {
             sizeRow.innerHTML = "<span class='text-muted'>Out of stock</span>";
+            selectedSize = null;
+            selectedSizeStock = 0;
         }
     }
+}
+
+async function loadRelatedProducts(categoryId, currentProductId) {
+    if (!categoryId) return;
+    try {
+        const res = await fetch(`/api/products?category=${categoryId}&limit=4`);
+        const data = await res.json();
+        if (data.success && data.products) {
+            const filtered = data.products.filter(p => p._id !== currentProductId).slice(0, 4);
+            renderRelatedProducts(filtered);
+        }
+    } catch (err) {
+        console.error("Error loading related products:", err);
+    }
+}
+
+function renderRelatedProducts(products) {
+    const row = document.getElementById('relatedProductsRow');
+    if (!row) return;
+
+    if (products.length === 0) {
+        row.innerHTML = '<p class="text-muted text-center w-100 py-3">No similar products found.</p>';
+        return;
+    }
+
+    row.innerHTML = products.map(p => {
+        const price = p.offerPrice && p.offerPrice < p.price ? p.offerPrice : p.price;
+        const oldPrice = (p.offerPrice && p.offerPrice < p.price) ? `<span class="text-decoration-line-through text-muted ms-1 small">₹${p.price}</span>` : "";
+        const image = p.variants?.[0]?.images?.[0] ? `/images/products/${p.variants[0].images[0]}` : '/images/user/phoodie.jpeg';
+        
+        return `
+            <div class="col-6 col-md-3">
+                <a href="/product/${p._id}" class="text-decoration-none text-dark">
+                    <div class="card border-0 h-100 shadow-sm rounded-4 overflow-hidden product-card-hover" style="transition: transform 0.3s ease;">
+                        <div class="position-relative overflow-hidden" style="height: 280px;">
+                            <img src="${image}" class="card-img-top w-100 h-100" alt="${p.name}" style="object-fit: cover;">
+                        </div>
+                        <div class="card-body p-3">
+                            <h6 class="fw-bold mb-1 text-truncate" style="font-size: 0.9rem;">${p.name}</h6>
+                            <p class="text-muted small mb-2" style="font-size: 0.75rem;">${p.category?.name || 'Fashion'}</p>
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold text-dark">₹${price}</span>
+                                ${oldPrice}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        `;
+    }).join("");
 }

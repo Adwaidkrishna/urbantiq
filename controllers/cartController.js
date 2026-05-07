@@ -4,7 +4,7 @@ import Product from "../models/ProductModel.js";
 // Add to Cart
 export const addToCart = async (req, res) => {
   try {
-    const { productId, variantId, size, quantity, override } = req.body;
+    const { productId, variantId, size, quantity, override, clearCart } = req.body;
     const userId = req.userId;
     const qty = parseInt(quantity, 10);
 
@@ -43,7 +43,15 @@ export const addToCart = async (req, res) => {
 
     // Find or create cart for user
     let cart = await Cart.findOne({ user: userId });
-    if (!cart) {
+    
+    // If clearCart is true, wipe the cart items before adding the new one (Order Now flow)
+    if (clearCart === true || clearCart === 'true') {
+      if (cart) {
+        cart.items = [];
+      } else {
+        cart = new Cart({ user: userId, items: [] });
+      }
+    } else if (!cart) {
       cart = new Cart({ user: userId, items: [] });
     }
 

@@ -11,16 +11,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // Color swatch toggle
     document.querySelectorAll('.color-swatch').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.color-swatch').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            btn.classList.toggle('active');
         });
     });
 
     // Size pill toggle
     document.querySelectorAll('.size-pill').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.size-pill').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            btn.classList.toggle('active');
         });
     });
 
@@ -74,6 +72,48 @@ document.addEventListener("DOMContentLoaded", () => {
         const productGrid = document.getElementById("productGrid");
         if (!productGrid) return;
 
+        // Build query string
+        const params = new URLSearchParams();
+        
+        const searchInput = document.querySelector('.search-input');
+        if (searchInput && searchInput.value) {
+            params.append('search', searchInput.value.trim());
+        }
+
+        const sortSelect = document.getElementById('sortSelect');
+        if (sortSelect) {
+            params.append('sort', sortSelect.value);
+        }
+
+        const priceSlider = document.getElementById('priceSlider');
+        if (priceSlider) {
+            params.append('maxPrice', priceSlider.value);
+        }
+
+        const checkedCategories = Array.from(document.querySelectorAll('#categoryFilterList input[type="checkbox"]:checked')).map(cb => cb.value);
+        if (checkedCategories.length > 0) {
+            params.append('categories', checkedCategories.join(','));
+        }
+
+        const activeSizes = Array.from(document.querySelectorAll('#sizeFilterList .size-pill.active')).map(btn => btn.value);
+        if (activeSizes.length > 0) {
+            params.append('sizes', activeSizes.join(','));
+        }
+
+        const activeColors = Array.from(document.querySelectorAll('#colorFilterList .color-swatch.active')).map(btn => btn.value);
+        if (activeColors.length > 0) {
+            params.append('colors', activeColors.join(','));
+        }
+
+        if (document.getElementById('filterNewArrival')?.checked) {
+            params.append('newArrival', 'true');
+        }
+        
+        const ratingFilter = document.querySelector('input[name="ratingFilter"]:checked');
+        if (ratingFilter) {
+            params.append('rating', ratingFilter.value);
+        }
+
         try {
             // Load wishlist first if logged in
             const status = await window.AuthGuard.fetchStatus();
@@ -83,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (wlData.success) currentWishlist = wlData.products.map(p => p._id);
             }
 
-            const res = await fetch("/api/products");
+            const res = await fetch(`/api/products?${params.toString()}`);
             const data = await res.json();
 
             if (data.success) {
@@ -200,6 +240,41 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             productGrid.appendChild(clone);
+        });
+    }
+
+    // Event listeners for filters and sort
+    const sortSelect = document.getElementById('sortSelect');
+    if (sortSelect) sortSelect.addEventListener('change', loadProducts);
+
+    const priceSlider = document.getElementById('priceSlider');
+    if (priceSlider) priceSlider.addEventListener('change', loadProducts);
+
+    const categoryFilterList = document.getElementById('categoryFilterList');
+    if (categoryFilterList) categoryFilterList.addEventListener('change', loadProducts);
+
+    const sizeFilterList = document.getElementById('sizeFilterList');
+    if (sizeFilterList) sizeFilterList.addEventListener('click', (e) => {
+        if(e.target.classList.contains('size-pill')) loadProducts();
+    });
+
+    const colorFilterList = document.getElementById('colorFilterList');
+    if (colorFilterList) colorFilterList.addEventListener('click', (e) => {
+        if(e.target.classList.contains('color-swatch')) loadProducts();
+    });
+
+    const otherFilterList = document.getElementById('otherFilterList');
+    if (otherFilterList) otherFilterList.addEventListener('change', loadProducts);
+
+    const ratingFilterList = document.getElementById('ratingFilterList');
+    if (ratingFilterList) ratingFilterList.addEventListener('change', loadProducts);
+
+    const searchInput = document.querySelector('.search-input');
+    if (searchInput) {
+        let searchTimeout;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(loadProducts, 500);
         });
     }
 

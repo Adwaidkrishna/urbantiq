@@ -1,0 +1,74 @@
+/**
+ * admin-dashboard.css — URBANTIQ Admin
+ * Specific styles for the analytics dashboard
+ */
+
+/* ─── Skeleton loader ─────────────────────────────────── */
+@keyframes shimmer {
+    0%   { background-position: -600px 0; }
+    100% { background-position: 600px 0; }
+}
+
+.skeleton {
+    background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);
+    background-size: 600px 100%;
+    animation: shimmer 1.4s infinite linear;
+    border-radius: 8px;
+    color: transparent !important;
+    pointer-events: none;
+    user-select: none;
+}
+
+.skeleton * { visibility: hidden; }
+
+/* ─── Trend badge variants ───────────────────────────── */
+.analytics-trend-badge.negative {
+    background: rgba(239, 68, 68, 0.10);
+    color: #ef4444;
+}
+
+/* ─── Mini charts grid ───────────────────────────────── */
+.mini-charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .mini-charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.mini-chart-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.25rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+}
+
+.mini-chart-card h5 {
+    font-size: .85rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.mini-chart-wrap {
+    height: 180px;
+    position: relative;
+}
+
+/* ─── Dashboard error banner ─────────────────────────── */
+#dashboardError {
+    display: none;
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    color: #b91c1c;
+    margin-bottom: 1.5rem;
+}

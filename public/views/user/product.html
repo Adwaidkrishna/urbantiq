@@ -91,6 +91,80 @@
                     <input type="range" class="price-slider" id="priceSlider" min="0" max="5000" value="5000" step="100">
                     <div class="d-flex justify-content-between"><span>₹0</span><span id="priceDisplay">₹5,000</span></div>
                 </div>
+                <div class="filter-section">
+                    <div class="filter-label">SIZE</div>
+                    <div class="size-pills" id="sizeFilterList">
+                        <button type="button" class="size-pill" value="S">S</button>
+                        <button type="button" class="size-pill" value="M">M</button>
+                        <button type="button" class="size-pill" value="L">L</button>
+                        <button type="button" class="size-pill" value="XL">XL</button>
+                        <button type="button" class="size-pill" value="XXL">XXL</button>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-label">COLOR</div>
+                    <div class="color-swatches" id="colorFilterList">
+                        <button type="button" class="color-swatch" style="background-color: #000;" value="Black" title="Black"></button>
+                        <button type="button" class="color-swatch" style="background-color: #fff; border: 1.5px solid #e5e5e7;" value="White" title="White"></button>
+                        <button type="button" class="color-swatch" style="background-color: #007aff;" value="Blue" title="Blue"></button>
+                        <button type="button" class="color-swatch" style="background-color: #ff3b30;" value="Red" title="Red"></button>
+                        <button type="button" class="color-swatch" style="background-color: #34c759;" value="Green" title="Green"></button>
+                        <button type="button" class="color-swatch" style="background-color: #a2845e;" value="Brown" title="Brown"></button>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-label">CUSTOMER RATINGS</div>
+                    <ul class="filter-list" id="ratingFilterList">
+                        <li>
+                            <label class="filter-check">
+                                <input type="radio" name="ratingFilter" value="4">
+                                <span class="checkmark"></span>
+                                <span class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-star-fill text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star-fill text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star-fill text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star-fill text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star text-warning" style="font-size: 0.8rem;"></i>
+                                    <span class="ms-1" style="font-size: 0.8rem; color: #86868b;">& Up</span>
+                                </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-check">
+                                <input type="radio" name="ratingFilter" value="3">
+                                <span class="checkmark"></span>
+                                <span class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-star-fill text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star-fill text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star-fill text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star text-warning" style="font-size: 0.8rem;"></i>
+                                    <span class="ms-1" style="font-size: 0.8rem; color: #86868b;">& Up</span>
+                                </span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="filter-check">
+                                <input type="radio" name="ratingFilter" value="2">
+                                <span class="checkmark"></span>
+                                <span class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-star-fill text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star-fill text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star text-warning" style="font-size: 0.8rem;"></i>
+                                    <i class="bi bi-star text-warning" style="font-size: 0.8rem;"></i>
+                                    <span class="ms-1" style="font-size: 0.8rem; color: #86868b;">& Up</span>
+                                </span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-label">OTHER FILTERS</div>
+                    <ul class="filter-list" id="otherFilterList">
+                        <li><label class="filter-check"><input type="checkbox" id="filterNewArrival" value="true"><span class="checkmark"></span> New Arrivals</label></li>
+                    </ul>
+                </div>
             </aside>
 
             <!-- ====== PRODUCT GRID ====== -->

@@ -1,6 +1,6 @@
 import Review from "../models/Review.js";
 import Product from "../models/ProductModel.js";
-import Order from "../models/Ordermodel.js";
+import Order from "../models/OrderModel.js";
 
 /**
  * POST /api/reviews

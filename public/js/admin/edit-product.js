@@ -287,19 +287,61 @@ document.addEventListener("DOMContentLoaded", function () {
             if (variantContainer.children.length > 1) card.remove();
         };
 
-        // Existing Images
+        // Existing Image Previews
+        card.croppedFiles = [];
         const previewGrid = card.querySelector(".image-preview-grid");
         if (data && data.images) {
             data.images.forEach(img => showImagePreviewUI(previewGrid, `/images/products/${img}`));
         }
 
-        card.croppedFiles = [];
         card.querySelector(".variant-image-input").onchange = (e) => {
             const files = Array.from(e.target.files);
             e.target.value = ''; // clear input
             if (files.length > 0) {
                 processFilesForCropping(files, 0, card, previewGrid);
             }
+        };
+
+        // Copy images to all variants
+        card.querySelector(".copy-images-btn").onclick = () => {
+            const sourceFiles = card.croppedFiles || [];
+            const sourceKeptImages = [];
+            card.querySelectorAll(".preview-item").forEach(item => {
+                const img = item.querySelector("img").src;
+                // If it's a server image (not a blob/data URL)
+                if (!img.startsWith('data:') && !img.startsWith('blob:')) {
+                    sourceKeptImages.push(img);
+                }
+            });
+
+            if (sourceFiles.length === 0 && sourceKeptImages.length === 0) {
+                alert("Please upload images to this variant first.");
+                return;
+            }
+
+            if (!confirm(`Copy these images to all other variants? This will overwrite their existing selections.`)) {
+                return;
+            }
+
+            document.querySelectorAll(".variant-card").forEach(otherCard => {
+                if (otherCard === card) return;
+
+                const otherGrid = otherCard.querySelector(".image-preview-grid");
+                otherGrid.innerHTML = "";
+                otherCard.croppedFiles = [...sourceFiles];
+
+                // Restore kept images to others
+                sourceKeptImages.forEach(src => {
+                    showImagePreviewUI(otherGrid, src, null, otherCard);
+                });
+
+                // Add newly cropped files to others
+                otherCard.croppedFiles.forEach(file => {
+                    const url = URL.createObjectURL(file);
+                    showImagePreviewUI(otherGrid, url, file, otherCard);
+                });
+            });
+            alert("Images copied to all variants!");
         };
 
         variantContainer.appendChild(clone);
@@ -311,7 +353,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const row = clone.querySelector(".size-row");
         if (data) {
             row.querySelector(".size-name").value = data.size;
-            row.querySelector(".size-stock").value = data.stock;
+            row.querySelector(".size-stock").value = data.stock || 0;
+        } else {
+            row.querySelector(".size-stock").value = 0; // New sizes default to 0
         }
         row.querySelector(".remove-size-row").onclick = () => { if (box.children.length > 1) row.remove(); };
         box.appendChild(clone);

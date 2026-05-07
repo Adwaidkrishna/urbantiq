@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Order from "../models/Ordermodel.js";
+import Order from "../models/OrderModel.js";
 import Cart from "../models/Cart.js";
 import Product from "../models/ProductModel.js";
 import PurchaseItem from "../models/PurchaseItemModel.js";
@@ -24,14 +24,11 @@ export const placeOrder = async (req, res) => {
       if (!coupon) throw new Error("Applied coupon is no longer valid.");
       if (new Date() > new Date(coupon.expiryDate)) throw new Error("Applied coupon has expired.");
       if (coupon.usedCount >= coupon.usageLimit) throw new Error("Coupon usage limit reached.");
-      
-      // Increment usedCount
-      coupon.usedCount += 1;
-      await coupon.save();
     }
 
     const orderItems = [];
 
+    // --- PHASE 1: Data validation & Pre-checks (No DB mutations yet) ---
     for (const item of items) {
       const productId = item.product?._id || item.product;
       const variantId = item.variant?._id || item.variant;
@@ -42,7 +39,7 @@ export const placeOrder = async (req, res) => {
         throw new Error("Invalid product variant or quantity data");
       }
 
-      // Step 3: Validate stock
+      // Validate stock
       const product = await Product.findById(productId);
       if (!product) throw new Error(`Product ${productId} not found`);
 
@@ -54,13 +51,76 @@ export const placeOrder = async (req, res) => {
         throw new Error(`Out of stock: ${product.name} (${sizeStr}) only has ${sizeObj ? sizeObj.stock : 0} left.`);
       }
 
-      // Step 4: Apply FIFO batch deduction
+      // Check FIFO batch availability without modifying
       const batches = await PurchaseItem.find({
         status: "LINKED",
         allocations: {
           $elemMatch: {
             variantId: new mongoose.Types.ObjectId(variantId),
             size: sizeStr,
+            remainingQuantity: { $gt: 0 }
+          }
+        }
+      });
+
+      const availableInBatches = batches.reduce((acc, batch) => {
+        const alloc = batch.allocations.find(a => a.variantId.toString() === variantId.toString() && a.size === sizeStr);
+        return acc + (alloc ? alloc.remainingQuantity : 0);
+      }, 0);
+
+      if (availableInBatches < requestedQty) {
+        throw new Error(`Out of Stock: Sync issue for ${product.name} (${sizeStr}). FIFO batches insufficient.`);
+      }
+
+      orderItems.push({
+        product: productId,
+        variant: variantId,
+        size: sizeStr,
+        quantity: requestedQty,
+        price: item.price
+      });
+    }
+
+    // --- PHASE 2: Create Order Instance and Validate Schema ---
+    const orderData = {
+      user: req.userId,
+      items: orderItems,
+      shippingAddress,
+      paymentMethod,
+      totalPrice,
+      discount,
+      shippingCharges,
+      finalAmount,
+      couponCode,
+      paymentStatus: paymentMethod === "COD" ? "Pending" : "Paid"
+    };
+
+    if (transactionId) {
+      orderData.transactionId = transactionId;
+    }
+
+    const order = new Order(orderData);
+
+    const validationError = order.validateSync();
+    if (validationError) {
+      throw new Error(`Order validation failed: ${validationError.message}`);
+    }
+
+    // --- PHASE 3: Mutate DB (Stock reduction & Payment) ---
+    if (couponCode) {
+      await Coupon.updateOne({ code: couponCode.toUpperCase() }, { $inc: { usedCount: 1 } });
+    }
+
+    for (const item of orderItems) {
+      const requestedQty = Number(item.quantity);
+
+      // Apply FIFO batch deduction
+      const batches = await PurchaseItem.find({
+        status: "LINKED",
+        allocations: {
+          $elemMatch: {
+            variantId: new mongoose.Types.ObjectId(item.variant),
+            size: item.size,
             remainingQuantity: { $gt: 0 }
           }
         }
@@ -72,8 +132,8 @@ export const placeOrder = async (req, res) => {
         if (remainingQtyToDeduct <= 0) break;
 
         const alloc = batch.allocations.find(a =>
-          a.variantId.toString() === variantId.toString() &&
-          a.size === sizeStr &&
+          a.variantId.toString() === item.variant.toString() &&
+          a.size === item.size &&
           a.remainingQuantity > 0
         );
 
@@ -88,45 +148,26 @@ export const placeOrder = async (req, res) => {
             { $inc: { "allocations.$.remainingQuantity": -deductAmount } }
           );
 
-          if (batchUpdate.modifiedCount === 0) {
-            throw new Error(`Concurrency mismatch: Batch allocation failed for ${product.name}.`);
+          if (batchUpdate.modifiedCount > 0) {
+            remainingQtyToDeduct -= deductAmount;
           }
-
-          remainingQtyToDeduct -= deductAmount;
         }
       }
 
-      // Step 5: Final stock check
-      if (remainingQtyToDeduct > 0) {
-        throw new Error(`Out of Stock: Sync issue for ${product.name} (${sizeStr}). FIFO batches insufficient.`);
-      }
-
-      // Step 6: Update ProductVariant stock
-      const productUpdate = await Product.updateOne(
-        { _id: productId },
+      // Update ProductVariant stock
+      await Product.updateOne(
+        { _id: item.product },
         { $inc: { "variants.$[v].sizes.$[s].stock": -requestedQty } },
         {
           arrayFilters: [
-            { "v._id": new mongoose.Types.ObjectId(variantId) },
-            { "s.size": sizeStr }
+            { "v._id": new mongoose.Types.ObjectId(item.variant) },
+            { "s.size": item.size }
           ]
         }
       );
-
-      if (productUpdate.modifiedCount === 0) {
-        throw new Error(`Failed to update master stock for ${product.name}.`);
-      }
-
-      orderItems.push({
-        product: productId,
-        variant: variantId,
-        size: sizeStr,
-        quantity: requestedQty,
-        price: item.price
-      });
     }
 
-    // Step 7: Handle Wallet Payment Deduction
+    // Handle Wallet Payment Deduction
     if (paymentMethod === "Wallet") {
       const user = await User.findById(req.userId);
       if (!user) throw new Error("User not found");
@@ -146,21 +187,7 @@ export const placeOrder = async (req, res) => {
       await transaction.save();
     }
 
-    // Step 8: Create order
-    const order = new Order({
-      user: req.userId,
-      items: orderItems,
-      shippingAddress,
-      paymentMethod,
-      totalPrice,
-      discount,
-      shippingCharges,
-      finalAmount,
-      couponCode,
-      paymentStatus: paymentMethod === "COD" ? "Pending" : "Paid",
-      transactionId
-    });
-
+    // Step 9: Save order (Stock is already validated and reduced above)
     const savedOrder = await order.save();
 
     // Link transaction to order if it was a wallet payment
@@ -437,8 +464,12 @@ async function rollbackOrderStock(order) {
     // We restore to the NEWEST batches first (reverse of placement deduction)
     const batches = await PurchaseItem.find({
       status: "LINKED",
-      "allocations.variantId": new mongoose.Types.ObjectId(item.variant),
-      "allocations.size": item.size
+      allocations: {
+        $elemMatch: {
+          variantId: new mongoose.Types.ObjectId(item.variant),
+          size: item.size
+        }
+      }
     }).sort({ createdAt: -1 });
 
     let qtyToRestore = item.quantity;
@@ -470,9 +501,6 @@ async function rollbackOrderStock(order) {
 // @access  Private
 export const validateStock = async (req, res) => {
   try {
-    // console.log("Validate Stock Headers:", req.headers);
-    // console.log("Validate Stock Body:", req.body);
-
     if (!req.body) {
         return res.status(500).json({ message: "Request body is missing on server" });
     }
@@ -513,20 +541,6 @@ export const validateStock = async (req, res) => {
           }
         }
       });
-
-      // console.log(`Pre-check: Found ${batches.length} batches for Variant ${variantId} Size ${sizeStr}`);
-
-      if (batches.length === 0) {
-        // Diagnostic: Let's see what batches DO exist for this product variant at all
-        const anyBatches = await PurchaseItem.find({ "allocations.variantId": new mongoose.Types.ObjectId(variantId) });
-        /*
-        console.log(`Diagnostic: Total batches (Linked or Unlinked) for this variant: ${anyBatches.length}`);
-        if (anyBatches.length > 0) {
-          console.log(`Sample Batch Status: ${anyBatches[0].status}`);
-          console.log(`Sample Batch Allocations:`, JSON.stringify(anyBatches[0].allocations));
-        }
-        */
-      }
 
       const availableInBatches = batches.reduce((acc, batch) => {
         const alloc = batch.allocations.find(a => a.variantId.toString() === variantId.toString() && a.size === sizeStr);
