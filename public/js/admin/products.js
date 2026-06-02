@@ -73,18 +73,23 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             // Handle Delete Button Click
-            clone.querySelector(".delete-btn").addEventListener("click", function() {
-                if (confirm("Are you sure you want to delete this product?")) {
-                    fetch(`/api/admin/products/${product._id}`, { method: "DELETE" })
-                        .then(res => {
-                            if (res.ok) {
-                                alert("Product deleted successfully");
-                                window.location.reload();
-                            } else {
-                                alert("Failed to delete product");
-                            }
-                        });
-                }
+            clone.querySelector(".delete-btn").addEventListener("click", async function() {
+                const confirmed = await showConfirm({
+                    title: "Delete Product?",
+                    text: "This product and all its variants will be permanently removed.",
+                    confirmText: "Yes, Delete",
+                    icon: "warning",
+                });
+                if (!confirmed) return;
+                fetch(`/api/admin/products/${product._id}`, { method: "DELETE" })
+                    .then(res => {
+                        if (res.ok) {
+                            successToast("Product deleted successfully");
+                            window.location.reload();
+                        } else {
+                            errorToast("Failed to delete product");
+                        }
+                    });
             });
 
             productsGrid.appendChild(clone);

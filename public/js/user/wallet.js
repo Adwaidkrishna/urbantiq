@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // 2. Configure Razorpay Options
                 const options = {
-                    key: "rzp_test_SYJDs3aCK4Cn6M",
+                    key: "rzp_test_SwO27oBRLdlxQm",
                     amount: orderData.order.amount,
                     currency: "INR",
                     name: "URBANTIQ Wallet",
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     },
                     modal: {
-                        ondismiss: function() {
+                        ondismiss: function () {
                             confirmTopupBtn.disabled = false;
                             confirmTopupBtn.textContent = "Proceed to Payment";
                         }
@@ -138,10 +138,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const isCredit = tx.type === "CREDIT";
                 const isRecharge = tx.description.toLowerCase().includes("recharge");
-                const iconClass = isCredit 
-                                    ? (isRecharge ? "bi bi-lightning-charge-fill" : "bi bi-arrow-counterclockwise") 
-                                    : "bi bi-bag";
-                
+                const iconClass = isCredit
+                    ? (isRecharge ? "bi bi-lightning-charge-fill" : "bi bi-arrow-counterclockwise")
+                    : "bi bi-bag";
+
                 const amountClass = isCredit ? "text-credit" : "text-debit";
                 const amountPrefix = isCredit ? "+₹" : "−₹";
 

@@ -185,7 +185,7 @@
   nextBtn2.addEventListener('click', () => {
     const totalAllocated = state.selectedVariants.reduce((sum, v) => sum + v.quantity, 0);
     if (totalAllocated !== state.batchObj.quantity) {
-      alert(`Error: Total allocated quantity (${totalAllocated}) must match batch quantity (${state.batchObj.quantity})`);
+      warningToast(`Total allocated (${totalAllocated}) must match batch quantity (${state.batchObj.quantity})`);
       return;
     }
     navigateToStep(2);
@@ -209,17 +209,17 @@
       });
 
       if (res.ok) {
-        alert('Batch implementation successful!');
-        window.location.reload();
+        successToast('Batch implementation successful!');
+        setTimeout(() => window.location.reload(), 1500);
       } else {
         const d = await res.json();
-        alert(d.message || 'Error linking batch');
+        errorToast(d.message || 'Error linking batch');
         submitBtn.innerText = 'Confirm & Implement Batch';
         submitBtn.disabled = false;
       }
     } catch (e) {
       console.error(e);
-      alert('Network error');
+      errorToast('Network error. Please try again.');
       submitBtn.innerText = 'Confirm & Implement Batch';
       submitBtn.disabled = false;
     }

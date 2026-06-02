@@ -82,10 +82,17 @@
         tableBody.querySelectorAll('.btn-delete-coupon').forEach(btn => {
             btn.addEventListener('click', async function() {
                 const id = this.dataset.id;
-                if (confirm('Delete this coupon permanently?')) {
+                const confirmed = await showConfirm({
+                    title: 'Delete Coupon?',
+                    text: 'This coupon will be permanently deleted and can no longer be used.',
+                    confirmText: 'Yes, Delete',
+                    icon: 'warning',
+                });
+                if (confirmed) {
                     try {
                         const res = await fetch(`/api/coupons/admin/${id}`, { method: 'DELETE' });
                         if (res.ok) {
+                            successToast('Coupon deleted successfully');
                             fetchCoupons();
                             if (isEditMode && editId === id) resetForm();
                         }
@@ -177,14 +184,14 @@
                     console.log('Success:', result);
                     resetForm();
                     await fetchCoupons(); // Refresh table
-                    alert(isCurrentlyUpdating ? 'Coupon updated successfully!' : 'New coupon created!');
+                    successToast(isCurrentlyUpdating ? 'Coupon updated successfully!' : 'New coupon created!');
                 } else {
                     console.error('Error result:', result);
-                    alert(result.message || 'Validation failed. Please check your inputs.');
+                    errorToast(result.message || 'Validation failed. Please check your inputs.');
                 }
             } catch (error) { 
                 console.error('Submission Fatal Error:', error);
-                alert('Connection error. Please try again.');
+                errorToast('Connection error. Please try again.');
             }
         });
     }

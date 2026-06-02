@@ -241,8 +241,8 @@
         }
       }
 
-      alert('✅ Purchase recorded successfully! Batches have been created.');
-      window.location.href = '/api/admin/purchases';
+      successToast('Purchase recorded! Batches have been created.');
+      setTimeout(() => window.location.href = '/api/admin/purchases', 1800);
 
     } catch (error) {
       showError('Error: ' + error.message);

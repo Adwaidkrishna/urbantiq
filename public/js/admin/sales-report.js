@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // PDF EXPORT
   exportPdfBtn.addEventListener("click", () => {
-    if (currentReportData.length === 0) return alert("Nothing to export");
+    if (currentReportData.length === 0) return warningToast("No data to export. Please generate a report first.");
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();

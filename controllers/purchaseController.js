@@ -2,8 +2,7 @@ import Purchase from "../models/PurchaseModel.js";
 import PurchaseItem from "../models/PurchaseItemModel.js";
 import Product from "../models/ProductModel.js";
 
-// ─── Counter for batch generation ─────────────────────────────────────────
-// Simple in-process counter per server boot; for production use a DB counter.
+
 let batchCounter = 1;
 function generateBatchId() {
   const now = new Date();
@@ -15,7 +14,7 @@ function generateBatchId() {
   // e.g. B-20260324-001
 }
 
-// ─── STEP 1: Create Purchase (parent) ─────────────────────────────────────
+//Create Purchase (parent)
 export const createPurchase = async (req, res) => {
   try {
     const { supplierId, invoiceNumber, purchaseDate } = req.body;
@@ -39,7 +38,7 @@ export const createPurchase = async (req, res) => {
   }
 };
 
-// ─── STEP 2: Add Item (child) ──────────────────────────────────────────────
+//Add Item (child) 
 export const createPurchaseItem = async (req, res) => {
   try {
     const { purchaseId, productName, quantity, costPrice, sellingPrice } = req.body;

@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const productId = urlParams.get('id');
 
     if (!productId) {
-        alert("No Product ID found in URL!");
+        errorToast("No Product ID found in URL!");
         return;
     }
 
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const croppedFiles = card.croppedFiles || [];
             if (keptImages.length + croppedFiles.length !== 4) {
-                alert(`Please ensure exactly 4 images are set for variant ${index + 1}. You have ${keptImages.length + croppedFiles.length} images.`);
+                warningToast(`Variant ${index + 1} needs exactly 4 images. You have ${keptImages.length + croppedFiles.length}.`);
                 hasError = true;
                 return;
             }
@@ -218,28 +218,33 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(res => res.json())
             .then(result => {
                 if (result.success) {
-                    alert("Product Updated Successfully!");
-                    window.location.href = "/api/admin/products";
+                    successToast("Product Updated Successfully!");
+                    setTimeout(() => window.location.href = "/api/admin/products", 1500);
                 } else {
-                    alert("Error: " + result.message);
+                    errorToast("Error: " + result.message);
                 }
             });
     });
 
     // Handle Delete Product (exposed to global for HTML onclick)
-    window.deleteProduct = function (id) {
-        if (confirm("Are you sure you want to delete this product?")) {
-            fetch(`/api/admin/products/${id}`, { method: "DELETE" })
-                .then(res => res.json())
-                .then(result => {
-                    if (result.success) {
-                        alert("Product deleted successfully");
-                        window.location.href = "/api/admin/products";
-                    } else {
-                        alert("Failed to delete product: " + result.message);
-                    }
-                });
-        }
+    window.deleteProduct = async function (id) {
+        const confirmed = await showConfirm({
+            title: "Delete Product?",
+            text: "This product and all its variants will be permanently removed.",
+            confirmText: "Yes, Delete",
+            icon: "warning",
+        });
+        if (!confirmed) return;
+        fetch(`/api/admin/products/${id}`, { method: "DELETE" })
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    successToast("Product deleted successfully");
+                    setTimeout(() => window.location.href = "/api/admin/products", 1500);
+                } else {
+                    errorToast("Failed to delete product: " + result.message);
+                }
+            });
     };
 
     // ==========================================
@@ -303,7 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // Copy images to all variants
-        card.querySelector(".copy-images-btn").onclick = () => {
+        card.querySelector(".copy-images-btn").onclick = async () => {
             const sourceFiles = card.croppedFiles || [];
             const sourceKeptImages = [];
             card.querySelectorAll(".preview-item").forEach(item => {
@@ -315,11 +320,17 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             if (sourceFiles.length === 0 && sourceKeptImages.length === 0) {
-                alert("Please upload images to this variant first.");
+                warningToast("Please upload images to this variant first.");
                 return;
             }
 
-            if (!confirm(`Copy these images to all other variants? This will overwrite their existing selections.`)) {
+            const confirmed = await showConfirm({
+                title: "Copy Images?",
+                text: "This will copy these images to all other variants, overwriting their current selections.",
+                confirmText: "Yes, Copy",
+                icon: "question",
+            });
+            if (!confirmed) {
                 return;
             }
 
@@ -341,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     showImagePreviewUI(otherGrid, url, file, otherCard);
                 });
             });
-            alert("Images copied to all variants!");
+            successToast("Images copied to all variants!");
         };
 
         variantContainer.appendChild(clone);

@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const supplierId = pathParts[pathParts.length - 1];
 
     if (!supplierId || supplierId === 'edit-supplier') {
-        alert('Invalid Supplier ID');
-        window.location.href = '/api/admin/suppliers';
+        errorToast('Invalid Supplier ID');
+        setTimeout(() => window.location.href = '/api/admin/suppliers', 1800);
         return;
     }
 
@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Error fetching supplier details:', error);
-            alert('Failed to load supplier details');
-            window.location.href = '/api/admin/suppliers';
+            errorToast('Failed to load supplier details');
+            setTimeout(() => window.location.href = '/api/admin/suppliers', 1800);
         }
     };
 
@@ -61,9 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const response = await fetch(`/api/admin/suppliers/${supplierId}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
 
@@ -72,12 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(result.message || 'Failed to update supplier');
             }
 
-            alert('Supplier updated successfully');
-            window.location.href = '/api/admin/suppliers';
+            successToast('Supplier updated successfully');
+            setTimeout(() => window.location.href = '/api/admin/suppliers', 1500);
 
         } catch (error) {
             console.error('Error updating supplier:', error);
-            alert(error.message || 'An error occurred while updating the supplier');
+            errorToast(error.message || 'An error occurred while updating the supplier');
             editSubmitBtn.innerHTML = originalBtnText;
             editSubmitBtn.disabled = false;
         }

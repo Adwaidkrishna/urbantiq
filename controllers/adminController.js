@@ -1,4 +1,4 @@
-import Admin from "../models/AdminModel.js";
+import Admin from "../models/adminModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -22,7 +22,7 @@ export const adminLogin = async (req, res) => {
 
         const token = jwt.sign(
             { id: admin._id },
-            process.env.JWT_SECRET,
+            process.env.JWT_ADMIN_SECRET || process.env.JWT_SECRET,
             { expiresIn: "7d" }
         );
 

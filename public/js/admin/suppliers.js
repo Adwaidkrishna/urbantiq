@@ -52,55 +52,59 @@ form.addEventListener("submit", async (e) => {
 
   // Frontend validation
   if (!name || !companyName || !contactNumber) {
-    alert("All fields are required");
+    warningToast("All fields are required");
     return;
   }
 
   if (!/^[0-9]{10}$/.test(contactNumber)) {
-    alert("Enter valid 10 digit number");
+    warningToast("Enter a valid 10-digit number");
     return;
   }
 
   try {
     const res = await fetch("/api/admin/suppliers", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, companyName, contactNumber }),
     });
 
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Error");
+      errorToast(data.message || "Error");
       return;
     }
 
-    // SUCCESS FLOW
-    alert("Supplier added successfully");
-
-    form.reset();        // clear form
-    loadSuppliers();     // refresh table
+    successToast("Supplier added successfully");
+    form.reset();
+    loadSuppliers();
 
   } catch (err) {
     console.error(err);
-    alert("Server error");
+    errorToast("Server error. Please try again.");
   }
 });
 
 async function deleteSupplier(id) {
-  if (!confirm("Are you sure you want to delete this supplier?")) return;
+  const confirmed = await showConfirm({
+    title: "Delete Supplier?",
+    text: "This action cannot be undone. The supplier will be permanently removed.",
+    confirmText: "Yes, Delete",
+    icon: "warning",
+  });
+  if (!confirmed) return;
+
   try {
     const res = await fetch(`/api/admin/suppliers/${id}`, { method: "DELETE" });
     if (res.ok) {
+      successToast("Supplier deleted successfully");
       loadSuppliers();
     } else {
       const data = await res.json();
-      alert(data.message || "Failed to delete");
+      errorToast(data.message || "Failed to delete supplier");
     }
   } catch (error) {
     console.error("Delete error:", error);
-    alert("Server error");
+    errorToast("Server error. Please try again.");
   }
 }

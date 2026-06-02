@@ -26,10 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.ok) {
                     window.location.href = "/api/admin/dashboard";
                 } else {
-                    alert(data.message || "Login failed");
+                    errorToast(data.message || "Login failed");
                 }
             } catch (error) {
-                alert("Server error");
+                errorToast("Server error. Please try again.");
             } finally {
                 btnText.textContent = "Login to Dashboard";
                 if (spinner) spinner.classList.add("d-none");

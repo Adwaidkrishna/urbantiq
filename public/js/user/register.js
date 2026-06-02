@@ -1,5 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    /* =========================
+       Google Sign-In Button
+    ========================= */
+    const googleBtn = document.querySelector(".btn-auth-outline");
+    if (googleBtn) {
+        googleBtn.addEventListener("click", () => {
+            window.location.href = "/api/auth/google";
+        });
+    }
+
     //Toggles password visibility for a specific input field
     const setupEyeToggle = (buttonId, inputId) => {//resuable function
         const btn = document.getElementById(buttonId);
@@ -16,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     //Validation Rules Helper
-     
+
     const checkRules = (value) => {
         return {
             'rule-8char': value.length >= 8,
@@ -27,9 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    
+
     //Updates UI based on satisfied rules
-     
+
     const updateValidationUI = (rulesRes) => {
         let metCount = 0;
         for (const [id, met] of Object.entries(rulesRes)) {

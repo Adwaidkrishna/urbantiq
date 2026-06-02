@@ -154,7 +154,7 @@ export const deleteCategory = async (req, res) => {
 export const getActiveCategories = async (req, res) => {
   try {
 
-    const categories = await Category.find({ status: true });
+    const categories = await Category.find({ status: true }).sort({ createdAt: -1 });
 
     res.json({
       success: true,

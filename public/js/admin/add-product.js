@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".variant-card").forEach((card, index) => {
             const croppedFiles = card.croppedFiles || [];
             if (croppedFiles.length !== 4) {
-                alert(`Please upload exactly four images for variant ${index + 1}. You have ${croppedFiles.length} images.`);
+                warningToast(`Variant ${index + 1} needs exactly 4 images. You have ${croppedFiles.length}.`);
                 hasError = true;
                 return;
             }
@@ -188,10 +188,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(res => res.json())
         .then(result => {
             if (result.success) {
-                alert("Product Created Successfully!");
-                window.location.href = "/api/admin/products";
+                successToast("Product Created Successfully!");
+                setTimeout(() => window.location.href = "/api/admin/products", 1500);
             } else {
-                alert("Error: " + result.message);
+                errorToast("Error: " + result.message);
             }
         })
         .catch(error => console.error("Error creating product:", error));
@@ -244,14 +244,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // Copy images to all variants
-        card.querySelector(".copy-images-btn").addEventListener("click", function() {
+        card.querySelector(".copy-images-btn").addEventListener("click", async function() {
             const sourceFiles = card.croppedFiles || [];
             if (sourceFiles.length === 0) {
-                alert("Please upload images to this variant first.");
+                warningToast("Please upload images to this variant first.");
                 return;
             }
 
-            if (!confirm(`Copy these ${sourceFiles.length} images to all other variants? This will overwrite their existing images.`)) {
+            const confirmed = await showConfirm({
+                title: "Copy Images?",
+                text: `This will copy ${sourceFiles.length} images to all other variants, overwriting their current images.`,
+                confirmText: "Yes, Copy",
+                icon: "question",
+            });
+            if (!confirmed) {
                 return;
             }
 
@@ -269,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     showImagePreviewUI(otherGrid, url, file, otherCard);
                 });
             });
-            alert("Images copied to all variants!");
+            successToast("Images copied to all variants!");
         });
 
         variantContainer.appendChild(clone);

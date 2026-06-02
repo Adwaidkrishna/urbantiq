@@ -5,6 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const errorDiv = document.getElementById("loginError");
 
     /* =========================
+       Google Sign-In Button
+    ========================= */
+    const googleBtn = document.querySelector(".btn-auth-outline");
+    if (googleBtn) {
+        googleBtn.addEventListener("click", () => {
+            window.location.href = "/api/auth/google";
+        });
+    }
+
+    /* =========================
        Helper functions
     ========================= */
 

@@ -11,10 +11,15 @@ import {
     verifyResetOTP,
     getAuthStatus,
     logout,
+    googleRedirect,
+    googleCallback,
 } from "../controllers/authController.js";
 
 
 const router = express.Router();
+
+router.get("/google", googleRedirect);
+router.get("/google/callback", googleCallback);
 
 router.get("/forgot-password", (req, res) => {
     res.sendFile(path.resolve("public/views/user/forgot-password.html"))

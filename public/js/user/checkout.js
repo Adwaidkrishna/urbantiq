@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (addresses.length > 0) {
                     const section = document.getElementById("savedAddrSection");
-                    const listEl  = document.getElementById("savedAddrList");
+                    const listEl = document.getElementById("savedAddrList");
                     const manualForm = document.getElementById("manualAddrForm");
 
                     if (section) section.style.display = "block";
@@ -94,12 +94,12 @@ document.addEventListener("DOMContentLoaded", function () {
         function fillFormFromAddress(addr) {
             const fields = {
                 fullName: addr.fullName,
-                phone:    addr.phone,
-                addr1:    addr.addressLine1,
-                addr2:    addr.addressLine2 || "",
-                city:     addr.city,
-                state:    addr.state,
-                pincode:  addr.postalCode
+                phone: addr.phone,
+                addr1: addr.addressLine1,
+                addr2: addr.addressLine2 || "",
+                city: addr.city,
+                state: addr.state,
+                pincode: addr.postalCode
             };
             for (const [id, val] of Object.entries(fields)) {
                 const el = document.getElementById(id);
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function clearForm() {
-            ["fullName","phone","addr1","addr2","city","state","pincode"].forEach(id => {
+            ["fullName", "phone", "addr1", "addr2", "city", "state", "pincode"].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.value = "";
             });
@@ -134,15 +134,15 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             if (validateForm()) {
                 const addressData = {
-                    fullName:     document.getElementById("fullName").value.trim(),
-                    email:        document.getElementById("email").value.trim(),
-                    phone:        document.getElementById("phone").value.trim(),
+                    fullName: document.getElementById("fullName").value.trim(),
+                    email: document.getElementById("email").value.trim(),
+                    phone: document.getElementById("phone").value.trim(),
                     addressLine1: document.getElementById("addr1").value.trim(),
                     addressLine2: document.getElementById("addr2").value.trim(),
-                    city:         document.getElementById("city").value.trim(),
-                    state:        document.getElementById("state").value.trim(),
-                    postalCode:   document.getElementById("pincode").value.trim(),
-                    country:      document.getElementById("country").value.trim()
+                    city: document.getElementById("city").value.trim(),
+                    state: document.getElementById("state").value.trim(),
+                    postalCode: document.getElementById("pincode").value.trim(),
+                    country: document.getElementById("country").value.trim()
                 };
                 localStorage.setItem('checkoutAddress', JSON.stringify(addressData));
 
@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         applyBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
 
                         const subtotal = Number(document.querySelector('.ck-price-list .ck-price-row:nth-child(1) span:last-child').textContent.replace('₹', '').replace(',', ''));
-                        
+
                         const res = await fetch("/api/coupons/validate", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
@@ -254,11 +254,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (res.ok && data.success) {
                             appliedCoupon = data;
                             localStorage.setItem('appliedCoupon', JSON.stringify(data));
-                            
+
                             resultDiv.style.display = 'block';
                             resultDiv.className = 'small mt-2 text-success fw-bold';
                             resultDiv.innerHTML = `<i class="bi bi-check-circle-fill"></i> Coupon "${data.code}" applied! (₹${data.discount.toLocaleString()} saved)`;
-                            
+
                             fetchCartSummary(false); // Re-render to update total
                         } else {
                             resultDiv.style.display = 'block';
@@ -287,10 +287,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await res.json();
             const balanceDisp = document.getElementById("walletBalanceDisplay");
             if (balanceDisp) balanceDisp.textContent = `₹${(data.balance || 0).toLocaleString()}`;
-            
+
             const walletInput = document.querySelector('input[value="wallet"]');
             const total = Number(localStorage.getItem('checkoutTotal') || 0);
-            
+
             if (data.balance < total) {
                 const walletOpt = document.getElementById("opt-wallet");
                 walletOpt.classList.add("disabled");
@@ -584,7 +584,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (!rzpOrderRes.ok) throw new Error(rzpOrderData.message || "Failed to initialize Razorpay order");
 
                     const options = {
-                        key: "rzp_test_SYJDs3aCK4Cn6M", // Final Key ID
+                        key: "rzp_test_SwO27oBRLdlxQm", // Final Key ID
                         amount: rzpOrderData.order.amount,
                         currency: "INR",
                         name: "URBANTIQ",
