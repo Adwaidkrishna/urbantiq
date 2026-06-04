@@ -1,6 +1,6 @@
-import Purchase from "../models/PurchaseModel.js";
-import PurchaseItem from "../models/PurchaseItemModel.js";
-import Product from "../models/ProductModel.js";
+import Purchase from "../models/Purchase.js";
+import PurchaseItem from "../models/PurchaseItem.js";
+import Product from "../models/Product.js";
 
 
 let batchCounter = 1;

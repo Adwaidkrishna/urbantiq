@@ -1,6 +1,6 @@
-import Order from "../models/OrderModel.js";
+import Order from "../models/Order.js";
 import User from "../models/User.js";
-import Product from "../models/ProductModel.js";
+import Product from "../models/Product.js";
 
 // ============================================================
 //  GET /api/admin/dashboard/stats

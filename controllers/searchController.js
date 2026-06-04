@@ -2,8 +2,8 @@
  * Global search controller for admin panel
  */
 import mongoose from "mongoose";
-import Product from "../models/ProductModel.js";
-import Order from "../models/OrderModel.js";
+import Product from "../models/Product.js";
+import Order from "../models/Order.js";
 import User from "../models/User.js";
 
 export const globalSearch = async (req, res) => {

@@ -5,7 +5,7 @@ import {
   getSupplierById,
   updateSupplier,
   deleteSupplier,
-} from "../controllers/SupplierController.js";
+} from "../controllers/supplierController.js";
 
 import adminMiddleware from "../middleware/adminMiddleware.js";
 

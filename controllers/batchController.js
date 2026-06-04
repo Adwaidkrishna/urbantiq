@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import PurchaseItem from "../models/PurchaseItemModel.js";
-import Product from "../models/ProductModel.js";
+import PurchaseItem from "../models/PurchaseItem.js";
+import Product from "../models/Product.js";
 
 // ─── GET only unlinked batches ─────────────────────────────────────────────
 export const getUnlinkedBatches = async (req, res) => {

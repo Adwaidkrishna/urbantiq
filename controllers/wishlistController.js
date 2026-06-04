@@ -1,5 +1,5 @@
 import Wishlist from "../models/Wishlist.js";
-import Product from "../models/ProductModel.js";
+import Product from "../models/Product.js";
 
 // Toggle Wishlist item
 export const toggleWishlist = async (req, res) => {
