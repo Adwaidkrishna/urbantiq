@@ -2,8 +2,8 @@ import express from "express";
 import {
   getUnlinkedBatches,
   linkBatch,
-} from "../controllers/batch/index.js";
-import adminMiddleware from "../middleware/adminMiddleware.js";
+} from "../../controllers/batch/index.js";
+import adminMiddleware from "../../middleware/adminMiddleware.js";
 
 const router = express.Router();
 

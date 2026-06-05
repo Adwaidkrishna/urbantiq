@@ -1,10 +1,10 @@
 import express from "express";
-import authMiddleware from "../middleware/authMiddleware.js";
-import adminAuthMiddleware from "../middleware/adminMiddleware.js";
+import authMiddleware from "../../middleware/authMiddleware.js";
+import adminAuthMiddleware from "../../middleware/adminMiddleware.js";
 import { 
   placeOrder, getMyOrders, getOrderById, cancelOrder, requestReturn,
   getAllOrders, updateOrderStatus, validateStock, getTransactions
-} from "../controllers/order/index.js";
+} from "../../controllers/order/index.js";
 
 const router = express.Router();
 

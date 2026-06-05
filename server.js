@@ -4,23 +4,23 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import connectDB from "./config/db.js";
-import authRoutes from "./routes/authRoutes.js";
-import adminRoutes from "./routes/adminRoutes.js";
-import adminCategoryRoutes from "./routes/adminCategoryRoutes.js"
-import categoryRoutes from "./routes/categoryRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-import adminProductRoutes from "./routes/adminProductRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
-import supplierRoutes from "./routes/supplierRoutes.js";
-import purchaseRoutes from "./routes/purchaseRoutes.js";
-import batchRoutes from "./routes/batchRoutes.js";
-import cartRoutes from "./routes/cartRoutes.js";
-import wishlistRoutes from "./routes/wishlistRoutes.js";
-import orderRoutes from "./routes/orderRoutes.js";
-import paymentRoutes from "./routes/paymentRoutes.js";
-import userProfileRoutes from "./routes/userProfileRoutes.js";
-import couponRoutes from "./routes/couponRoutes.js";
-import reviewRoutes from "./routes/reviewRoutes.js";
+import authRoutes from "./routes/auth/authRoutes.js";
+import adminRoutes from "./routes/admin/adminRoutes.js";
+import adminCategoryRoutes from "./routes/category/adminCategoryRoutes.js";
+import categoryRoutes from "./routes/category/categoryRoutes.js";
+import userRoutes from "./routes/user/userRoutes.js";
+import adminProductRoutes from "./routes/product/adminProductRoutes.js";
+import productRoutes from "./routes/product/productRoutes.js";
+import supplierRoutes from "./routes/supplier/supplierRoutes.js";
+import purchaseRoutes from "./routes/purchase/purchaseRoutes.js";
+import batchRoutes from "./routes/batch/batchRoutes.js";
+import cartRoutes from "./routes/cart/cartRoutes.js";
+import wishlistRoutes from "./routes/wishlist/wishlistRoutes.js";
+import orderRoutes from "./routes/order/orderRoutes.js";
+import paymentRoutes from "./routes/payment/paymentRoutes.js";
+import userProfileRoutes from "./routes/profile/userProfileRoutes.js";
+import couponRoutes from "./routes/coupon/couponRoutes.js";
+import reviewRoutes from "./routes/review/reviewRoutes.js";
 
 const app = express();
 

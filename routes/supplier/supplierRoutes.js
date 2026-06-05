@@ -5,9 +5,9 @@ import {
   getSupplierById,
   updateSupplier,
   deleteSupplier,
-} from "../controllers/supplier/index.js";
+} from "../../controllers/supplier/index.js";
 
-import adminMiddleware from "../middleware/adminMiddleware.js";
+import adminMiddleware from "../../middleware/adminMiddleware.js";
 
 const router = express.Router();
 
