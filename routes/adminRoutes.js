@@ -1,10 +1,10 @@
 import express from "express";
 import path from "path";
 
-import { adminLogin, adminLogout, getAdminProfile, updateAdminProfile, changeAdminPassword } from "../controllers/adminController.js";
-import { getDashboardStats } from "../controllers/dashboardController.js";
-import { getSalesReport } from "../controllers/salesController.js";
-import { globalSearch } from "../controllers/searchController.js";
+import { adminLogin, adminLogout, getAdminProfile, updateAdminProfile, changeAdminPassword } from "../controllers/admin/index.js";
+import { getDashboardStats } from "../controllers/dashboard/index.js";
+import { getSalesReport } from "../controllers/sales/index.js";
+import { globalSearch } from "../controllers/search/index.js";
 import adminAuthMiddleware from "../middleware/adminMiddleware.js"
 
 

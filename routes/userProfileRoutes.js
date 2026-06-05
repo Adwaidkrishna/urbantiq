@@ -1,5 +1,5 @@
 import express from "express";
-import { getWallet, createWalletOrder, verifyWalletPayment } from "../controllers/walletController.js";
+import { getWallet, createWalletOrder, verifyWalletPayment } from "../controllers/wallet/index.js";
 import {
   getAddresses,
   addAddress,
@@ -7,8 +7,8 @@ import {
   deleteAddress,
   setDefaultAddress,
   getDefaultAddress
-} from "../controllers/addressController.js";
-import { getProfile, updateProfile, changePassword } from "../controllers/profileController.js";
+} from "../controllers/address/index.js";
+import { getProfile, updateProfile, changePassword } from "../controllers/profile/index.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();

@@ -4,7 +4,7 @@ import adminAuthMiddleware from "../middleware/adminMiddleware.js";
 import { 
   placeOrder, getMyOrders, getOrderById, cancelOrder, requestReturn,
   getAllOrders, updateOrderStatus, validateStock, getTransactions
-} from "../controllers/orderController.js";
+} from "../controllers/order/index.js";
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
 import express from "express";
 import adminAuthMiddleware from "../middleware/adminMiddleware.js";
 import authMiddleware from "../middleware/authMiddleware.js";
-import { getAllCoupons, createCoupon, updateCoupon, deleteCoupon, validateCoupon } from "../controllers/couponController.js";
+import { getAllCoupons, createCoupon, updateCoupon, deleteCoupon, validateCoupon } from "../controllers/coupon/index.js";
 
 const router = express.Router();
 

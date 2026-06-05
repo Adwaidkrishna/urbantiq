@@ -13,7 +13,7 @@ import {
     logout,
     googleRedirect,
     googleCallback,
-} from "../controllers/authController.js";
+} from "../controllers/auth/index.js";
 
 
 const router = express.Router();

@@ -4,7 +4,7 @@ import {
   createPurchaseItem,
   getPurchases,
   getPurchaseItems,
-} from "../controllers/purchaseController.js";
+} from "../controllers/purchase/index.js";
 import adminMiddleware from "../middleware/adminMiddleware.js";
 
 const router = express.Router();
