@@ -1,5 +1,4 @@
 import express from "express";
-import path from "path";
 
 import {
     register,
@@ -20,35 +19,6 @@ const router = express.Router();
 
 router.get("/google", googleRedirect);
 router.get("/google/callback", googleCallback);
-
-router.get("/forgot-password", (req, res) => {
-    res.sendFile(path.resolve("public/views/user/forgot-password.html"))
-})
-
-router.get("/verify-reset-otp", (req, res) => {
-    res.sendFile(path.resolve("public/views/user/verify-reset-otp.html"))
-})
-
-router.get("/reset-password", (req, res) => {
-    res.sendFile(path.resolve("public/views/user/reset-password.html"))
-})
-
-router.get("/register", (req, res) => {
-    res.sendFile(path.resolve("public/views/user/register.html"));
-});
-
-router.get("/verify-email", (req, res) => {
-    res.sendFile(path.resolve("public/views/user/verify-email.html"));
-});
-
-router.get("/login", (req, res) => {
-    res.sendFile(path.resolve("public/views/user/login.html"));
-});
-
-router.get("/home", (req, res) => {
-    res.sendFile(path.resolve("public/views/user/home.html"));
-});
-
 
 router.post("/register", register);
 router.post("/verify-otp", verifyOTP);

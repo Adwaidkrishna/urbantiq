@@ -5,7 +5,7 @@ import categoryUploadMiddleware from "../../middleware/categoryUploadMiddleware.
 
 const router = express.Router();
 
-router.post("/categories", categoryUploadMiddleware.single("image"), createCategory);
+router.post("/categories", adminAuthMiddleware, categoryUploadMiddleware.single("image"), createCategory);
 router.get("/categories/list", adminAuthMiddleware, getCategories);
 router.get("/categories/:id", adminAuthMiddleware, getCategoryById);
 router.put("/categories/:id", adminAuthMiddleware, categoryUploadMiddleware.single("image"), updateCategory);
