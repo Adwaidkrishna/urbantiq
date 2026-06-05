@@ -1,9 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 
-// @desc GET current user profile
-// @route GET /api/user-profile
-// @access Private
+
 export const getProfile = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select("-password -otp -otpExpire");
@@ -14,9 +12,7 @@ export const getProfile = async (req, res) => {
     }
 };
 
-// @desc Update user profile (name, phone)
-// @route PUT /api/user-profile
-// @access Private
+
 export const updateProfile = async (req, res) => {
     try {
         const { name, phone } = req.body;
@@ -33,17 +29,17 @@ export const updateProfile = async (req, res) => {
     }
 };
 
-// @desc Change user password
-// @route PUT /api/user-profile/change-password
-// @access Private
+
 export const changePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
         const user = await User.findById(req.userId);
         if (!user) return res.status(404).json({ message: "User not found" });
 
-        const isMatch = await bcrypt.compare(currentPassword, user.password);
-        if (!isMatch) return res.status(400).json({ message: "Incorrect current password" });
+        if (user.password) {
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!isMatch) return res.status(400).json({ message: "Incorrect current password" });
+        }
 
         // Basic validation for new password
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W]).{8,}$/;

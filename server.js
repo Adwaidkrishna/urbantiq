@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
-
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
@@ -23,14 +22,9 @@ import userProfileRoutes from "./routes/userProfileRoutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 
-
-
-
 const app = express();
 
 connectDB();
-
-
 
 app.use(cors());
 app.use(express.json());
@@ -47,7 +41,7 @@ app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
 
 // ==========================================
-// 2. PROTECTED USER API ROUTES 
+// 2. PROTECTED USER API ROUTES
 // (Auth guards applied inside individual route files)
 // ==========================================
 app.use("/api/cart", cartRoutes);
@@ -59,10 +53,9 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/reviews", reviewRoutes);
 
 // ==========================================
-// 3. PROTECTED ADMIN API & PAGE ROUTES 
+// 3. PROTECTED ADMIN API & PAGE ROUTES
 // (Admin Auth guards applied inside individual route files)
 // ==========================================
-// Note: /api/admin/login remains publicly accessible
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin", adminCategoryRoutes);
 app.use("/api/admin", adminProductRoutes);

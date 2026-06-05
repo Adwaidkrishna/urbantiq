@@ -1,8 +1,6 @@
 import User from "../models/User.js";
 
-// @desc  Get all saved addresses
-// @route GET /api/user-profile/addresses
-// @access Private
+
 export const getAddresses = async (req, res) => {
   try {
     const user = await User.findById(req.userId).select("addresses");
@@ -13,9 +11,7 @@ export const getAddresses = async (req, res) => {
   }
 };
 
-// @desc  Add a new address
-// @route POST /api/user-profile/addresses
-// @access Private
+
 export const addAddress = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -52,9 +48,7 @@ export const addAddress = async (req, res) => {
   }
 };
 
-// @desc  Update an existing address
-// @route PUT /api/user-profile/addresses/:addressId
-// @access Private
+
 export const updateAddress = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -89,9 +83,7 @@ export const updateAddress = async (req, res) => {
   }
 };
 
-// @desc  Delete an address
-// @route DELETE /api/user-profile/addresses/:addressId
-// @access Private
+
 export const deleteAddress = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -116,9 +108,7 @@ export const deleteAddress = async (req, res) => {
   }
 };
 
-// @desc  Set an address as default
-// @route PATCH /api/user-profile/addresses/:addressId/set-default
-// @access Private
+
 export const setDefaultAddress = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -136,9 +126,7 @@ export const setDefaultAddress = async (req, res) => {
   }
 };
 
-// @desc  Get the default address (for checkout auto-fill)
-// @route GET /api/user-profile/addresses/default
-// @access Private
+
 export const getDefaultAddress = async (req, res) => {
   try {
     const user = await User.findById(req.userId).select("addresses name email");

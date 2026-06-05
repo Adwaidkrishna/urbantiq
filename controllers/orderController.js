@@ -7,9 +7,7 @@ import User from "../models/User.js";
 import WalletTransaction from "../models/WalletTransaction.js";
 import Coupon from "../models/Coupon.js";
 
-// @desc    Place a new order
-// @route   POST /api/orders
-// @access  Private
+
 export const placeOrder = async (req, res) => {
   try {
     const { items, shippingAddress, paymentMethod, totalPrice, discount, shippingCharges, finalAmount, couponCode, transactionId } = req.body;
@@ -24,6 +22,16 @@ export const placeOrder = async (req, res) => {
       if (!coupon) throw new Error("Applied coupon is no longer valid.");
       if (new Date() > new Date(coupon.expiryDate)) throw new Error("Applied coupon has expired.");
       if (coupon.usedCount >= coupon.usageLimit) throw new Error("Coupon usage limit reached.");
+
+      // Check if user has already used this coupon
+      const alreadyUsed = await Order.findOne({
+        user: req.userId,
+        couponCode: couponCode.toUpperCase(),
+        orderStatus: { $ne: "Cancelled" }
+      });
+      if (alreadyUsed) {
+        throw new Error("You have already used this coupon code.");
+      }
     }
 
     const orderItems = [];
@@ -214,9 +222,7 @@ export const placeOrder = async (req, res) => {
   }
 };
 
-// @desc    Get user's order history
-// @route   GET /api/orders/my-orders
-// @access  Private
+
 export const getMyOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.userId })
@@ -228,9 +234,7 @@ export const getMyOrders = async (req, res) => {
   }
 };
 
-// @desc    Get single order details
-// @route   GET /api/orders/:id
-// @access  Private
+
 export const getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
@@ -251,9 +255,7 @@ export const getOrderById = async (req, res) => {
   }
 };
 
-// @desc    Cancel an order by user
-// @route   PUT /api/orders/:id/cancel
-// @access  Private
+
 export const cancelOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -306,9 +308,7 @@ export const cancelOrder = async (req, res) => {
   }
 };
 
-// @desc    Request a return for an order
-// @route   PUT /api/orders/:id/return-request
-// @access  Private
+
 export const requestReturn = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -343,9 +343,7 @@ export const requestReturn = async (req, res) => {
 
 // --- ADMIN FUNCTIONS ---
 
-// @desc    Get all orders (Admin)
-// @route   GET /api/orders/admin/all
-// @access  Private/Admin
+
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find({})
@@ -357,9 +355,7 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
-// @desc    Update order status (Admin)
-// @route   PUT /api/orders/admin/:id/status
-// @access  Private/Admin
+
 export const updateOrderStatus = async (req, res) => {
   try {
     const { status } = req.body;
@@ -427,9 +423,7 @@ export const updateOrderStatus = async (req, res) => {
   }
 };
 
-// @desc    Get all transactions (Admin)
-// @route   GET /api/admin/transactions
-// @access  Private/Admin
+
 export const getTransactions = async (req, res) => {
   try {
     const transactions = await Order.find({})
@@ -496,9 +490,7 @@ async function rollbackOrderStock(order) {
   }
 }
 
-// @desc    Validate stock before order placement (Pre-flight check)
-// @route   POST /api/orders/validate-stock
-// @access  Private
+
 export const validateStock = async (req, res) => {
   try {
     if (!req.body) {

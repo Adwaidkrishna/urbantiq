@@ -1,8 +1,7 @@
 import Coupon from "../models/Coupon.js";
+import Order from "../models/Order.js";
 
-// @desc    Get all coupons (Admin)
-// @route   GET /api/admin/coupons
-// @access  Private/Admin
+
 export const getAllCoupons = async (req, res) => {
   try {
     const coupons = await Coupon.find().sort({ createdAt: -1 });
@@ -12,9 +11,7 @@ export const getAllCoupons = async (req, res) => {
   }
 };
 
-// @desc    Create a new coupon (Admin)
-// @route   POST /api/admin/coupons
-// @access  Private/Admin
+
 export const createCoupon = async (req, res) => {
   try {
     const { code, discountType, value, usageLimit, expiryDate } = req.body;
@@ -41,9 +38,7 @@ export const createCoupon = async (req, res) => {
   }
 };
 
-// @desc    Delete a coupon (Admin)
-// @route   DELETE /api/admin/coupons/:id
-// @access  Private/Admin
+
 export const deleteCoupon = async (req, res) => {
   try {
     const coupon = await Coupon.findByIdAndDelete(req.params.id);
@@ -56,9 +51,7 @@ export const deleteCoupon = async (req, res) => {
   }
 };
 
-// @desc    Update a coupon (Admin)
-// @route   PUT /api/admin/coupons/:id
-// @access  Private/Admin
+
 export const updateCoupon = async (req, res) => {
   try {
     const { code, discountType, value, usageLimit, expiryDate, isActive } = req.body;
@@ -90,9 +83,7 @@ export const updateCoupon = async (req, res) => {
   }
 };
 
-// @desc    Validate coupon (Private - for checkout)
-// @route   POST /api/coupons/validate
-// @access  Private
+
 export const validateCoupon = async (req, res) => {
   try {
     const { code, subtotal } = req.body;
@@ -100,6 +91,17 @@ export const validateCoupon = async (req, res) => {
 
     if (!coupon) {
       return res.status(404).json({ message: "Invalid or expired coupon code" });
+    }
+
+    // Check if user has already used this coupon
+    const alreadyUsed = await Order.findOne({
+      user: req.userId,
+      couponCode: code.toUpperCase(),
+      orderStatus: { $ne: "Cancelled" }
+    });
+
+    if (alreadyUsed) {
+      return res.status(400).json({ message: "You have already used this coupon code" });
     }
 
     // Check expiry

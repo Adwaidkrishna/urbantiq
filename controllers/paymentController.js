@@ -1,9 +1,7 @@
 import razorpay from "../config/razorpay.js";
 import crypto from "crypto";
 
-// @desc    Create a Razorpay order
-// @route   POST /api/payment/create-order
-// @access  Private
+
 export const createPaymentOrder = async (req, res) => {
     try {
         const { amount } = req.body;
@@ -27,9 +25,7 @@ export const createPaymentOrder = async (req, res) => {
     }
 };
 
-// @desc    Verify Razorpay payment
-// @route   POST /api/payment/verify
-// @access  Private
+
 export const verifyPayment = async (req, res) => {
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;

@@ -246,6 +246,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /* --------------------------------------------------
+       6. GLOBAL HEADER SEARCH REDIRECT
+       -------------------------------------------------- */
+    const searchContainer = document.querySelector('.search-container');
+    const isCatalogPage = window.location.pathname === '/product' || window.location.pathname === '/product/';
+    const isAdminPage = window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/api/admin');
+    if (searchContainer && !isCatalogPage && !isAdminPage) {
+        const input = searchContainer.querySelector('.search-input');
+        const icon = searchContainer.querySelector('.bi-search');
+        
+        const triggerSearch = () => {
+            const query = input.value.trim();
+            if (query) {
+                window.location.href = `/product?search=${encodeURIComponent(query)}`;
+            }
+        };
+
+        if (input) {
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') triggerSearch();
+            });
+        }
+        if (icon) {
+            icon.style.cursor = 'pointer';
+            icon.addEventListener('click', triggerSearch);
+        }
+    }
+
     initHomeProducts();
 
 });
