@@ -21,7 +21,7 @@ export const linkBatch = async (req, res) => {
         return res.status(400).json({ message: `Quantity for size ${a.size} must be greater than 0` });
       }
       totalAllocated += Number(a.quantity);
-    }
+    }//checking if total allocated quantity matches batch quantity
 
     if (totalAllocated !== batch.quantity) {
       return res.status(400).json({ message: `Total allocated (${totalAllocated}) doesn't match batch total (${batch.quantity})` });
@@ -30,7 +30,7 @@ export const linkBatch = async (req, res) => {
     batch.allocations = allocations.map(a => ({
       ...a,
       remainingQuantity: Number(a.quantity)
-    }));
+    }));//selecting the correct varient
 
     for (const alloc of batch.allocations) {
       await Product.updateOne(
@@ -43,7 +43,7 @@ export const linkBatch = async (req, res) => {
           ]
         }
       );
-    }
+    }//updating the stock of the product variant
 
     batch.status = "LINKED";
     await batch.save();
