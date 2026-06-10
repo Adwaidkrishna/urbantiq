@@ -57,6 +57,12 @@ const userSchema = new mongoose.Schema({
   addresses: {
     type: [addressSchema],
     default: []
+  },
+
+  status: {
+    type: String,
+    enum: ["active", "blocked"],
+    default: "active"
   }
 
 }, { timestamps: true });

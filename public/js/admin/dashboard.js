@@ -11,10 +11,10 @@ const fmt = (n) =>
   n >= 1_00_00_000
     ? `₹${(n / 1_00_00_000).toFixed(2)}Cr`
     : n >= 1_00_000
-    ? `₹${(n / 1_00_000).toFixed(2)}L`
-    : n >= 1_000
-    ? `₹${(n / 1_000).toFixed(1)}K`
-    : `₹${n.toFixed(2)}`;
+      ? `₹${(n / 1_00_000).toFixed(2)}L`
+      : n >= 1_000
+        ? `₹${(n / 1_000).toFixed(1)}K`
+        : `₹${n.toFixed(2)}`;
 
 const pct = (val) => {
   if (val === null || val === undefined) return { text: "--", positive: true };
@@ -24,13 +24,13 @@ const pct = (val) => {
 
 const statusBadge = (status) => {
   const map = {
-    Pending:          { cls: "badge-pending",    label: "Pending" },
-    Confirmed:        { cls: "badge-processing", label: "Confirmed" },
-    Shipped:          { cls: "badge-processing", label: "Shipped" },
-    Delivered:        { cls: "badge-delivered",  label: "Delivered" },
-    Cancelled:        { cls: "badge-cancelled",  label: "Cancelled" },
-    "Return Requested":{ cls: "badge-low-stock", label: "Return Req." },
-    Returned:         { cls: "badge-out-of-stock","label": "Returned" },
+    Pending: { cls: "badge-pending", label: "Pending" },
+    Confirmed: { cls: "badge-processing", label: "Confirmed" },
+    Shipped: { cls: "badge-processing", label: "Shipped" },
+    Delivered: { cls: "badge-delivered", label: "Delivered" },
+    Cancelled: { cls: "badge-cancelled", label: "Cancelled" },
+    "Return Requested": { cls: "badge-low-stock", label: "Return Req." },
+    Returned: { cls: "badge-out-of-stock", "label": "Returned" },
   };
   const d = map[status] || { cls: "badge-pending", label: status };
   return `<span class="status-badge ${d.cls}">${d.label}</span>`;
@@ -42,13 +42,13 @@ const statusBadge = (status) => {
 function populateCard(elementId, value, growth, prefix = "") {
   const card = document.getElementById(elementId);
   if (!card) return;
-  const valEl   = card.querySelector(".stat-card-value");
-  const subEl   = card.querySelector(".stat-card-sub");
+  const valEl = card.querySelector(".stat-card-value");
+  const subEl = card.querySelector(".stat-card-sub");
   if (valEl) valEl.textContent = prefix + value;
   if (subEl && growth !== undefined) {
     const g = pct(growth);
     subEl.textContent = `${g.text} from last month`;
-    subEl.className   = `stat-card-sub ${g.positive ? "text-success" : "text-danger"}`;
+    subEl.className = `stat-card-sub ${g.positive ? "text-success" : "text-danger"}`;
   }
 }
 
@@ -58,10 +58,10 @@ function populateCard(elementId, value, growth, prefix = "") {
 function updateInsightStrip(data, filter) {
   // We aggregate the chosen period's total orders and revenue from chart slices
   const revisions = {
-    today:  1,
-    week:   7,
-    month:  30,
-    year:   365,
+    today: 1,
+    week: 7,
+    month: 30,
+    year: 365,
   };
   const slices = { today: 1, week: 7, month: 30, year: 12 };
   const take = Math.min(slices[filter] || 1, data.chart.revenue.length);
@@ -69,14 +69,14 @@ function updateInsightStrip(data, filter) {
   const ordArr = data.chart.orders.slice(-take);
   const totalRev = revArr.reduce((a, b) => a + b, 0);
   const totalOrd = ordArr.reduce((a, b) => a + b, 0);
-  const avgDay   = take > 0 ? totalRev / (take === 1 ? 1 : take * 30) : 0;
-  const conv     = data.stats.totalCustomers > 0 ? ((totalOrd / data.stats.totalCustomers) * 100).toFixed(1) : "0.0";
+  const avgDay = take > 0 ? totalRev / (take === 1 ? 1 : take * 30) : 0;
+  const conv = data.stats.totalCustomers > 0 ? ((totalOrd / data.stats.totalCustomers) * 100).toFixed(1) : "0.0";
 
   const el = (id) => document.getElementById(id);
-  if (el("metric-revenue"))   el("metric-revenue").textContent   = fmt(totalRev);
-  if (el("metric-orders"))    el("metric-orders").textContent    = totalOrd.toLocaleString("en-IN");
-  if (el("metric-conversion"))el("metric-conversion").textContent= conv + "%";
-  if (el("metric-avg"))       el("metric-avg").textContent       = fmt(avgDay);
+  if (el("metric-revenue")) el("metric-revenue").textContent = fmt(totalRev);
+  if (el("metric-orders")) el("metric-orders").textContent = totalOrd.toLocaleString("en-IN");
+  if (el("metric-conversion")) el("metric-conversion").textContent = conv + "%";
+  if (el("metric-avg")) el("metric-avg").textContent = fmt(avgDay);
 }
 
 /* ──────────────────────────────────────────────
@@ -87,9 +87,9 @@ let salesChartInstance = null;
 function buildChartData(filter, rawLabels, rawRevenue, rawOrders) {
   const take = { today: 1, week: 7, month: 1, year: 12 }[filter] || 12;
   return {
-    labels:  rawLabels.slice(-take),
+    labels: rawLabels.slice(-take),
     revenue: rawRevenue.slice(-take),
-    orders:  rawOrders.slice(-take),
+    orders: rawOrders.slice(-take),
   };
 }
 
@@ -172,13 +172,13 @@ function renderSalesChart(labels, revenue, orders) {
       },
       scales: {
         x: {
-          grid:  { display: false },
+          grid: { display: false },
           ticks: { color: "#9ca3af", font: { size: 11 } },
           border: { display: false },
         },
         y: {
           position: "left",
-          grid:  { color: "rgba(0,0,0,0.05)", drawBorder: false },
+          grid: { color: "rgba(0,0,0,0.05)", drawBorder: false },
           ticks: {
             color: "#9ca3af",
             font: { size: 11 },
@@ -208,7 +208,7 @@ function renderStatusDonut(breakdown) {
 
   const labels = Object.keys(breakdown);
   const values = Object.values(breakdown);
-  const colors = ["#0066cc","#22c55e","#ff9f00","#ef4444","#8b5cf6","#06b6d4","#f59e0b","#64748b"];
+  const colors = ["#0066cc", "#22c55e", "#ff9f00", "#ef4444", "#8b5cf6", "#06b6d4", "#f59e0b", "#64748b"];
 
   if (donutChartInstance) donutChartInstance.destroy();
 
@@ -271,7 +271,7 @@ function renderPaymentChart(split) {
         label: "Orders",
         data: [split.COD || 0, split.Online || 0, split.Wallet || 0],
         backgroundColor: ["#f59e0b80", "#0066cc80", "#22c55e80"],
-        borderColor:     ["#f59e0b",   "#0066cc",   "#22c55e"],
+        borderColor: ["#f59e0b", "#0066cc", "#22c55e"],
         borderWidth: 1.5,
         borderRadius: 6,
       }],
@@ -309,11 +309,11 @@ function renderPaymentChart(split) {
 ────────────────────────────────────────────── */
 function updateTrendBadge(growthPct) {
   const badge = document.getElementById("trend-badge");
-  const val   = document.getElementById("trend-value");
+  const val = document.getElementById("trend-value");
   if (!badge || !val) return;
   const g = pct(growthPct);
-  val.textContent   = g.text;
-  badge.className   = `analytics-trend-badge ${g.positive ? "positive" : "negative"}`;
+  val.textContent = g.text;
+  badge.className = `analytics-trend-badge ${g.positive ? "positive" : "negative"}`;
 }
 
 /* ──────────────────────────────────────────────
@@ -356,9 +356,9 @@ function renderLowStock(items) {
   }
 
   tbody.innerHTML = items.map(item => {
-    const badgeClass = item.stock === 0  ? "badge-out-of-stock"
-                    :  item.stock <= 2   ? "badge-cancelled"
-                    :                     "badge-low-stock";
+    const badgeClass = item.stock === 0 ? "badge-out-of-stock"
+      : item.stock <= 2 ? "badge-cancelled"
+        : "badge-low-stock";
     const label = item.stock === 0 ? "Out of Stock" : `${item.stock} left`;
     return `
       <tr>
@@ -395,7 +395,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* ── Fetch Stats ── */
   try {
-    const res  = await fetch("/api/admin/dashboard/stats");
+    const res = await fetch("/api/admin/dashboard/stats");
     const json = await res.json();
     if (!json.success) throw new Error(json.message);
     dashData = json;
@@ -408,10 +408,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   /* ── Populate Stat Cards ── */
   const { stats } = dashData;
 
-  populateCard("cardRevenue",   fmt(stats.totalRevenue),            stats.revenueGrowth);
-  populateCard("cardOrders",    stats.totalOrders.toLocaleString("en-IN"),  stats.ordersGrowth);
+  populateCard("cardRevenue", fmt(stats.totalRevenue), stats.revenueGrowth);
+  populateCard("cardOrders", stats.totalOrders.toLocaleString("en-IN"), stats.ordersGrowth);
   populateCard("cardCustomers", stats.totalCustomers.toLocaleString("en-IN"), stats.customersGrowth);
-  populateCard("cardProducts",  stats.totalProducts.toLocaleString("en-IN"), null);
+  populateCard("cardProducts", stats.totalProducts.toLocaleString("en-IN"), null);
 
   /* ── Charts ── */
   const { labels, revenue, orders } = dashData.chart;
@@ -429,7 +429,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderLowStock(dashData.lowStock);
 
   /* ── Remove skeleton shimmer from stat cards ── */
-  ["cardRevenue","cardOrders","cardCustomers","cardProducts"].forEach(id => {
+  ["cardRevenue", "cardOrders", "cardCustomers", "cardProducts"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove("skeleton");
   });
@@ -449,7 +449,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* ── Topbar admin name ── */
   try {
-    const profileRes  = await fetch("/api/admin/profile");
+    const profileRes = await fetch("/api/admin/profile");
     const profileData = await profileRes.json();
     if (profileData.success && profileData.admin) {
       const admin = profileData.admin;

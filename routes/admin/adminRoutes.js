@@ -19,7 +19,6 @@ router.get("/login", (req, res) => {
 const adminPages = [
   "dashboard",
   "order-management",
-  "customers",
   "coupons",
   "categories",
   "sales-offers",
@@ -40,6 +39,14 @@ adminPages.forEach((page) => {
   router.get(`/${page}`, adminAuthMiddleware, (req, res) => {
     res.sendFile(path.resolve(`public/views/admin/${page}.html`));
   });
+});
+
+// Explicit route for customers page vs JSON API resolution
+router.get("/customers", adminAuthMiddleware, (req, res, next) => {
+  if (req.headers.accept && req.headers.accept.includes("json")) {
+    return next();
+  }
+  res.sendFile(path.resolve("public/views/admin/customers.html"));
 });
 
 // Edit category page — dynamic ID param

@@ -14,6 +14,7 @@ import productRoutes from "./routes/public/productRoutes.js";
 import supplierRoutes from "./routes/admin/supplierRoutes.js";
 import purchaseRoutes from "./routes/admin/purchaseRoutes.js";
 import batchRoutes from "./routes/admin/batchRoutes.js";
+import adminCustomerRoutes from "./routes/admin/customerRoutes.js";
 import cartRoutes from "./routes/user/cartRoutes.js";
 import wishlistRoutes from "./routes/user/wishlistRoutes.js";
 import orderRoutes from "./routes/user/orderRoutes.js";
@@ -33,17 +34,12 @@ app.use(cookieParser());
 
 app.use(express.static("public"));
 
-// ==========================================
 // 1. PUBLIC API ROUTES
-// ==========================================
 app.use("/api/auth", authRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
 
-// ==========================================
 // 2. PROTECTED USER API ROUTES
-// (Auth guards applied inside individual route files)
-// ==========================================
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/orders", orderRoutes);
@@ -52,20 +48,16 @@ app.use("/api/user-profile", userProfileRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/reviews", reviewRoutes);
 
-// ==========================================
 // 3. PROTECTED ADMIN API & PAGE ROUTES
-// (Admin Auth guards applied inside individual route files)
-// ==========================================
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin", adminCategoryRoutes);
 app.use("/api/admin", adminProductRoutes);
 app.use("/api/admin/suppliers", supplierRoutes);
 app.use("/api/admin", purchaseRoutes);
 app.use("/api/admin", batchRoutes);
+app.use("/api/admin", adminCustomerRoutes);
 
-// ==========================================
 // 4. USER-SIDE PAGES
-// ==========================================
 app.use("/", userRoutes);
 
 const PORT = process.env.PORT || 5000;
