@@ -1,4 +1,5 @@
 import Product from "../../models/Product.js";
+import { applyOffers } from "../offer/offerUtils.js";
 
 export const updateProduct = async (req, res) => {
     try {
@@ -28,11 +29,14 @@ export const updateProduct = async (req, res) => {
                 category,
                 price,
                 offerPrice: offerPrice || null,
+                productOfferPrice: offerPrice || null,
                 status: status === "true" || status === true,
                 variants
             },
             { new: true }
         );
+
+        await applyOffers(true);
 
         res.json({ success: true, message: "Product updated successfully", product: updatedProduct });
     } catch (error) {

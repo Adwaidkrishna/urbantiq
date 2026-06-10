@@ -1,8 +1,10 @@
 import Product from "../../models/Product.js";
 import Order from "../../models/Order.js";
+import { applyOffers } from "../offer/offerUtils.js";
 
 export const getPublicProducts = async (req, res) => {
     try {
+        await applyOffers();
         const { categories, maxPrice, search, sort, sizes, colors, newArrival, rating, limit } = req.query;
         let query = { status: true };
 

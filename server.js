@@ -22,6 +22,7 @@ import paymentRoutes from "./routes/user/paymentRoutes.js";
 import userProfileRoutes from "./routes/user/profileRoutes.js";
 import couponRoutes from "./routes/user/couponRoutes.js";
 import reviewRoutes from "./routes/user/reviewRoutes.js";
+import adminOfferRoutes from "./routes/admin/offerRoutes.js";
 
 const app = express();
 
@@ -56,6 +57,7 @@ app.use("/api/admin/suppliers", supplierRoutes);
 app.use("/api/admin", purchaseRoutes);
 app.use("/api/admin", batchRoutes);
 app.use("/api/admin", adminCustomerRoutes);
+app.use("/api/admin", adminOfferRoutes);
 
 // 4. USER-SIDE PAGES
 app.use("/", userRoutes);

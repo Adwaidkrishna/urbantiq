@@ -1,8 +1,10 @@
 import Product from "../../models/Product.js";
 import Order from "../../models/Order.js";
+import { applyOffers } from "../offer/offerUtils.js";
 
 export const getProductDetails = async (req, res) => {
     try {
+        await applyOffers();
         const product = await Product
             .findById(req.params.id)
             .populate("category", "name");

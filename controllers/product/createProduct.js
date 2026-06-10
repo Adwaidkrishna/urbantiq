@@ -1,4 +1,5 @@
 import Product from "../../models/Product.js";
+import { applyOffers } from "../offer/offerUtils.js";
 
 export const createProduct = async (req, res) => {
     try {
@@ -17,12 +18,14 @@ export const createProduct = async (req, res) => {
             description,
             category,
             price,
-            offerPrice,
+            offerPrice: offerPrice || null,
+            productOfferPrice: offerPrice || null,
             status: status === "true" || status === true, // boolean conversion
             variants: variantsWithImages
         });
 
         await newProduct.save();
+        await applyOffers(true);
         res.status(201).json({ success: true, message: "Product created successfully", product: newProduct });
     } catch (error) {
         console.error(error);

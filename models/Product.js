@@ -62,6 +62,11 @@ const productSchema = new mongoose.Schema({
     min: 0
   },
 
+  productOfferPrice: {
+    type: Number,
+    min: 0
+  },
+
   variants: [variantSchema],
 
   status: {
