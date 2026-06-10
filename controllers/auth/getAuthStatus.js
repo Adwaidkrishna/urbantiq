@@ -11,9 +11,10 @@ export const getAuthStatus = async (req, res) => {
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        const user = await User.findById(decoded.id).select("name email");
+        const user = await User.findById(decoded.id).select("name email status");
 
-        if (!user) {
+        if (!user || user.status === "blocked") {
+            res.clearCookie("token");
             return res.json({ loggedIn: false });
         }
 

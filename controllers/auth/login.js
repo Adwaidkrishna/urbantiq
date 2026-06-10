@@ -22,6 +22,13 @@ export const login = async (req, res) => {
             });
         }
 
+        if (user.status === "blocked") {
+            return res.json({
+                success: false,
+                message: "Your account has been blocked. Please contact support."
+            });
+        }
+
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {

@@ -70,6 +70,10 @@ export const googleCallback = async (req, res) => {
             await user.save();
         }
 
+        if (user.status === "blocked") {
+            return res.redirect("/api/auth/login?error=Your account has been blocked. Please contact support.");
+        }
+
         // Generate JWT Token
         const token = jwt.sign(
             { id: user._id },
