@@ -45,6 +45,7 @@
                 <div class="d-flex align-items-center gap-2">
                     <a href="/wishlist" class="icon-btn" title="Wishlist">
                         <i class="bi bi-heart"></i>
+                        <span class="wishlist-badge">0</span>
                     </a>
                     <a href="/cart" class="icon-btn" title="Cart">
                         <i class="bi bi-cart3"></i>
@@ -98,149 +99,16 @@
 
     <!-- Coupon Section -->
     <section id="coupons" class="container coupon-section">
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="coupon-card">
-                    <div class="coupon-info">
-                        <span class="coupon-code">SAVE20</span>
-                        <p class="coupon-desc">Get extra 20% on orders above ₹1999</p>
-                    </div>
-                    <button class="copy-btn" data-coupon-code="SAVE20">Copy</button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="coupon-card">
-                    <div class="coupon-info">
-                        <span class="coupon-code">FREESHIP</span>
-                        <p class="coupon-desc">Free shipping on all sale items</p>
-                    </div>
-                    <button class="copy-btn" data-coupon-code="FREESHIP">Copy</button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="coupon-card">
-                    <div class="coupon-info">
-                        <span class="coupon-code">BUY2GET1</span>
-                        <p class="coupon-desc">Buy any 2 get 1 free on selected items</p>
-                    </div>
-                    <button class="copy-btn" data-coupon-code="BUY2GET1">Copy</button>
-                </div>
-            </div>
+        <div class="row g-4" id="couponGrid">
+            <!-- Dynamically loaded -->
         </div>
     </section>
 
     <!-- Sale Product Grid -->
     <section id="sale-products" class="container py-5">
         <h2 class="sale-grid-title">Discounted Styles</h2>
-        <div class="row g-4">
-            <!-- Product 1 -->
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="sale-product-card">
-                    <div class="sale-img-wrap">
-                        <span class="discount-badge">40% OFF</span>
-                        <img src="/images/user/phoodie.jpeg" alt="Oversized Hoodie">
-                    </div>
-                    <div class="sale-product-info">
-                        <span class="sale-cat">Hoodies</span>
-                        <a href="/product/1" class="sale-name">Premium Oversized Hoodie</a>
-                        <div class="sale-price-row">
-                            <span class="price-new">₹539</span>
-                            <span class="price-old">₹899</span>
-                        </div>
-                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 2 -->
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="sale-product-card">
-                    <div class="sale-img-wrap">
-                        <span class="discount-badge">50% OFF</span>
-                        <img src="/images/user/pbaggy.jpeg" alt="Baggy Jeans">
-                    </div>
-                    <div class="sale-product-info">
-                        <span class="sale-cat">Jeans</span>
-                        <a href="/product/1" class="sale-name">Relaxed Baggy Jeans</a>
-                        <div class="sale-price-row">
-                            <span class="price-new">₹99</span>
-                            <span class="price-old">₹199</span>
-                        </div>
-                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 3 -->
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="sale-product-card">
-                    <div class="sale-img-wrap">
-                        <span class="discount-badge">30% OFF</span>
-                        <img src="/images/user/pcasual.jpeg" alt="Classic Shirt">
-                    </div>
-                    <div class="sale-product-info">
-                        <span class="sale-cat">Shirts</span>
-                        <a href="/product/1" class="sale-name">Minimalist Cotton Shirt</a>
-                        <div class="sale-price-row">
-                            <span class="price-new">₹62</span>
-                            <span class="price-old">₹89</span>
-                        </div>
-                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 4 -->
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="sale-product-card">
-                    <div class="sale-img-wrap">
-                        <span class="discount-badge">20% OFF</span>
-                        <img src="/images/user/combo.jpeg" alt="Shirt & Pant Combo">
-                    </div>
-                    <div class="sale-product-info">
-                        <span class="sale-cat">Combo</span>
-                        <a href="/product/1" class="sale-name">Modular Style Combo</a>
-                        <div class="sale-price-row">
-                            <span class="price-new">₹103</span>
-                            <span class="price-old">₹129</span>
-                        </div>
-                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 5 -->
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="sale-product-card">
-                    <div class="sale-img-wrap">
-                        <span class="discount-badge">60% OFF</span>
-                        <img src="/images/user/oversized.jpeg" alt="Oversized Tee">
-                    </div>
-                    <div class="sale-product-info">
-                        <span class="sale-cat">Oversized</span>
-                        <a href="/product/1" class="sale-name">Drop Shoulder Tee</a>
-                        <div class="sale-price-row">
-                            <span class="price-new">₹48</span>
-                            <span class="price-old">₹120</span>
-                        </div>
-                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 6 -->
-            <div class="col-6 col-md-4 col-lg-3">
-                <div class="sale-product-card">
-                    <div class="sale-img-wrap">
-                        <span class="discount-badge">45% OFF</span>
-                        <img src="/images/user/formals.jpeg" alt="Formal Shirt">
-                    </div>
-                    <div class="sale-product-info">
-                        <span class="sale-cat">Formals</span>
-                        <a href="/product/1" class="sale-name">Sleek Executive Shirt</a>
-                        <div class="sale-price-row">
-                            <span class="price-new">₹137</span>
-                            <span class="price-old">₹249</span>
-                        </div>
-                        <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
+        <div class="row g-4" id="saleProductsGrid">
+            <!-- Dynamically loaded -->
         </div>
     </section>
 
@@ -335,6 +203,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/common/auth-guard.js"></script>
     <script src="/js/product/sale.js"></script>
+
+    <!-- Template for sale product cards -->
+    <template id="saleProductTemplate">
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="sale-product-card">
+                <div class="sale-img-wrap">
+                    <span class="discount-badge"></span>
+                    <a href="" class="p-link"><img src="" alt=""></a>
+                </div>
+                <div class="sale-product-info">
+                    <span class="sale-cat"></span>
+                    <a href="" class="sale-name"></a>
+                    <div class="sale-price-row">
+                        <span class="price-new"></span>
+                        <span class="price-old"></span>
+                    </div>
+                    <button class="btn btn-black add-to-cart-sale">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </template>
 
 </body>
 

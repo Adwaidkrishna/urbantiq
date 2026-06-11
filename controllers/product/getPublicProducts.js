@@ -5,8 +5,13 @@ import { applyOffers } from "../offer/offerUtils.js";
 export const getPublicProducts = async (req, res) => {
     try {
         await applyOffers();
-        const { categories, maxPrice, search, sort, sizes, colors, newArrival, rating, limit } = req.query;
+        const { categories, maxPrice, search, sort, sizes, colors, newArrival, rating, limit, onSale } = req.query;
         let query = { status: true };
+
+        if (onSale === "true") {
+            query.offerPrice = { $gt: 0, $ne: null };
+        }
+
 
         // 1. Search
         if (search) {

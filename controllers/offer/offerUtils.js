@@ -5,7 +5,7 @@ let lastCheckTime = 0;
 
 export const applyOffers = async (force = false) => {
   const now = Date.now();
-  // Throttle to avoid running too frequently (e.g. once every 60 seconds unless forced)
+  // checking offer in every 60 seconds
   if (!force && now - lastCheckTime < 60000) {
     return;
   }
@@ -22,7 +22,7 @@ export const applyOffers = async (force = false) => {
 
 
 
-    // Map Category ID -> discountPercentage (keep the highest discount if overlaps exist)
+    // discount persentage keep the highest 10%>5%
     const categoryOfferMap = {};
     let globalDiscountPercentage = null;
 
@@ -33,7 +33,7 @@ export const applyOffers = async (force = false) => {
           categoryOfferMap[catId] = offer.discountPercentage;
         }
       } else {
-        // "All Categories" offer
+        // all categories discount
         if (globalDiscountPercentage === null || globalDiscountPercentage < offer.discountPercentage) {
           globalDiscountPercentage = offer.discountPercentage;
         }
@@ -48,7 +48,7 @@ export const applyOffers = async (force = false) => {
       let productOfferPrice = product.productOfferPrice;
       let needsProductOfferPriceSave = false;
 
-      // Backwards compatibility: initialize productOfferPrice if undefined (field missing)
+      // 
       if (product.productOfferPrice === undefined) {
         if (product.offerPrice !== undefined && product.offerPrice !== null) {
           productOfferPrice = product.offerPrice;
@@ -63,7 +63,7 @@ export const applyOffers = async (force = false) => {
       const catId = product.category ? product.category.toString() : null;
       let categoryDiscount = (catId && categoryOfferMap[catId]) ? categoryOfferMap[catId] : null;
 
-      // Apply the global discount if it is higher than the specific category discount
+      // take category discount 10% > global discount 5%
       if (globalDiscountPercentage !== null) {
         if (categoryDiscount === null || categoryDiscount < globalDiscountPercentage) {
           categoryDiscount = globalDiscountPercentage;
@@ -71,7 +71,7 @@ export const applyOffers = async (force = false) => {
       }
 
       let categoryOfferPrice = null;
-      if (categoryDiscount) {
+      if (categoryDiscount) {//convert offer price into ruppeess
         categoryOfferPrice = Math.round(product.price * (1 - categoryDiscount / 100));
       }
 

@@ -1,10 +1,6 @@
 import User from "../../models/User.js";
 import mongoose from "mongoose";
 
-/**
- * Toggle customer status (active/blocked)
- * PATCH /api/admin/customers/:id/status
- */
 export const toggleCustomerStatus = async (req, res) => {
   try {
     const { id } = req.params;

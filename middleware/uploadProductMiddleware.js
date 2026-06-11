@@ -3,6 +3,9 @@ import fs from "fs";
 
 const uploadDir = "public/images/products";
 
+//this middleware it is used to upload images of products with unique names
+//and storing them in the public/images/products folder
+
 fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
