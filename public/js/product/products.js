@@ -282,13 +282,13 @@ document.addEventListener("DOMContentLoaded", function () {
             // Rating rendering
             const ratingDiv = clone.querySelector(".p-rating");
             if (ratingDiv) {
-                const rating = p.averageRating || 4.5; // fallback rating
-                const reviews = p.reviewCount || Math.floor(Math.random() * 35) + 15;
+                const rating = p.averageRating !== undefined ? p.averageRating : 0;
+                const reviews = p.reviewCount !== undefined ? p.reviewCount : 0;
                 let starsHtml = '';
                 for (let i = 1; i <= 5; i++) {
-                    if (rating >= i) {
+                    if (rating > 0 && rating >= i) {
                         starsHtml += '<i class="bi bi-star-fill"></i>';
-                    } else if (rating >= i - 0.5) {
+                    } else if (rating > 0 && rating >= i - 0.5) {
                         starsHtml += '<i class="bi bi-star-half"></i>';
                     } else {
                         starsHtml += '<i class="bi bi-star text-muted"></i>';

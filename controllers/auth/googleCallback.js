@@ -89,7 +89,7 @@ export const googleCallback = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
-        return res.redirect("/api/auth/home");
+        return res.redirect("/");
 
     } catch (error) {
         console.error("Google Auth Callback Error:", error);

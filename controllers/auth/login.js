@@ -56,7 +56,7 @@ export const login = async (req, res) => {
         return res.json({
             success: true,
             message: "Login successful",
-            redirect: "/api/auth/home"
+            redirect: "/"
         });
 
     } catch (error) {

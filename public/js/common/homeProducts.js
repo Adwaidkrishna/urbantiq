@@ -120,13 +120,13 @@ function createHomeProductCard(product, isNew, isBestSeller = false) {
     const categoryName = product.category && product.category.name ? product.category.name : 'Uncategorized';
     
     let starsHtml = '';
-    const rating = product.averageRating || 4.5;
-    const reviews = product.reviewCount || Math.floor(Math.random() * 40) + 15;
+    const rating = product.averageRating !== undefined ? product.averageRating : 0;
+    const reviews = product.reviewCount !== undefined ? product.reviewCount : 0;
     
     for (let i = 1; i <= 5; i++) {
-        if (rating >= i) {
+        if (rating > 0 && rating >= i) {
             starsHtml += '<i class="bi bi-star-fill rating-star"></i>';
-        } else if (rating >= i - 0.5) {
+        } else if (rating > 0 && rating >= i - 0.5) {
             starsHtml += '<i class="bi bi-star-half rating-star"></i>';
         } else {
             starsHtml += '<i class="bi bi-star rating-star"></i>';
