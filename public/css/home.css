@@ -4,11 +4,22 @@
    ============================================ */
 
 /* ============================================
+   NAVBAR GLASS OVERRIDE
+   ============================================ */
+.navbar.navbar-glass {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+/* ============================================
    HERO SECTION
    ============================================ */
 .hero-section {
     background: #f5f5f7;
-    padding: 6rem 0 5rem;
+    padding: 7rem 0 6rem;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -35,6 +46,13 @@
     letter-spacing: 0.03em;
     margin-bottom: 1.75rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+    cursor: default;
+}
+
+.collection-badge:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .hero-title {
@@ -43,7 +61,7 @@
     color: #1d1d1f;
     letter-spacing: -0.04em;
     line-height: 1.05;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.5rem;
 }
 
 .hero-subtitle {
@@ -72,11 +90,14 @@
 .category-card {
     display: block;
     position: relative;
-    border-radius: 20px;
+    border-radius: 24px;
     overflow: hidden;
     aspect-ratio: 3 / 4;
+    max-height: 300px;
     text-decoration: none;
     background: #f0f0f0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
 }
 
 .category-card img {
@@ -87,8 +108,13 @@
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+}
+
 .category-card:hover img {
-    transform: scale(1.06);
+    transform: scale(1.04);
 }
 
 .category-overlay {
@@ -96,17 +122,18 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 1.25rem 1rem 1rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, transparent 100%);
-    border-radius: 0 0 20px 20px;
+    padding: 1.5rem 1.25rem 1.25rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 100%);
+    border-radius: 0 0 24px 24px;
 }
 
 .category-overlay h3 {
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #fff;
     margin: 0;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
 }
 
 /* ============================================
@@ -116,18 +143,19 @@
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1.5px solid rgba(0, 0, 0, 0.07);
-    border-radius: 22px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 18px;
     overflow: hidden;
     position: relative;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    height: 100%;
 }
 
 .product-card:hover {
-    transform: translateY(-6px) scale(1.01);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.07);
-    border-color: rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Product Image Wrapper */
@@ -136,6 +164,8 @@
     overflow: hidden;
     aspect-ratio: 3 / 4;
     background: #f5f5f7;
+    border-radius: 14px;
+    margin: 8px 8px 0 8px;
 }
 
 .product-img-wrap img {
@@ -147,14 +177,14 @@
 }
 
 .product-card:hover .product-img-wrap img {
-    transform: scale(1.04);
+    transform: scale(1.03);
 }
 
 /* Badge */
 .product-badge {
     position: absolute;
-    top: 12px;
-    left: 12px;
+    top: 10px;
+    left: 10px;
     z-index: 3;
     font-size: 0.65rem;
     font-weight: 700;
@@ -173,9 +203,10 @@
     background: #fff;
     color: #1d1d1f;
     border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
 }
 
-/* Floating Actions (Wishlist + Cart) — ALWAYS VISIBLE */
+/* Floating Actions (Wishlist + Cart) */
 .floating-actions {
     position: absolute;
     top: 10px;
@@ -184,7 +215,6 @@
     flex-direction: column;
     gap: 8px;
     z-index: 10;
-    transition: transform 0.25s ease;
 }
 
 .action-btn {
@@ -227,7 +257,7 @@
 }
 
 .product-title {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 700;
     color: #1d1d1f;
     margin: 0 0 6px;
@@ -276,7 +306,7 @@
 }
 
 .product-price {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 800;
     color: #1d1d1f;
     letter-spacing: -0.02em;
@@ -289,71 +319,79 @@
     text-decoration: line-through;
 }
 
+/* Color Swatches */
+.product-colors {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.color-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+}
+
 /* ============================================
-   SEASON CLEARANCE — ROUNDED PARALLAX CARD
-   ============================================
-
-   CORRECT ARCHITECTURE:
-   ─ background-attachment:fixed sits DIRECTLY on .parallax-card
-   ─ overflow:hidden on the SAME element is fine — it clips the
-     painted output to the border-radius WITHOUT breaking fixed
-     attachment (they're on the same paint surface)
-   ─ ::before is ONLY the dark gradient overlay (no bg-attachment)
-   ─ NO transform on .parallax-card (transform creates a new
-     containing block and breaks background-attachment:fixed)
-   ─ NO will-change:transform anywhere (same breaking effect)
+   LOADING SKELETONS
    ============================================ */
+.skeleton-card {
+    pointer-events: none;
+    border-color: rgba(0, 0, 0, 0.03) !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
 
+.skeleton-pulse {
+    animation: skeleton-loading 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* ============================================
+   SEASON CLEARANCE - ROUNDED PARALLAX CARD
+   ============================================ */
 .parallax-section {
-    padding: 4rem 0;
+    padding: 3rem 0;
 }
 
 .parallax-card {
     position: relative;
     border-radius: 28px;
     overflow: hidden;
-    min-height: 420px;
-    /* compact premium height — not full-screen */
-
-    /* ── Locally generated HD luxury menswear boutique image ── */
+    min-height: 440px;
     background-image: url('../images/user/boutique-banner.png');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    /* pure CSS parallax, no JS */
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    /* Soft anti-gravity elevation */
     box-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.04),
-        0 8px 20px rgba(0, 0, 0, 0.08),
-        0 20px 48px rgba(0, 0, 0, 0.12);
-
-    /* ⚠  NO transform — breaks background-attachment:fixed */
+        0 2px 4px rgba(0, 0, 0, 0.03),
+        0 8px 20px rgba(0, 0, 0, 0.06),
+        0 20px 48px rgba(0, 0, 0, 0.1);
 }
 
-/* ── Dark overlay ────────────────────────────
-   Pure gradient; NO background-attachment.
-   z-index:0 puts it above the card background
-   but below .parallax-content (z-index:1).   */
 .parallax-card::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 0;
-    /* Subtle overlay — warm image tones show through, text stays readable */
     background: linear-gradient(to bottom,
-            rgba(10, 8, 6, 0.52) 0%,
-            rgba(10, 8, 6, 0.36) 50%,
-            rgba(10, 8, 6, 0.58) 100%);
-    /* ⚠  NO will-change — breaks fixed bg */
+            rgba(0, 0, 0, 0.4) 0%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0.45) 100%);
 }
 
-/* ── Content ─────────────────────────────── */
 .parallax-content {
     position: relative;
     z-index: 1;
@@ -364,7 +402,6 @@
     width: 100%;
 }
 
-/* Eyebrow pill */
 .parallax-eyebrow {
     display: inline-block;
     font-size: 0.68rem;
@@ -381,7 +418,6 @@
     background: rgba(255, 255, 255, 0.06);
 }
 
-/* Title */
 .parallax-title {
     font-size: clamp(2rem, 4.5vw, 3.25rem);
     /* refined — not oversized */
@@ -393,7 +429,6 @@
     text-shadow: 0 1px 16px rgba(0, 0, 0, 0.45);
 }
 
-/* Subtitle */
 .parallax-subtitle {
     font-size: clamp(0.875rem, 1.6vw, 1rem);
     color: rgba(255, 255, 255, 0.70);
@@ -403,7 +438,6 @@
     line-height: 1.65;
 }
 
-/* Ghost CTA */
 .parallax-cta {
     display: inline-flex;
     align-items: center;
@@ -443,44 +477,160 @@
 }
 
 /* ============================================
-   MOBILE — disable fixed attachment
-   iOS Safari + Chrome Android both misrender
-   background-attachment:fixed inside
-   overflow:hidden. Switch to scroll.
+   FEATURED COLLECTION (50/50 Asymmetric Grid)
    ============================================ */
-@media (max-width: 991px) {
-    .parallax-card {
-        background-attachment: scroll;
-        min-height: 55vh;
-    }
-
-    .parallax-section {
-        padding: 4rem 0;
-    }
+.featured-editorial-card {
+    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+    min-height: 480px;
+    background: #f5f5f7;
+    display: flex;
+    align-items: flex-end;
+    padding: 3.5rem 3rem;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+    text-decoration: none;
+    height: 100%;
 }
 
-@media (max-width: 576px) {
-    .parallax-card {
-        min-height: 420px;
-        border-radius: 20px;
-    }
-
-    .parallax-section {
-        padding: 3rem 0;
-    }
-
-    .parallax-content {
-        padding: 3.5rem 1.5rem;
-    }
+.featured-editorial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.06);
 }
+
+.featured-editorial-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.featured-editorial-card:hover img {
+    transform: scale(1.03);
+}
+
+.featured-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.15) 60%, transparent 100%);
+    z-index: 1;
+}
+
+.featured-content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+}
+
+.featured-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.featured-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+}
+
+.featured-subtitle {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.85);
+    max-width: 360px;
+    margin-bottom: 1.75rem;
+    line-height: 1.5;
+}
+
+.featured-link {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    padding-bottom: 2px;
+    transition: border-color 0.2s ease;
+}
+
+.featured-link:hover {
+    border-color: #fff;
+}
+
+.featured-link i {
+    transition: transform 0.2s ease;
+}
+
+.featured-editorial-card:hover .featured-link i {
+    transform: translateX(4px);
+}
+
 
 
 /* ============================================
-   RESPONSIVE TWEAKS
+   WHY CHOOSE US
    ============================================ */
-@media (max-width: 768px) {
+.why-choose-us-card {
+    border-radius: 20px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 2.25rem 1.75rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.why-choose-us-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+}
+
+.why-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #f5f5f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1d1d1f;
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.why-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 0.5rem;
+}
+
+.why-desc {
+    font-size: 0.82rem;
+    color: #86868b;
+    line-height: 1.5;
+    margin: 0;
+}
+
+
+
+/* ============================================
+   RESPONSIVE TWEAKS & MEDIA QUERIES
+   ============================================ */
+@media (max-width: 991px) {
     .hero-section {
-        padding: 4rem 0 3.5rem;
+        padding: 5rem 0 4.5rem;
     }
 
     .category-card {
@@ -491,19 +641,39 @@
         border-radius: 16px;
     }
 
-    /* Always show floating actions on touch devices */
+    /* Disable fixed background attachment on mobile for smooth performance */
+    .parallax-card {
+        background-attachment: scroll;
+        min-height: 480px;
+    }
+
+    .parallax-section {
+        padding: 3rem 0;
+    }
+
+    .featured-supporting-card {
+        padding: 2.25rem;
+    }
+}
+
+@media (max-width: 768px) {
     .floating-actions {
         opacity: 1;
         transform: translateX(0);
     }
-
-    .offer-banner {
-        border-radius: 20px;
-    }
-
 }
 
 @media (max-width: 576px) {
+    .parallax-card {
+        min-height: 420px;
+        border-radius: 20px;
+    }
+
+    .parallax-content {
+        padding: 2.5rem 1.5rem;
+        margin: 1rem;
+    }
+
     .product-info {
         padding: 0.75rem 0.85rem 1rem;
     }
@@ -521,22 +691,6 @@
         height: 32px;
         font-size: 0.8rem;
     }
+
+
 }
-
-/* Color Swatches on Product Card */
-
-.product-colors {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-}
-
-.color-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.05);
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
-}
-

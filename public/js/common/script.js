@@ -94,80 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* --------------------------------------------------
-       5. HOME PAGE PRODUCT LOADERS (New & Top)
+       5. DYNAMIC INTERACTION LISTENERS (AJAX Cart/Wishlist)
        -------------------------------------------------- */
-    async function initHomeProducts() {
-        const arrivalGrid = document.getElementById("newArrivalsGrid");
-        const sellingGrid = document.getElementById("topSellingGrid");
-        if (!arrivalGrid && !sellingGrid) return;
-
-        try {
-            const res = await fetch("/api/products");
-            const data = await res.json();
-
-            if (data.success && data.products) {
-                // Populate New Arrivals (Latest 4)
-                if (arrivalGrid) {
-                    const arrivals = data.products.slice(0, 4);
-                    renderHomeProductGrid(arrivalGrid, arrivals);
-                }
-                // Populate Top Selling (Next 4)
-                if (sellingGrid) {
-                    const topSelling = data.products.slice(4, 8);
-                    renderHomeProductGrid(sellingGrid, topSelling);
-                }
-                attachDynamicListeners();
-            }
-        } catch (error) {
-            console.error("Home products error:", error);
-        }
-    }
-
-    function renderHomeProductGrid(container, products) {
-        container.innerHTML = "";
-        products.forEach(p => {
-            const mainImg = (p.variants?.[0]?.images?.[0]) ? `/images/products/${p.variants[0].images[0]}` : '/images/user/phoodie.jpeg';
-            const col = document.createElement("div");
-            col.className = "col-6 col-md-4 col-lg-3";
-            
-            let colorHtml = "";
-            if(p.variants) {
-                p.variants.slice(0, 3).forEach(v => {
-                    colorHtml += `<span class="color-dot" style="background: ${v.color};" title="${v.colorName || ''}"></span>`;
-                });
-            }
-
-            col.innerHTML = `
-                <div class="product-card">
-                    <div class="product-img-wrap">
-                        ${ (new Date() - new Date(p.createdAt)) < 7*24*60*60*1000 ? '<span class="product-badge badge-dark">New</span>' : '' }
-                        <div class="floating-actions">
-                            <button class="action-btn wishlist-btn-dynamic" data-id="${p._id}"><i class="bi bi-heart"></i></button>
-                            <button class="action-btn cart-btn-dynamic" data-id="${p._id}"><i class="bi bi-cart3"></i></button>
-                        </div>
-                        <a href="/product/${p._id}">
-                            <img src="${mainImg}" alt="${p.name}">
-                        </a>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">${p.category?.name || 'Men'}</div>
-                        <h4 class="product-title"><a href="/product/${p._id}">${p.name}</a></h4>
-                        <div class="product-rating">
-                            <i class="bi bi-star-fill rating-star"></i>
-                            <span>4.8</span>
-                            <span class="review-count">(234)</span>
-                        </div>
-                        <div class="product-colors">${colorHtml}</div>
-                        <div class="product-bottom">
-                            <div class="product-price">₹${p.offerPrice || p.price}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            container.appendChild(col);
-        });
-    }
-
     function attachDynamicListeners() {
         document.querySelectorAll('.wishlist-btn-dynamic').forEach(btn => {
             btn.addEventListener('click', async function(e) {
@@ -246,6 +174,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Expose dynamically globally so homeProducts.js can invoke it
+    window.attachDynamicListeners = attachDynamicListeners;
+
     /* --------------------------------------------------
        6. GLOBAL HEADER SEARCH REDIRECT
        -------------------------------------------------- */
@@ -273,7 +204,5 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.addEventListener('click', triggerSearch);
         }
     }
-
-    initHomeProducts();
 
 });
