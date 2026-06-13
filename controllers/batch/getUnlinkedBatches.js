@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
 import PurchaseItem from "../../models/PurchaseItem.js";
-import Product from "../../models/Product.js";
 
 export const getUnlinkedBatches = async (req, res) => {
   try {

@@ -1,5 +1,4 @@
 import Cart from "../../models/Cart.js";
-import Product from "../../models/Product.js";
 
 export const validateCartStock = async (req, res) => {
   try {

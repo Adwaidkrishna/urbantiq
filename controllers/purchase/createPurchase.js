@@ -1,5 +1,4 @@
 import Purchase from "../../models/Purchase.js";
-import PurchaseItem from "../../models/PurchaseItem.js";
 
 let batchCounter = 1;
 function generateBatchId() {
