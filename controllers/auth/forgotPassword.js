@@ -25,7 +25,7 @@ export const forgotPassword = async (req, res) => {
 
         return res.json({
             success: true,
-            redirect: `/api/auth/verify-reset-otp?email=${email}`
+            redirect: `/verify-reset-otp?email=${email}`
         });
 
     } catch (err) {

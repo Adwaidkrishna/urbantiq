@@ -5,7 +5,7 @@ export const googleCallback = async (req, res) => {
     const { code } = req.query;
 
     if (!code) {
-        return res.redirect("/api/auth/login?error=Google authentication failed");
+        return res.redirect("/login?error=Google authentication failed");
     }
 
     try {
@@ -33,7 +33,7 @@ export const googleCallback = async (req, res) => {
         if (!tokenRes.ok || tokenData.error) {
             console.error("Google Token Exchange Error:", tokenData);
             const errMsg = tokenData.error_description || tokenData.error || "Unknown error";
-            return res.redirect(`/api/auth/login?error=Failed to exchange token with Google. Details: ${encodeURIComponent(errMsg)}`);
+            return res.redirect(`/login?error=Failed to exchange token with Google. Details: ${encodeURIComponent(errMsg)}`);
         }
 
         const { access_token } = tokenData;
@@ -45,13 +45,13 @@ export const googleCallback = async (req, res) => {
         if (!userinfoRes.ok || profile.error) {
             console.error("Google User Info Error:", profile);
             const errMsg = profile.error_description || profile.error || "Unknown error";
-            return res.redirect(`/api/auth/login?error=Failed to fetch user profile. Details: ${encodeURIComponent(errMsg)}`);
+            return res.redirect(`/login?error=Failed to fetch user profile. Details: ${encodeURIComponent(errMsg)}`);
         }
 
         const { email, name } = profile;
 
         if (!email) {
-            return res.redirect("/api/auth/login?error=Email address not provided by Google");
+            return res.redirect("/login?error=Email address not provided by Google");
         }
 
         // Find or create the user in the database
@@ -71,7 +71,7 @@ export const googleCallback = async (req, res) => {
         }
 
         if (user.status === "blocked") {
-            return res.redirect("/api/auth/login?error=Your account has been blocked. Please contact support.");
+            return res.redirect("/login?error=Your account has been blocked. Please contact support.");
         }
 
         // Generate JWT Token
@@ -93,6 +93,6 @@ export const googleCallback = async (req, res) => {
 
     } catch (error) {
         console.error("Google Auth Callback Error:", error);
-        return res.redirect("/api/auth/login?error=Internal server error during Google login");
+        return res.redirect("/login?error=Internal server error during Google login");
     }
 };

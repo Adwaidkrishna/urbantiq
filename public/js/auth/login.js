@@ -28,6 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
         errorDiv.classList.add("d-none");
     }
 
+    const params = new URLSearchParams(window.location.search);
+    const urlError = params.get("error");
+    if (urlError) {
+        showError(urlError);
+    }
+
     /* =========================
        Password Eye Toggle
     ========================= */

@@ -41,28 +41,27 @@
                 <div id="otpInfo" class="alert alert-info d-none"></div>
 
                 <form id="otpForm" class="auth-form">
-                    <form id="otpForm" class="auth-form">
-                        <input type="hidden" id="emailInput" name="email">
-                        <div class="otp-inputs">
-                            <input type="number" class="otp-field" maxlength="1" required>
-                            <input type="number" class="otp-field" maxlength="1" required>
-                            <input type="number" class="otp-field" maxlength="1" required>
-                            <input type="number" class="otp-field" maxlength="1" required>
-                            <input type="number" class="otp-field" maxlength="1" required>
-                            <input type="number" class="otp-field" maxlength="1" required>
-                        </div>
-
-                        <button type="submit" class="btn-auth-primary">Verify Email</button>
-                    </form>
-
-                    <p class="auth-footnote">
-                        Didn't receive a code? <a href="#" id="resendBtn" class="auth-link">Resend Code</a>
-                    </p>
-                    <div class="mt-4">
-                        <a href="/api/auth/register" class="auth-link small text-muted">
-                            <i class="bi bi-arrow-left"></i> Back to Sign Up
-                        </a>
+                    <input type="hidden" id="emailInput" name="email">
+                    <div class="otp-inputs">
+                        <input type="number" class="otp-field" maxlength="1" required>
+                        <input type="number" class="otp-field" maxlength="1" required>
+                        <input type="number" class="otp-field" maxlength="1" required>
+                        <input type="number" class="otp-field" maxlength="1" required>
+                        <input type="number" class="otp-field" maxlength="1" required>
+                        <input type="number" class="otp-field" maxlength="1" required>
                     </div>
+
+                    <button type="submit" class="btn-auth-primary">Verify Email</button>
+                </form>
+
+                <p class="auth-footnote">
+                    Didn't receive a code? <a href="#" id="resendBtn" class="auth-link">Resend Code</a>
+                </p>
+                <div class="mt-4">
+                    <a href="/register" class="auth-link small text-muted">
+                        <i class="bi bi-arrow-left"></i> Back to Sign Up
+                    </a>
+                </div>
             </div>
         </div>
     </div>

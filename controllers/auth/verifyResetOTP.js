@@ -28,6 +28,6 @@ export const verifyResetOTP = async (req, res) => {
 
     return res.json({
         success: true,
-        redirect: `/api/auth/reset-password?email=${email}`
+        redirect: `/reset-password?email=${email}`
     });
 };

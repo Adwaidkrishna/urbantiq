@@ -30,6 +30,6 @@ export const resetPassword = async (req, res) => {
 
     return res.json({
         success: true,
-        redirect: "/api/auth/login"
+        redirect: "/login"
     });
 };

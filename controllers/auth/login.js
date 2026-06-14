@@ -15,6 +15,13 @@ export const login = async (req, res) => {
             });
         }
 
+        if (!user.password) {
+            return res.json({
+                success: false,
+                message: "This account was registered using Google. Please log in with Google."
+            });
+        }
+
         if (!user.isVerified) {
             return res.json({
                 success: false,

@@ -57,7 +57,7 @@ export const register = async (req, res) => {
 
         return res.json({
             success: true,
-            redirect: `/api/auth/verify-email?email=${email}`
+            redirect: `/verify-email?email=${email}`
         });
 
     }

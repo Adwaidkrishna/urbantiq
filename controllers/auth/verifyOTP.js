@@ -35,6 +35,6 @@ export const verifyOTP = async (req, res) => {
     return res.json({
         success: true,
         message: "Email verified successfully",
-        redirect: "/api/auth/login"
+        redirect: "/login"
     });
 };
