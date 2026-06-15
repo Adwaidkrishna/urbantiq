@@ -5,3 +5,4 @@ export { updateProduct } from "./updateProduct.js";
 export { deleteProduct } from "./deleteProduct.js";
 export { getProductDetails } from "./getProductDetails.js";
 export { getPublicProducts } from "./getPublicProducts.js";
+export { searchSuggestions } from "./searchSuggestions.js";

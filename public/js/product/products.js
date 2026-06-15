@@ -1,5 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
     let currentWishlist = [];
+    let currentPage = 1;
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Pre-populate search query from URL parameters if present
+    const searchParam = urlParams.get('search');
+    const searchInput = document.querySelector('.search-input');
+    if (searchParam && searchInput) {
+        searchInput.value = searchParam;
+    }
 
     // ====== DUAL PRICE SLIDER ======
     const minInput = document.getElementById('priceSliderMin');
@@ -36,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (minInput && maxInput) {
         minInput.addEventListener('input', updateSlider);
         maxInput.addEventListener('input', updateSlider);
-        minInput.addEventListener('change', loadProducts);
-        maxInput.addEventListener('change', loadProducts);
+        minInput.addEventListener('change', () => loadProducts(true));
+        maxInput.addEventListener('change', () => loadProducts(true));
 
         // Adjust z-index dynamically for easier overlapping thumb dragging
         minInput.addEventListener('input', () => {
@@ -56,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.color-swatch').forEach(btn => {
         btn.addEventListener('click', () => {
             btn.classList.toggle('active');
-            loadProducts();
+            loadProducts(true);
         });
     });
 
@@ -64,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.size-pill').forEach(btn => {
         btn.addEventListener('click', () => {
             btn.classList.toggle('active');
-            loadProducts();
+            loadProducts(true);
         });
     });
 
@@ -150,11 +159,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // Reload products
-        loadProducts();
+        loadProducts(true);
     }
 
     // ====== PRODUCT LOADER & FILTER SYSTEM ======
-    async function loadProducts() {
+    async function loadProducts(resetPage = false) {
+        if (resetPage) {
+            currentPage = 1;
+        }
+
         const productGrid = document.getElementById("productGrid");
         if (!productGrid) return;
 
@@ -254,7 +267,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
 
-                renderProducts(filteredProducts);
+                // Client-side Pagination logic
+                const itemsPerPage = 16;
+                const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+                
+                if (currentPage > totalPages) {
+                    currentPage = Math.max(1, totalPages);
+                }
+                
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+
+                renderProducts(paginatedProducts);
+                renderPagination(totalPages, currentPage);
             }
         } catch (err) {
             console.error("Error loading products:", err);
@@ -400,43 +425,110 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ====== ATTACH FILTER DELEGATION LISTENERS ======
     const sortSelect = document.getElementById('sortSelect');
-    if (sortSelect) sortSelect.addEventListener('change', loadProducts);
+    if (sortSelect) sortSelect.addEventListener('change', () => loadProducts(true));
 
     const categoryFilterList = document.getElementById('categoryFilterList');
-    if (categoryFilterList) categoryFilterList.addEventListener('change', loadProducts);
+    if (categoryFilterList) categoryFilterList.addEventListener('change', () => loadProducts(true));
 
     const availabilityFilterList = document.getElementById('availabilityFilterList');
-    if (availabilityFilterList) availabilityFilterList.addEventListener('change', loadProducts);
+    if (availabilityFilterList) availabilityFilterList.addEventListener('change', () => loadProducts(true));
 
     const ratingFilterList = document.getElementById('ratingFilterList');
-    if (ratingFilterList) ratingFilterList.addEventListener('change', loadProducts);
+    if (ratingFilterList) ratingFilterList.addEventListener('change', () => loadProducts(true));
 
     const collectionFilterList = document.getElementById('collectionFilterList');
-    if (collectionFilterList) collectionFilterList.addEventListener('change', loadProducts);
+    if (collectionFilterList) collectionFilterList.addEventListener('change', () => loadProducts(true));
 
     const discountFilterList = document.getElementById('discountFilterList');
-    if (discountFilterList) discountFilterList.addEventListener('change', loadProducts);
+    if (discountFilterList) discountFilterList.addEventListener('change', () => loadProducts(true));
 
-    const searchInput = document.querySelector('.search-input');
     if (searchInput) {
         let searchTimeout;
         searchInput.addEventListener('input', () => {
             clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(loadProducts, 400);
+            searchTimeout = setTimeout(() => loadProducts(true), 400);
         });
     }
 
-    // Pagination (if static pages exist)
-    document.querySelectorAll('.p-page:not(.p-page-next)').forEach(btn => {
-        btn.addEventListener('click', function () {
-            document.querySelectorAll('.p-page').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
+    // ====== DYNAMIC PAGINATION RENDERER ======
+    function renderPagination(totalPages, activePage) {
+        const container = document.getElementById("productPagination");
+        if (!container) return;
+
+        if (totalPages <= 1) {
+            container.innerHTML = "";
+            return;
+        }
+
+        let html = "";
+        
+        // Prev button
+        html += `
+            <button class="p-page prev-btn" ${activePage === 1 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                <i class="bi bi-chevron-left"></i>
+            </button>
+        `;
+
+        // Page buttons
+        for (let i = 1; i <= totalPages; i++) {
+            html += `
+                <button class="p-page page-num-btn ${i === activePage ? 'active' : ''}" data-page="${i}">
+                    ${i}
+                </button>
+            `;
+        }
+
+        // Next button
+        html += `
+            <button class="p-page p-page-next next-btn" ${activePage === totalPages ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                Next <i class="bi bi-chevron-right ms-1"></i>
+            </button>
+        `;
+
+        container.innerHTML = html;
+
+        // Add event listeners
+        const prevBtn = container.querySelector(".prev-btn");
+        if (prevBtn && activePage > 1) {
+            prevBtn.addEventListener("click", () => {
+                currentPage = activePage - 1;
+                loadProducts();
+                scrollToGridTop();
+            });
+        }
+
+        const nextBtn = container.querySelector(".next-btn");
+        if (nextBtn && activePage < totalPages) {
+            nextBtn.addEventListener("click", () => {
+                currentPage = activePage + 1;
+                loadProducts();
+                scrollToGridTop();
+            });
+        }
+
+        container.querySelectorAll(".page-num-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const targetPage = parseInt(e.target.dataset.page);
+                if (targetPage !== activePage) {
+                    currentPage = targetPage;
+                    loadProducts();
+                    scrollToGridTop();
+                }
+            });
         });
-    });
+    }
+
+    function scrollToGridTop() {
+        const titleRow = document.querySelector(".shop-title-row");
+        if (titleRow) {
+            titleRow.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }
 
     // ====== CATEGORY BINDER & FETCH ======
     async function loadFilterCategories() {
         try {
+            const categoryId = urlParams.get('category');
             const res = await fetch("/api/categories");
             const data = await res.json();
             const list = document.getElementById("categoryFilterList");
@@ -444,10 +536,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             list.innerHTML = "";
             data.categories.forEach(cat => {
+                const isChecked = categoryId && cat._id.toString() === categoryId.toString();
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <label class="filter-check">
-                        <input type="checkbox" value="${cat._id}">
+                        <input type="checkbox" value="${cat._id}" ${isChecked ? 'checked' : ''}>
                         <span class="checkmark"></span>
                         ${cat.name}
                     </label>

@@ -23,6 +23,8 @@ import userProfileRoutes from "./routes/user/profileRoutes.js";
 import couponRoutes from "./routes/user/couponRoutes.js";
 import reviewRoutes from "./routes/user/reviewRoutes.js";
 import adminOfferRoutes from "./routes/admin/offerRoutes.js";
+import publicContactRoutes from "./routes/public/contactRoutes.js";
+import adminContactRoutes from "./routes/admin/contactRoutes.js";
 
 const app = express();
 
@@ -39,6 +41,7 @@ app.use(express.static("public"));
 app.use("/api/auth", authRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
+app.use("/api", publicContactRoutes);
 
 // 2. PROTECTED USER API ROUTES
 app.use("/api/cart", cartRoutes);
@@ -58,6 +61,7 @@ app.use("/api/admin", purchaseRoutes);
 app.use("/api/admin", batchRoutes);
 app.use("/api/admin", adminCustomerRoutes);
 app.use("/api/admin", adminOfferRoutes);
+app.use("/api/admin", adminContactRoutes);
 
 // 4. USER-SIDE PAGES
 app.use("/", userRoutes);

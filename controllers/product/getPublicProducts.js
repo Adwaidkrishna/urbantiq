@@ -5,7 +5,7 @@ import { applyOffers } from "../offer/offerUtils.js";
 export const getPublicProducts = async (req, res) => {
     try {
         await applyOffers();
-        const { categories, maxPrice, search, sort, sizes, colors, newArrival, rating, limit, onSale } = req.query;
+        const { categories, maxPrice, search, sort, sizes, colors, newArrival, rating, limit, onSale, page } = req.query;
         let query = { status: true };
 
         if (onSale === "true") {
@@ -77,7 +77,19 @@ export const getPublicProducts = async (req, res) => {
             .populate("category", "name")
             .sort(sortObj);
             
-        if (limit && sort !== "Most Popular") {
+        const pageNum = parseInt(page);
+        const limitNum = parseInt(limit);
+        let productsCount;
+        let totalPages = 1;
+
+        if (pageNum) {
+            const lim = limitNum || 16;
+            if (sort !== "Most Popular") {
+                productsCount = await Product.countDocuments(query);
+                totalPages = Math.ceil(productsCount / lim);
+                dbQuery = dbQuery.skip((pageNum - 1) * lim).limit(lim);
+            }
+        } else if (limit && sort !== "Most Popular") {
             dbQuery = dbQuery.limit(Number(limit));
         }
             
@@ -105,12 +117,23 @@ export const getPublicProducts = async (req, res) => {
 
         if (sort === "Most Popular") {
             productsWithSales.sort((a, b) => b.salesCount - a.salesCount);
-            if (limit) {
+            if (pageNum) {
+                const lim = limitNum || 16;
+                productsCount = productsWithSales.length;
+                totalPages = Math.ceil(productsCount / lim);
+                productsWithSales = productsWithSales.slice((pageNum - 1) * lim, pageNum * lim);
+            } else if (limit) {
                 productsWithSales = productsWithSales.slice(0, Number(limit));
             }
         }
             
-        res.json({ success: true, products: productsWithSales });
+        res.json({
+            success: true,
+            products: productsWithSales,
+            totalPages,
+            currentPage: pageNum || 1,
+            totalProducts: productsCount !== undefined ? productsCount : productsWithSales.length
+        });
     } catch (error) {
         console.error("Error fetching products:", error);
         res.status(500).json({ success: false, message: "Server error" });

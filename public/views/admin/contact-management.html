@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Category | URBANTIQ Admin</title>
+    <title>Contact Messages | URBANTIQ Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/admin.css">
 </head>
@@ -67,8 +67,11 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="/api/admin/contact-management" class="sidebar-nav-link">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        <a href="/api/admin/contact-management" class="sidebar-nav-link active">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
                             Contact Messages
                         </a>
                     </li>
@@ -89,7 +92,7 @@
                         </a>
                     </li>
                     <li class="sidebar-nav-item">
-                        <a href="/api/admin/categories" class="sidebar-nav-link active">
+                        <a href="/api/admin/categories" class="sidebar-nav-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -213,7 +216,7 @@
                 <div class="sidebar-user">
                     <div class="sidebar-user-avatar">AD</div>
                     <div class="sidebar-user-info">
-                        <div class="sidebar-user-name">Adwaid S.</div>
+                        <div class="sidebar-user-name">Admin</div>
                         <div class="sidebar-user-role">Super Admin</div>
                     </div>
                 </div>
@@ -225,169 +228,67 @@
             <!-- TOP BAR -->
             <header class="admin-topbar">
                 <div class="topbar-left">
-                    <div class="topbar-breadcrumb">
-                        Pages <span>/</span>
-                        <a href="/api/admin/categories" style="color: inherit; text-decoration: none;">Categories</a>
-                        <span>/</span> Edit Category
-                    </div>
-                    <h1 class="topbar-title">Edit Category</h1>
+                    <div class="topbar-breadcrumb">Pages <span>/</span> Contact Messages</div>
+                    <h1 class="topbar-title">Contact Messages</h1>
                 </div>
                 <div class="topbar-right">
-                    <button class="topbar-icon-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </button>
-                    <button class="topbar-icon-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                        <span class="topbar-badge">4</span>
-                    </button>
                     <div class="topbar-divider"></div>
                     <div class="topbar-user">
                         <div class="topbar-user-avatar">AD</div>
-                        <span class="topbar-user-name">Adwaid</span>
+                        <span class="topbar-user-name">Admin</span>
                     </div>
                 </div>
             </header>
 
             <!-- PAGE CONTENT -->
             <div class="admin-content">
-                <div class="row g-4">
-                    <div class="col-lg-8 mx-auto">
+                <!-- Page actions and filters -->
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">User Support Queries</h2>
+                        <p class="page-subtitle">View contact requests submitted by users.</p>
+                    </div>
+                    <div class="page-actions">
+                        <label class="d-flex align-items-center gap-2" style="font-size: 13px; font-weight: 600; cursor: pointer; color: #374151;">
+                            <input type="checkbox" id="sortOldestFirst" style="width: 16px; height: 16px; cursor: pointer;">
+                            Sort Oldest First
+                        </label>
+                    </div>
+                </div>
 
-                        <!-- Back Button -->
-                        <div class="mb-3">
-                            <a href="/api/admin/categories" class="btn-admin-outline" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; padding: 8px 18px; border-radius: 8px; font-size: 14px;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
-                                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                                    <polyline points="12 19 5 12 12 5"></polyline>
-                                </svg>
-                                Back to Categories
-                            </a>
-                        </div>
-
-                        <!-- Edit Form Card -->
-                        <section class="admin-form-section">
-                            <div class="admin-form-section-header">
-                                <h5 class="admin-form-section-title">Edit Category Details</h5>
-                            </div>
-                            <div class="admin-form-section-body">
-
-                                <!-- Loading state -->
-                                <div id="editFormLoader" style="text-align:center; padding: 40px 0; display:flex; flex-direction:column; align-items:center; gap:12px;">
-                                    <div style="width:36px;height:36px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--admin-accent,#6366f1);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
-                                    <span style="opacity:0.5;font-size:14px;">Loading category details...</span>
-                                </div>
-
-                                <form id="editCategoryForm" class="row g-3" enctype="multipart/form-data" style="display:none;">
-
-                                    <!-- Category Name -->
-                                    <div class="col-md-6">
-                                        <label class="form-label-admin">Category Name</label>
-                                        <input type="text" id="editName" name="name" class="form-control-admin"
-                                            placeholder="e.g. Outerwear" required>
-                                    </div>
-
-                                    <!-- Status -->
-                                    <div class="col-md-6">
-                                        <label class="form-label-admin">Status</label>
-                                        <select id="editStatus" name="status" class="form-control-admin">
-                                            <option value="true">Active</option>
-                                            <option value="false">Inactive</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Current Image Preview -->
-                                    <div class="col-12">
-                                        <label class="form-label-admin">Current Image</label>
-                                        <div style="display:flex; align-items:center; gap:16px; margin-top:6px;">
-                                            <img id="currentCategoryImg" src="" alt="Current category image" style="
-                                                width: 80px;
-                                                height: 80px;
-                                                object-fit: cover;
-                                                border-radius: 10px;
-                                                border: 2px solid var(--admin-border, rgba(255,255,255,0.12));
-                                                box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-                                            ">
-                                            <div>
-                                                <p style="margin:0; font-size:12px; opacity:0.6;">Current category image</p>
-                                                <p style="margin:4px 0 0; font-size:12px; opacity:0.4;">Upload a new image below to replace it</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- New Image Upload -->
-                                    <div class="col-12">
-                                        <label class="form-label-admin">Replace Image <span style="opacity:0.5;font-size:12px;">(optional)</span></label>
-                                        <input type="file" id="editImage" name="image" class="form-control-admin"
-                                            accept=".jpg,.jpeg,.png,.webp"
-                                            style="padding: 0.45rem 0.75rem; cursor: pointer;"
-                                            onchange="previewNewImage(event)">
-                                        <!-- New Image Preview -->
-                                        <div id="newImagePreview" style="display:none; margin-top: 0.75rem;">
-                                            <p class="form-label-admin" style="margin-bottom: 0.35rem; font-size: 0.78rem; opacity: 0.7;">New Image Preview</p>
-                                            <img id="newPreviewImg" src="" alt="New category preview" style="
-                                                width: 80px;
-                                                height: 80px;
-                                                object-fit: cover;
-                                                border-radius: 10px;
-                                                border: 2px solid var(--admin-border, rgba(255,255,255,0.12));
-                                                box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-                                            ">
-                                        </div>
-                                    </div>
-
-                                    <!-- Description -->
-                                    <div class="col-12">
-                                        <label class="form-label-admin">Category Description</label>
-                                        <textarea id="editDescription" name="description" class="form-control-admin"
-                                            rows="4" placeholder="Write a short description for this category..."
-                                            style="resize: vertical; min-height: 100px;"></textarea>
-                                    </div>
-
-                                    <!-- Action Buttons -->
-                                    <div class="col-12 d-flex justify-content-end gap-3" style="gap:12px;">
-                                        <a href="/api/admin/categories"
-                                            class="btn-admin-outline"
-                                            style="padding: 10px 24px; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center;">
-                                            Cancel
-                                        </a>
-                                        <button type="submit" id="editSubmitBtn" class="btn-admin-primary" style="min-width: 150px;">
-                                            Save Changes
-                                        </button>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </section>
-
+                <!-- Messages Card -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h3 class="admin-card-title">Message List</h3>
+                    </div>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Subject</th>
+                                    <th>Message</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contactQueriesTable">
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 td-secondary">
+                                        Loading messages...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <style>
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        select.form-control-admin {
-            cursor: pointer;
-        }
-        .gap-3 { gap: 12px !important; }
-    </style>
-
-    <script src="/js/admin/edit-category.js"></script>
-
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js/admin/alerts.js"></script>
+    <script src="/js/admin/contact-management.js"></script>
 </body>
 
 </html>

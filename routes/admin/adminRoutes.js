@@ -34,6 +34,7 @@ const adminPages = [
   "add-product",
   "products",
   "edit-product",
+  "contact-management",
 ];
 
 adminPages.forEach((page) => {
