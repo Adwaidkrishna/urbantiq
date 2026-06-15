@@ -290,3 +290,8 @@ window.AuthGuard = (() => {
         updateCartBadge();
         updateWishlistBadge();
         initSearchSuggestions();
+    });
+
+    return { requireAuth, fetchStatus, clearCache, updateCartBadge, updateWishlistBadge, showToast, initSearchSuggestions };
+
+})();
