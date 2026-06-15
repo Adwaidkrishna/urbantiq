@@ -25,13 +25,23 @@ export const register = async (req, res) => {
             });
         }
 
+
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
-            return res.json({
-                success: false,
-                message: "Email already registered"
-            });
+            if (existingUser.isVerified) {
+                return res.json({
+                    success: false,
+                    message: "Email already registered"
+                });
+            } else {
+                return res.json({
+                    success: false,
+                    requiresVerification: true,
+                    redirect: `/verify-email?email=${email}`,
+                    message: "Please verify your account before continuing."
+                });
+            }
         }
 
         const otp = otpGenerator.generate(6, {

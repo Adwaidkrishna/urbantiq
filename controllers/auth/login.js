@@ -22,13 +22,6 @@ export const login = async (req, res) => {
             });
         }
 
-        if (!user.isVerified) {
-            return res.json({
-                success: false,
-                message: "Please verify your email first"
-            });
-        }
-
         if (user.status === "blocked") {
             return res.json({
                 success: false,
@@ -42,6 +35,26 @@ export const login = async (req, res) => {
             return res.json({
                 success: false,
                 message: "Invalid password"
+            });
+        }
+
+        if (!user.isVerified) {
+            // Check if user already has a valid (non-expired) OTP
+            if (user.otp && user.otpExpire > Date.now()) {
+                return res.status(200).json({
+                    success: false,
+                    requiresVerification: true,
+                    redirect: `/verify-email?email=${email}`,
+                    message: "A verification code has already been sent. Please check your email."
+                });
+            }
+
+            // OTP expired or missing — tell user to resend from verify page
+            return res.json({
+                success: false,
+                requiresVerification: true,
+                redirect: `/verify-email?email=${email}`,
+                message: "Your verification code has expired. Please resend a new code."
             });
         }
 

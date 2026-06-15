@@ -136,6 +136,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     const redirectTo = params.get("redirect");
                     window.location.href = redirectTo || data.redirect;
 
+                } else if (data.requiresVerification) {
+
+                    showError(data.message);
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 2000);
+
                 } else {
 
                     showError(data.message);

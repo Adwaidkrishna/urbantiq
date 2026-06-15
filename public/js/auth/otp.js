@@ -14,7 +14,13 @@ document.addEventListener("DOMContentLoaded", function () {
     /* ---------------- GET EMAIL FROM URL ---------------- */
 
     const params = new URLSearchParams(window.location.search);
-    const email = params.get("email");
+    let email = params.get("email");
+
+    if (email) {
+        localStorage.setItem("pendingVerificationEmail", email);
+    } else {
+        email = localStorage.getItem("pendingVerificationEmail");
+    }
 
     if (emailInput) {
         emailInput.value = email;

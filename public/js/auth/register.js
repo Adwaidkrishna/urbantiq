@@ -192,7 +192,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const data = await response.json();
 
-                if (data.redirect) {
+                if (data.requiresVerification) {
+                    const errorBox = document.getElementById("registerError");
+                    if (errorBox) {
+                        errorBox.textContent = data.message;
+                        errorBox.classList.remove("d-none");
+                    }
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 2000);
+                } else if (data.redirect) {
                     window.location.href = data.redirect;
                 } else {
                     submitBtn.disabled = false;
