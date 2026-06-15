@@ -1,56 +1,52 @@
 import Order from "../../models/Order.js";
-import User from "../../models/User.js";
-import WalletTransaction from "../../models/WalletTransaction.js";
-import { rollbackOrderStock } from "./rollbackOrderStock.js";
 
 export const cancelOrder = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id);
+    const { reason } = req.body;
+
+    if (!reason || reason.trim() === "") {
+      return res.status(400).json({ success: false, message: "Reason is required for cancellation." });
+    }
+
+    const order = await Order.findById(req.params.id || req.params.orderId);
 
     if (!order) {
-      return res.status(404).json({ message: "Order not found" });
+      return res.status(404).json({ success: false, message: "Order not found" });
     }
 
     if (order.user.toString() !== req.userId) {
-      return res.status(401).json({ message: "Not authorized" });
+      return res.status(401).json({ success: false, message: "Not authorized" });
     }
 
     if (order.orderStatus === "Cancelled") {
-      return res.status(400).json({ message: "Order is already cancelled" });
+      return res.status(400).json({ success: false, message: "Order is already cancelled" });
     }
 
-    if (order.orderStatus === "Delivered" || order.orderStatus === "Shipped") {
-      return res.status(400).json({ message: "Order cannot be cancelled at this stage" });
+    if (order.orderStatus === "Delivered") {
+      return res.status(400).json({ success: false, message: "Delivered orders cannot be cancelled" });
     }
 
-    // Rollback Inventory
-    await rollbackOrderStock(order);
-
-    // Refund to Wallet if Paid
-    if (order.paymentStatus === "Paid") {
-      const user = await User.findById(req.userId);
-      if (user) {
-        user.wallet += order.finalAmount;
-        await user.save();
-
-        const transaction = new WalletTransaction({
-          user: req.userId,
-          amount: order.finalAmount,
-          type: "CREDIT",
-          description: `Refund for Cancelled Order: ${order._id}`,
-          orderId: order._id
-        });
-        await transaction.save();
-      }
+    if (order.cancellationRequest && order.cancellationRequest.requested) {
+      return res.status(400).json({ success: false, message: "Cancellation request already submitted for this order" });
     }
 
-    // Update status
-    order.orderStatus = "Cancelled";
-    const updatedOrder = await order.save();
+    // Update status to Cancellation Requested and save details
+    order.orderStatus = "Cancellation Requested";
+    order.cancellationRequest = {
+      requested: true,
+      reason: reason.trim(),
+      status: "Pending",
+      requestedAt: new Date()
+    };
 
-    res.json(updatedOrder);
+    await order.save();
+
+    return res.json({
+      success: true,
+      message: "Cancellation request submitted successfully."
+    });
   } catch (error) {
     console.error("Cancel Order Error:", error);
-    res.status(500).json({ message: error.message || "Error cancelling order" });
+    res.status(500).json({ success: false, message: error.message || "Error cancelling order" });
   }
 };

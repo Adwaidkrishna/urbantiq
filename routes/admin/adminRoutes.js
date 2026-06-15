@@ -5,6 +5,7 @@ import { adminLogin, adminLogout, getAdminProfile, updateAdminProfile, changeAdm
 import { getDashboardStats } from "../../controllers/dashboard/index.js";
 import { getSalesReport } from "../../controllers/sales/index.js";
 import { globalSearch } from "../../controllers/search/index.js";
+import { cancelReview, returnReview } from "../../controllers/order/index.js";
 import adminAuthMiddleware from "../../middleware/adminMiddleware.js";
 
 
@@ -71,5 +72,9 @@ router.get("/logout", adminLogout);
 router.get("/profile", adminAuthMiddleware, getAdminProfile);
 router.put("/profile", adminAuthMiddleware, updateAdminProfile);
 router.put("/profile/change-password", adminAuthMiddleware, changeAdminPassword);
+
+// Order Cancellation and Return Review routes
+router.patch("/orders/:orderId/cancel-review", adminAuthMiddleware, cancelReview);
+router.patch("/orders/:orderId/return-review", adminAuthMiddleware, returnReview);
 
 export default router;

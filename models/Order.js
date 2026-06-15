@@ -53,12 +53,12 @@ const orderSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ["Pending", "Paid", "Failed"],
+    enum: ["Pending", "Paid", "Failed", "Refunded"],
     default: "Pending"
   },
   orderStatus: {
     type: String,
-    enum: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled", "Return Requested", "Returned", "Return Rejected"],
+    enum: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled", "Cancellation Requested", "Return Requested", "Returned", "Return Rejected"],
     default: "Pending"
   },
   totalPrice: {
@@ -85,6 +85,36 @@ const orderSchema = new mongoose.Schema({
     type: String,
     unique: true,
     sparse: true
+  },
+  cancellationRequest: {
+    requested: {
+      type: Boolean,
+      default: false
+    },
+    reason: String,
+    status: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: null
+    },
+    requestedAt: Date,
+    reviewedAt: Date,
+    adminComment: String
+  },
+  returnRequest: {
+    requested: {
+      type: Boolean,
+      default: false
+    },
+    reason: String,
+    status: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: null
+    },
+    requestedAt: Date,
+    reviewedAt: Date,
+    adminComment: String
   }
 }, { timestamps: true });
 

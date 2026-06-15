@@ -14,25 +14,38 @@ export const updateOrderStatus = async (req, res) => {
 
     const previousStatus = order.orderStatus;
 
+    // Transition paymentStatus to Paid when order is Delivered (e.g. for COD)
+    if (status === "Delivered" && previousStatus !== "Delivered") {
+      order.paymentStatus = "Paid";
+    }
+
     // Handle cancellation rollback for admin
     if (status === "Cancelled" && previousStatus !== "Cancelled") {
       await rollbackOrderStock(order);
 
       // Refund to Wallet if Paid
-      if (order.paymentStatus === "Paid") {
+      if (order.paymentStatus === "Paid" && order.paymentStatus !== "Refunded") {
         const user = await User.findById(order.user);
         if (user) {
-          user.wallet += order.finalAmount;
-          await user.save();
-
-          const transaction = new WalletTransaction({
-            user: user._id,
-            amount: order.finalAmount,
-            type: "CREDIT",
-            description: `Refund for Cancelled Order (Admin): ${order._id}`,
-            orderId: order._id
+          const existingTx = await WalletTransaction.findOne({
+            orderId: order._id,
+            type: "CREDIT"
           });
-          await transaction.save();
+          
+          if (!existingTx) {
+            user.wallet += order.finalAmount;
+            await user.save();
+
+            const transaction = new WalletTransaction({
+              user: user._id,
+              amount: order.finalAmount,
+              type: "CREDIT",
+              description: `Refund for Cancelled Order (Admin): ${order._id}`,
+              orderId: order._id
+            });
+            await transaction.save();
+          }
+          order.paymentStatus = "Refunded";
         }
       }
     }
@@ -42,20 +55,28 @@ export const updateOrderStatus = async (req, res) => {
       await rollbackOrderStock(order);
       
       // Always refund for returns if paid
-      if (order.paymentStatus === "Paid") {
+      if (order.paymentStatus === "Paid" && order.paymentStatus !== "Refunded") {
         const user = await User.findById(order.user);
         if (user) {
-          user.wallet += order.finalAmount;
-          await user.save();
-
-          const transaction = new WalletTransaction({
-            user: user._id,
-            amount: order.finalAmount,
-            type: "CREDIT",
-            description: `Refund for Returned Order: ${order._id}`,
-            orderId: order._id
+          const existingTx = await WalletTransaction.findOne({
+            orderId: order._id,
+            type: "CREDIT"
           });
-          await transaction.save();
+          
+          if (!existingTx) {
+            user.wallet += order.finalAmount;
+            await user.save();
+
+            const transaction = new WalletTransaction({
+              user: user._id,
+              amount: order.finalAmount,
+              type: "CREDIT",
+              description: `Refund for Returned Order: ${order._id}`,
+              orderId: order._id
+            });
+            await transaction.save();
+          }
+          order.paymentStatus = "Refunded";
         }
       }
     }

@@ -12,7 +12,9 @@ const router = express.Router();
 router.get("/my-orders", authMiddleware, getMyOrders);
 router.get("/:id", authMiddleware, getOrderById);
 router.put("/:id/cancel", authMiddleware, cancelOrder);
+router.post("/:id/cancel", authMiddleware, cancelOrder);
 router.put("/:id/return-request", authMiddleware, requestReturn);
+router.post("/:id/return", authMiddleware, requestReturn);
 router.post("/validate-stock", authMiddleware, validateStock);
 router.post("/", authMiddleware, placeOrder);
 

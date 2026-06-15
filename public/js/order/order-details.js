@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         statusEl.className = `status-badge ${getStatusClass(order.orderStatus)}`;
 
         // Generate Flipkart-Style Tracking Timeline
-        generateTrackingTimeline(order.orderStatus, expectedDateStr);
+        generateTrackingTimeline(order, expectedDateStr);
 
         // Shipping
         document.getElementById('displayShipName').textContent = order.shippingAddress.fullName;
@@ -129,7 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (cancellableStatuses.includes(lowerStatus)) {
             actionsEl.innerHTML = `<button class="btn-outline-red px-5" id="cancelOrderBtn">Cancel Order</button>`;
-            document.getElementById('cancelOrderBtn').addEventListener('click', () => cancelOrder(order._id));
+            document.getElementById('cancelOrderBtn').addEventListener('click', () => openCancelModal(order._id));
+        } else if (lowerStatus === 'cancellation requested') {
+            actionsEl.innerHTML = `<button class="btn-outline-red px-5" disabled><i class="bi bi-clock-history me-2"></i> Cancellation Under Review</button>`;
         } else if (lowerStatus === 'shipped') {
             actionsEl.innerHTML = `
                 <div class="d-flex flex-column align-items-center">
@@ -139,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (lowerStatus === 'delivered') {
             document.getElementById('invoiceSection').style.display = 'block';
             actionsEl.innerHTML = `<button class="btn-outline-black px-5" id="returnOrderBtn">Request Return</button>`;
-            document.getElementById('returnOrderBtn').addEventListener('click', () => requestReturn(order._id));
+            document.getElementById('returnOrderBtn').addEventListener('click', () => openReturnModal(order._id));
         } else if (lowerStatus === 'return requested') {
             actionsEl.innerHTML = `<button class="btn-outline-black px-5" disabled><i class="bi bi-clock-history me-2"></i> Return Under Review</button>`;
         } else if (lowerStatus === 'return rejected') {
@@ -231,44 +233,106 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    function cancelOrder(id) {
-        showConfirmModal("Cancel Order", "Are you sure you want to cancel this order? This action cannot be undone.", async () => {
+    function openCancelModal(id) {
+        const modalEl = document.getElementById('cancelReasonModal');
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+
+        const selectEl = document.getElementById('cancelReason');
+        const otherDiv = document.getElementById('cancelOtherTextDiv');
+        const otherInput = document.getElementById('cancelReasonOther');
+
+        selectEl.value = "";
+        otherDiv.classList.add('d-none');
+        otherInput.value = "";
+
+        selectEl.onchange = function() {
+            if (this.value === "Other") {
+                otherDiv.classList.remove('d-none');
+                otherInput.required = true;
+            } else {
+                otherDiv.classList.add('d-none');
+                otherInput.required = false;
+            }
+        };
+
+        const form = document.getElementById('cancelReasonForm');
+        form.onsubmit = async function(e) {
+            e.preventDefault();
+            const reasonVal = selectEl.value === "Other" ? otherInput.value.trim() : selectEl.value;
+            if (!reasonVal) return;
+
             try {
                 const res = await fetch(`/api/orders/${id}/cancel`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" }
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ reason: reasonVal })
                 });
                 const data = await res.json();
-                if (data._id || data.success) {
-                    window.location.reload();
+                modal.hide();
+                if (data.success) {
+                    showAlertModal("Success", data.message || "Cancellation request submitted.", true);
+                    setTimeout(() => window.location.reload(), 1500);
                 } else {
                     showAlertModal("Cancellation Failed", data.message || "Failed to cancel order.", false);
                 }
             } catch (err) {
                 console.error("Error cancelling order:", err);
+                modal.hide();
                 showAlertModal("Error", "Failed to cancel order due to a network error.", false);
             }
-        });
+        };
     }
 
-    function requestReturn(id) {
-        showConfirmModal("Request Return", "Are you sure you want to request a return for this order? Our team will review your request shortly.", async () => {
+    function openReturnModal(id) {
+        const modalEl = document.getElementById('returnReasonModal');
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+
+        const selectEl = document.getElementById('returnReason');
+        const otherDiv = document.getElementById('returnOtherTextDiv');
+        const otherInput = document.getElementById('returnReasonOther');
+
+        selectEl.value = "";
+        otherDiv.classList.add('d-none');
+        otherInput.value = "";
+
+        selectEl.onchange = function() {
+            if (this.value === "Other") {
+                otherDiv.classList.remove('d-none');
+                otherInput.required = true;
+            } else {
+                otherDiv.classList.add('d-none');
+                otherInput.required = false;
+            }
+        };
+
+        const form = document.getElementById('returnReasonForm');
+        form.onsubmit = async function(e) {
+            e.preventDefault();
+            const reasonVal = selectEl.value === "Other" ? otherInput.value.trim() : selectEl.value;
+            if (!reasonVal) return;
+
             try {
-                const res = await fetch(`/api/orders/${id}/return-request`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" }
+                const res = await fetch(`/api/orders/${id}/return`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ reason: reasonVal })
                 });
                 const data = await res.json();
+                modal.hide();
                 if (data.success) {
-                    window.location.reload();
+                    showAlertModal("Success", data.message || "Return request submitted.", true);
+                    setTimeout(() => window.location.reload(), 1500);
                 } else {
                     showAlertModal("Request Failed", data.message || "Failed to submit return request.", false);
                 }
             } catch (err) {
                 console.error("Error requesting return:", err);
+                modal.hide();
                 showAlertModal("Error", "Failed to submit return request due to a network error.", false);
             }
-        });
+        };
     }
 
     // --- Custom UI Modal Utilities ---
@@ -346,11 +410,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function generateTrackingTimeline(status, expectedDelivery) {
+    function generateTrackingTimeline(order, expectedDelivery) {
         const headerSection = document.getElementById('orderHeader').parentNode; // The card wrapping the header
         
         let timelineHtml = '';
-        const lowerState = status.toLowerCase();
+        const lowerState = order.orderStatus.toLowerCase();
 
         // Calculate progress percentage mapping to nodes (Placed=0%, Confirmed=33%, Shipped=66%, Delivered=100%)
         let progress = 0;
@@ -360,6 +424,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (lowerState === 'delivered') progress = 100;
 
         if (lowerState === 'cancelled') {
+            const adminComment = order.cancellationRequest?.adminComment ? `<div class="text-secondary small mt-1">Admin note: "${order.cancellationRequest.adminComment}"</div>` : '';
             timelineHtml = `
             <div class="mt-4 pt-4 border-top">
                 <div class="d-flex align-items-center gap-3 text-danger px-1">
@@ -368,11 +433,26 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <div>
                         <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Order Cancelled</div>
-                        <div class="text-secondary small">This order has been successfully cancelled and refunded.</div>
+                        <div class="text-secondary small">This order has been successfully cancelled.</div>
+                        ${adminComment}
+                    </div>
+                </div>
+            </div>`;
+        } else if (lowerState === 'cancellation requested') {
+            timelineHtml = `
+            <div class="mt-4 pt-4 border-top">
+                <div class="d-flex align-items-center gap-3 text-warning px-1">
+                    <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; min-width:44px;">
+                        <i class="bi bi-clock-history fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Cancellation Under Review</div>
+                        <div class="text-secondary small">Your cancellation request is under review. Reason: "${order.cancellationRequest?.reason || 'N/A'}"</div>
                     </div>
                 </div>
             </div>`;
         } else if (lowerState === 'returned') {
+            const adminComment = order.returnRequest?.adminComment ? `<div class="text-secondary small mt-1">Admin note: "${order.returnRequest.adminComment}"</div>` : '';
             timelineHtml = `
             <div class="mt-4 pt-4 border-top">
                 <div class="d-flex align-items-center gap-3 text-warning px-1">
@@ -382,6 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div>
                         <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Order Returned</div>
                         <div class="text-secondary small">Your return request has been processed and amount credited to your wallet.</div>
+                        ${adminComment}
                     </div>
                 </div>
             </div>`;
@@ -394,11 +475,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <div>
                         <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Return Under Review</div>
-                        <div class="text-secondary small">Your request is being reviewed by our quality team.</div>
+                        <div class="text-secondary small">Your request is being reviewed by our quality team. Reason: "${order.returnRequest?.reason || 'N/A'}"</div>
                     </div>
                 </div>
             </div>`;
         } else if (lowerState === 'return rejected') {
+            const adminComment = order.returnRequest?.adminComment ? `<div class="text-secondary small mt-1">Reason: "${order.returnRequest.adminComment}"</div>` : '';
             timelineHtml = `
             <div class="mt-4 pt-4 border-top">
                 <div class="d-flex align-items-center gap-3 text-secondary px-1">
@@ -408,6 +490,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div>
                         <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Return Rejected</div>
                         <div class="text-secondary small">Your return request did not meet our policy requirements.</div>
+                        ${adminComment}
                     </div>
                 </div>
             </div>`;

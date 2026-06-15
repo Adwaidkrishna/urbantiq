@@ -49,6 +49,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         renderAdminOrders(filtered);
+        renderCancellations();
+        renderReturns();
     }
 
     function renderAdminOrders(orders) {
@@ -84,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 case 'Shipped': statusClass = 'status-shipped'; break;
                 case 'Delivered': statusClass = 'status-delivered'; break;
                 case 'Cancelled': statusClass = 'status-cancelled'; break;
+                case 'Cancellation Requested': statusClass = 'status-pending'; break;
                 case 'Return Requested': statusClass = 'status-returned'; break;
                 case 'Returned': statusClass = 'status-returned'; break;
                 case 'Return Rejected': statusClass = 'status-cancelled'; break;
@@ -112,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <option value="Shipped" ${order.orderStatus === 'Shipped' ? 'selected' : ''}>Shipped</option>
                         <option value="Delivered" ${order.orderStatus === 'Delivered' ? 'selected' : ''}>Delivered</option>
                         <option value="Cancelled" ${order.orderStatus === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        <option value="Cancellation Requested" ${order.orderStatus === 'Cancellation Requested' ? 'selected' : ''}>Cancellation Requested</option>
                         <option value="Return Requested" ${order.orderStatus === 'Return Requested' ? 'selected' : ''}>Return Req</option>
                         <option value="Returned" ${order.orderStatus === 'Returned' ? 'selected' : ''}>Returned</option>
                         <option value="Return Rejected" ${order.orderStatus === 'Return Rejected' ? 'selected' : ''}>Return Rej</option>
@@ -180,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     case 'Shipped': statusClass = 'status-shipped'; break;
                     case 'Delivered': statusClass = 'status-delivered'; break;
                     case 'Cancelled': statusClass = 'status-cancelled'; break;
+                    case 'Cancellation Requested': statusClass = 'status-pending'; break;
                     case 'Return Requested': statusClass = 'status-returned'; break;
                     case 'Returned': statusClass = 'status-returned'; break;
                     case 'Return Rejected': statusClass = 'status-cancelled'; break;
@@ -224,6 +229,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (status === 'Cancelled') {
                     timelineHTML += createItem("Order Cancelled", "Cancelled by customer/administrator", false, true);
+                } else if (status === 'Cancellation Requested') {
+                    timelineHTML += createItem("Cancellation Requested", "Customer initiated cancellation request", false, true);
                 } else if (status === 'Return Requested') {
                     timelineHTML += createItem("Confirmed", "Processed successfully", true, false);
                     timelineHTML += createItem("Shipped", "Shipped via logistics partner", true, false);
@@ -265,6 +272,200 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (err) {
             console.error(err);
             return false;
+        }
+    }
+
+    function renderCancellations() {
+        const tbody = document.querySelector("#cancellationsTable tbody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+
+        const pendingCancellations = allOrders.filter(order => 
+            order.cancellationRequest && 
+            order.cancellationRequest.requested && 
+            order.cancellationRequest.status === "Pending"
+        );
+
+        if (pendingCancellations.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center p-5 text-muted">No pending cancellation requests.</td></tr>';
+            return;
+        }
+
+        pendingCancellations.forEach(order => {
+            const date = new Date(order.cancellationRequest.requestedAt || order.updatedAt).toLocaleDateString(undefined, {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>
+                    <span style="background:#f1f5f9; color:#475569; padding:6px 12px; border-radius:8px; font-size:12px; font-weight: 600; border:1px solid #e2e8f0; font-family: monospace;">#ORD-${order._id.slice(-6).toUpperCase()}</span>
+                </td>
+                <td>
+                    <div style="font-weight:600; color:#0f172a;">${order.user?.name || 'Guest'}</div>
+                    <div style="font-size:11px; color:#64748b;">${order.user?.email || 'N/A'}</div>
+                </td>
+                <td>
+                    <div style="font-weight:500; color:#334155; max-width: 250px; white-space: normal; word-break: break-word;">${order.cancellationRequest.reason}</div>
+                </td>
+                <td>
+                    <div style="display:flex; align-items:center; gap:6px; color:#64748b;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span>${date}</span>
+                    </div>
+                </td>
+                <td>
+                    <span class="status-badge status-pending" style="border-radius: 9999px; padding: 4px 10px; font-size: 11px; font-weight: 600;">Pending Review</span>
+                </td>
+                <td>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-sm btn-success px-3 btn-approve-cancel" data-id="${order._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #10B981; border: none; color: white; padding: 6px 12px;">Approve</button>
+                        <button class="btn btn-sm btn-danger px-3 btn-reject-cancel" data-id="${order._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #EF4444; border: none; color: white; padding: 6px 12px;">Reject</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        tbody.querySelectorAll('.btn-approve-cancel').forEach(btn => {
+            btn.addEventListener('click', () => reviewCancellation(btn.getAttribute('data-id'), 'Approved'));
+        });
+        tbody.querySelectorAll('.btn-reject-cancel').forEach(btn => {
+            btn.addEventListener('click', () => reviewCancellation(btn.getAttribute('data-id'), 'Rejected'));
+        });
+    }
+
+    function renderReturns() {
+        const tbody = document.querySelector("#returnsTable tbody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+
+        const pendingReturns = allOrders.filter(order => 
+            order.returnRequest && 
+            order.returnRequest.requested && 
+            order.returnRequest.status === "Pending"
+        );
+
+        if (pendingReturns.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center p-5 text-muted">No pending return requests.</td></tr>';
+            return;
+        }
+
+        pendingReturns.forEach(order => {
+            const date = new Date(order.returnRequest.requestedAt || order.updatedAt).toLocaleDateString(undefined, {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>
+                    <span style="background:#f1f5f9; color:#475569; padding:6px 12px; border-radius:8px; font-size:12px; font-weight: 600; border:1px solid #e2e8f0; font-family: monospace;">#ORD-${order._id.slice(-6).toUpperCase()}</span>
+                </td>
+                <td>
+                    <div style="font-weight:600; color:#0f172a;">${order.user?.name || 'Guest'}</div>
+                    <div style="font-size:11px; color:#64748b;">${order.user?.email || 'N/A'}</div>
+                </td>
+                <td>
+                    <div style="font-weight:500; color:#334155; max-width: 250px; white-space: normal; word-break: break-word;">${order.returnRequest.reason}</div>
+                </td>
+                <td>
+                    <div style="display:flex; align-items:center; gap:6px; color:#64748b;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span>${date}</span>
+                    </div>
+                </td>
+                <td>
+                    <span class="status-badge status-pending" style="border-radius: 9999px; padding: 4px 10px; font-size: 11px; font-weight: 600;">Pending Review</span>
+                </td>
+                <td>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-sm btn-success px-3 btn-approve-return" data-id="${order._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #10B981; border: none; color: white; padding: 6px 12px;">Approve</button>
+                        <button class="btn btn-sm btn-danger px-3 btn-reject-return" data-id="${order._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #EF4444; border: none; color: white; padding: 6px 12px;">Reject</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        tbody.querySelectorAll('.btn-approve-return').forEach(btn => {
+            btn.addEventListener('click', () => reviewReturn(btn.getAttribute('data-id'), 'Approved'));
+        });
+        tbody.querySelectorAll('.btn-reject-return').forEach(btn => {
+            btn.addEventListener('click', () => reviewReturn(btn.getAttribute('data-id'), 'Rejected'));
+        });
+    }
+
+    async function reviewCancellation(orderId, decision) {
+        const actionText = decision === "Approved" ? "approve" : "reject";
+        const { value: comment } = await Swal.fire({
+            title: 'Are you sure?',
+            text: `You are about to ${actionText} the cancellation request for order #ORD-${orderId.slice(-6).toUpperCase()}. Add a comment (optional):`,
+            input: 'text',
+            inputPlaceholder: 'Enter review comment here...',
+            showCancelButton: true,
+            confirmButtonColor: decision === 'Approved' ? '#10B981' : '#EF4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: `Yes, ${decision}`,
+            cancelButtonText: 'Cancel'
+        });
+
+        if (comment !== undefined) {
+            try {
+                const res = await fetch(`/api/admin/orders/${orderId}/cancel-review`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ decision, comment })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    successToast(`Cancellation request ${decision.toLowerCase()} successfully!`);
+                    fetchAdminOrders();
+                } else {
+                    errorToast(data.message || "Failed to submit review.");
+                }
+            } catch (err) {
+                console.error(err);
+                errorToast("Network error occurred.");
+            }
+        }
+    }
+
+    async function reviewReturn(orderId, decision) {
+        const actionText = decision === "Approved" ? "approve" : "reject";
+        const { value: comment } = await Swal.fire({
+            title: 'Are you sure?',
+            text: `You are about to ${actionText} the return request for order #ORD-${orderId.slice(-6).toUpperCase()}. Add a comment (optional):`,
+            input: 'text',
+            inputPlaceholder: 'Enter review comment here...',
+            showCancelButton: true,
+            confirmButtonColor: decision === 'Approved' ? '#10B981' : '#EF4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: `Yes, ${decision}`,
+            cancelButtonText: 'Cancel'
+        });
+
+        if (comment !== undefined) {
+            try {
+                const res = await fetch(`/api/admin/orders/${orderId}/return-review`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ decision, comment })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    successToast(`Return request ${decision.toLowerCase()} successfully!`);
+                    fetchAdminOrders();
+                } else {
+                    errorToast(data.message || "Failed to submit review.");
+                }
+            } catch (err) {
+                console.error(err);
+                errorToast("Network error occurred.");
+            }
         }
     }
 });

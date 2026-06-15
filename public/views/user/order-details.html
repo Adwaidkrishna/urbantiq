@@ -193,6 +193,78 @@
                 </div>
             </div>
         </div>
+
+        <!-- Cancel Reason Modal -->
+        <div class="modal fade" id="cancelReasonModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-bold">Cancel Order Reason</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form id="cancelReasonForm">
+                            <div class="mb-3">
+                                <label for="cancelReason" class="form-label text-muted small fw-bold text-uppercase">Reason for Cancellation</label>
+                                <select class="form-select border-0 bg-light p-3" id="cancelReason" style="border-radius: 12px;" required>
+                                    <option value="" disabled selected>Select a reason...</option>
+                                    <option value="Ordered by mistake">Ordered by mistake</option>
+                                    <option value="Incorrect shipping address">Incorrect shipping address</option>
+                                    <option value="Expected delivery time is too long">Expected delivery time is too long</option>
+                                    <option value="Item price dropped/found cheaper elsewhere">Item price dropped/found cheaper elsewhere</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 d-none" id="cancelOtherTextDiv">
+                                <label for="cancelReasonOther" class="form-label text-muted small fw-bold text-uppercase">Please specify</label>
+                                <textarea class="form-control border-0 bg-light p-3" id="cancelReasonOther" rows="3" placeholder="Tell us why..." style="border-radius: 12px; resize: none;"></textarea>
+                            </div>
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-danger w-100 rounded-pill py-3 fw-bold shadow-sm" id="submitCancelBtn">
+                                    Submit Cancellation Request
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Return Reason Modal -->
+        <div class="modal fade" id="returnReasonModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-bold">Request Return</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form id="returnReasonForm">
+                            <div class="mb-3">
+                                <label for="returnReason" class="form-label text-muted small fw-bold text-uppercase">Reason for Return</label>
+                                <select class="form-select border-0 bg-light p-3" id="returnReason" style="border-radius: 12px;" required>
+                                    <option value="" disabled selected>Select a reason...</option>
+                                    <option value="Received damaged product">Received damaged product</option>
+                                    <option value="Size does not fit">Size does not fit</option>
+                                    <option value="Item is different from description">Item is different from description</option>
+                                    <option value="Quality not as expected">Quality not as expected</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 d-none" id="returnOtherTextDiv">
+                                <label for="returnReasonOther" class="form-label text-muted small fw-bold text-uppercase">Please specify</label>
+                                <textarea class="form-control border-0 bg-light p-3" id="returnReasonOther" rows="3" placeholder="Tell us why..." style="border-radius: 12px; resize: none;"></textarea>
+                            </div>
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-dark w-100 rounded-pill py-3 fw-bold shadow-sm" id="submitReturnBtn">
+                                    Submit Return Request
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
         <!-- Footer -->

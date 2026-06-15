@@ -66,10 +66,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="fw-bold mb-1" style="font-size: 1.1rem; color: #111;">#ORD-${order._id.slice(-6).toUpperCase()}</div>
                         <div class="text-secondary d-flex flex-wrap gap-2" style="font-size: 0.85rem;">
                             <span><i class="bi bi-calendar3 me-1"></i> Ordered on ${date}</span>
-                            ${order.orderStatus.toLowerCase() !== 'cancelled' && order.orderStatus.toLowerCase() !== 'delivered' ? 
+                            ${['pending', 'confirmed', 'processing', 'shipped'].includes(order.orderStatus.toLowerCase()) ? 
                                 `<span class="text-success fw-bold"><i class="bi bi-truck me-1"></i> Arriving by ${deliveryDateStr}</span>` : ''}
                             ${order.orderStatus.toLowerCase() === 'delivered' ? 
                                 `<span class="text-success fw-bold"><i class="bi bi-check-circle me-1"></i> Delivered</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'cancelled' ? 
+                                `<span class="text-danger fw-bold"><i class="bi bi-x-circle me-1"></i> Cancelled</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'cancellation requested' ? 
+                                `<span class="text-warning fw-bold"><i class="bi bi-clock-history me-1"></i> Cancellation Pending</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'return requested' ? 
+                                `<span class="text-warning fw-bold"><i class="bi bi-clock-history me-1"></i> Return Pending</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'returned' ? 
+                                `<span class="text-success fw-bold"><i class="bi bi-arrow-return-left me-1"></i> Returned & Refunded</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'return rejected' ? 
+                                `<span class="text-danger fw-bold"><i class="bi bi-exclamation-circle me-1"></i> Return Rejected</span>` : ''}
                         </div>
                     </div>
                     <span class="badge rounded-pill ${statusClass}" style="font-size: 0.75rem; padding: 0.5em 1em; letter-spacing: 0.5px; text-transform: uppercase;">
@@ -108,8 +118,14 @@ document.addEventListener("DOMContentLoaded", () => {
         switch (status.toLowerCase()) {
             case "delivered": return "badge-delivered";
             case "processing":
-            case "pending": return "badge-processing";
+            case "pending": 
+            case "confirmed":
+            case "shipped": return "badge-processing";
             case "cancelled": return "badge-cancelled";
+            case "returned": return "badge-returned";
+            case "cancellation requested":
+            case "return requested": return "badge-processing";
+            case "return rejected": return "badge-cancelled";
             default: return "badge-processing";
         }
     }
