@@ -288,19 +288,61 @@ document.addEventListener("DOMContentLoaded", function () {
             const balanceDisp = document.getElementById("walletBalanceDisplay");
             if (balanceDisp) balanceDisp.textContent = `₹${(data.balance || 0).toLocaleString()}`;
 
-            const walletInput = document.querySelector('input[value="wallet"]');
             const total = Number(localStorage.getItem('checkoutTotal') || 0);
-
-            if (data.balance < total) {
-                const walletOpt = document.getElementById("opt-wallet");
-                walletOpt.classList.add("disabled");
-                walletOpt.title = "Insufficient balance";
-                walletInput.disabled = true;
-                walletOpt.style.opacity = '0.6';
-                walletOpt.style.pointerEvents = 'none';
-            }
+            updatePaymentUI(total);
         } catch (err) {
             console.error("Error fetching wallet balance", err);
+        }
+    }
+
+    function updatePaymentUI(total) {
+        const walletInput = document.querySelector('input[value="wallet"]');
+        const walletOpt = document.getElementById("opt-wallet");
+        const balanceDisp = document.getElementById("walletBalanceDisplay");
+        
+        if (walletOpt && balanceDisp) {
+            const balanceText = balanceDisp.textContent.replace('₹', '').replace(/,/g, '');
+            const balance = Number(balanceText) || 0;
+            if (balance < total) {
+                walletOpt.classList.add("disabled");
+                walletOpt.title = "Insufficient balance";
+                if (walletInput) walletInput.disabled = true;
+                walletOpt.style.opacity = '0.6';
+                walletOpt.style.pointerEvents = 'none';
+                
+                // If wallet was selected, fall back to UPI
+                if (walletInput && walletInput.checked) {
+                    const upiInput = document.querySelector('input[value="upi"]');
+                    if (upiInput) {
+                        upiInput.checked = true;
+                        const upiOpt = document.getElementById("opt-upi");
+                        if (upiOpt) {
+                            document.querySelectorAll('.ck-payment-option').forEach(o => o.classList.remove('selected'));
+                            upiOpt.classList.add('selected');
+                        }
+                    }
+                }
+            } else {
+                walletOpt.classList.remove("disabled");
+                walletOpt.title = "";
+                if (walletInput) walletInput.disabled = false;
+                walletOpt.style.opacity = '1';
+                walletOpt.style.pointerEvents = 'auto';
+            }
+        }
+
+        // Update payment button text based on currently selected option
+        const payBtn = document.querySelector('a.ck-action-btn[href="/order-success"]');
+        const checkedRadio = document.querySelector('input[name="payMethod"]:checked');
+        if (payBtn && checkedRadio) {
+            const formattedAmt = `₹${total.toLocaleString()}`;
+            if (checkedRadio.value === 'cod') {
+                payBtn.innerHTML = `Place Order <i class="bi bi-check-circle-fill"></i>`;
+            } else if (checkedRadio.value === 'wallet') {
+                payBtn.innerHTML = `Pay using Wallet <i class="bi bi-wallet2"></i>`;
+            } else {
+                payBtn.innerHTML = `Pay <span id="payNowAmount">${formattedAmt}</span> <i class="bi bi-lock-fill"></i>`;
+            }
         }
     }
 
@@ -415,29 +457,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const finalTotal = subtotal - totalDiscount - couponDiscount;
 
-        const subtotalEl = document.querySelector('.ck-price-list .ck-price-row:nth-child(1) span:last-child');
+        const subtotalEl = document.querySelector('.ck-price-list .ck-price-row:nth-child(1) span:last-child') || document.getElementById('miniSubtotal');
         if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toLocaleString()}`;
 
-        const discountEl = document.querySelector('.ck-discount-val');
+        const discountEl = document.querySelector('.ck-discount-val') || document.getElementById('miniDiscount');
         if (discountEl) discountEl.textContent = `−₹${totalDiscount.toLocaleString()}`;
 
         // Create/Update Coupon Discount Row
-        let couponRow = document.getElementById('coupon-row-summary');
+        let couponRow = document.getElementById('coupon-row-summary') || document.getElementById('coupon-row-payment');
         if (couponDiscount > 0) {
             if (!couponRow) {
-                const list = document.querySelector('.ck-price-list');
-                couponRow = document.createElement('div');
-                couponRow.id = 'coupon-row-summary';
-                couponRow.className = 'ck-price-row';
-                list.appendChild(couponRow);
+                const list = document.querySelector('.ck-price-list') || document.querySelector('.ck-mini-price-details');
+                if (list) {
+                    couponRow = document.createElement('div');
+                    couponRow.id = list.classList.contains('ck-mini-price-details') ? 'coupon-row-payment' : 'coupon-row-summary';
+                    couponRow.className = 'ck-price-row';
+                    list.appendChild(couponRow);
+                }
             }
-            couponRow.innerHTML = `<span>Coupon Code (${couponData.code})</span><span class="text-success fw-bold">−₹${couponDiscount.toLocaleString()}</span>`;
-            couponRow.style.display = 'flex';
+            if (couponRow) {
+                couponRow.innerHTML = `<span>Coupon Discount (${couponData.code})</span><span class="text-success fw-bold">−₹${couponDiscount.toLocaleString()}</span>`;
+                couponRow.style.display = 'flex';
+            }
         } else if (couponRow) {
             couponRow.style.display = 'none';
         }
 
-        const totalValEl = document.querySelector('.ck-total-val');
+        const totalValEl = document.querySelector('.ck-total-val') || document.getElementById('finalPaymentTotal');
         if (totalValEl) totalValEl.textContent = `₹${finalTotal.toLocaleString()}`;
 
         // Payment Page Specifics
@@ -451,6 +497,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (payAmt) payAmt.textContent = `₹${finalTotal.toLocaleString()}`;
 
         localStorage.setItem('checkoutTotal', finalTotal);
+
+        if (window.location.pathname.includes('checkout-payment')) {
+            updatePaymentUI(finalTotal);
+        }
     }
 
     // 3. PAYMENT OPTION SELECTION
@@ -463,7 +513,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (totalDisplay) totalDisplay.textContent = formattedAmt;
 
         const payBtn = document.querySelector('a.ck-action-btn[href="/order-success"]');
-        const payAmtSpan = document.getElementById("payNowAmount");
 
         options.forEach(opt => {
             opt.addEventListener('click', function () {
@@ -474,12 +523,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Dynamic Button Text Logic
                 if (payBtn) {
+                    const currentTotal = Number(localStorage.getItem('checkoutTotal') || 0);
+                    const currentFormatted = `₹${currentTotal.toLocaleString()}`;
                     if (radio.value === 'cod') {
                         payBtn.innerHTML = `Place Order <i class="bi bi-check-circle-fill"></i>`;
                     } else if (radio.value === 'wallet') {
                         payBtn.innerHTML = `Pay using Wallet <i class="bi bi-wallet2"></i>`;
                     } else {
-                        payBtn.innerHTML = `Pay <span id="payNowAmount">${formattedAmt}</span> <i class="bi bi-lock-fill"></i>`;
+                        payBtn.innerHTML = `Pay <span id="payNowAmount">${currentFormatted}</span> <i class="bi bi-lock-fill"></i>`;
                     }
                 }
             });
@@ -488,12 +539,14 @@ document.addEventListener("DOMContentLoaded", function () {
         // Set Initial Button Text based on default checked option
         const initialRadio = document.querySelector('input[name="payMethod"]:checked');
         if (initialRadio && payBtn) {
+            const currentTotal = Number(localStorage.getItem('checkoutTotal') || 0);
+            const currentFormatted = `₹${currentTotal.toLocaleString()}`;
             if (initialRadio.value === 'cod') {
                 payBtn.innerHTML = `Place Order <i class="bi bi-check-circle-fill"></i>`;
             } else if (initialRadio.value === 'wallet') {
                 payBtn.innerHTML = `Pay using Wallet <i class="bi bi-wallet2"></i>`;
             } else {
-                payBtn.innerHTML = `Pay <span id="payNowAmount">${formattedAmt}</span> <i class="bi bi-lock-fill"></i>`;
+                payBtn.innerHTML = `Pay <span id="payNowAmount">${currentFormatted}</span> <i class="bi bi-lock-fill"></i>`;
             }
         }
     }
