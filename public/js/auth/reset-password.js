@@ -202,11 +202,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!validateForm()) return;
 
-        submitBtn.disabled = true;
-
-        submitBtn.textContent = "Updating...";
-
         const email = new URLSearchParams(window.location.search).get("email");
+        const token = sessionStorage.getItem("passwordResetToken");
+
+        if (!token) {
+            errorBox.textContent = "Reset authorization token is missing or has expired. Please verify your OTP again.";
+            errorBox.classList.remove("d-none");
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Updating...";
 
         try {
 
@@ -221,7 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({
                     email,
                     password: passwordInput.value,
-                    confirmPassword: confirmInput.value
+                    confirmPassword: confirmInput.value,
+                    token
                 })
 
             });
@@ -230,6 +237,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (data.success) {
 
+                // Clear token from sessionStorage upon success
+                sessionStorage.removeItem("passwordResetToken");
                 window.location.href = data.redirect;
 
             }

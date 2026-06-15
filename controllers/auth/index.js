@@ -3,6 +3,7 @@ export { verifyOTP } from "./verifyOTP.js";
 export { login } from "./login.js";
 export { resendOTP } from "./resendOTP.js";
 export { forgotPassword } from "./forgotPassword.js";
+export { resendResetOTP } from "./resendResetOTP.js";
 export { verifyResetOTP } from "./verifyResetOTP.js";
 export { resetPassword } from "./resetPassword.js";
 export { getAuthStatus } from "./getAuthStatus.js";

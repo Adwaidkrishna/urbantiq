@@ -1,7 +1,7 @@
 import User from "../../models/User.js";
 import sendEmail from "../../utils/sendEmail.js";
 
-export const resendOTP = async (req, res) => {
+export const resendResetOTP = async (req, res) => {
     try {
         const { email } = req.body;
 
@@ -14,18 +14,11 @@ export const resendOTP = async (req, res) => {
             });
         }
 
-        if (user.isVerified) {
-            return res.json({
-                success: false,
-                message: "Account is already verified"
-            });
-        }
-
-        // ── Cooldown check ──
         const now = Date.now();
 
-        if (user.resendAvailableAt && user.resendAvailableAt > now) {
-            const remainingTime = Math.ceil((user.resendAvailableAt - now) / 1000);
+        // Check if cooldown is active
+        if (user.resetResendAvailableAt && user.resetResendAvailableAt > now) {
+            const remainingTime = Math.ceil((user.resetResendAvailableAt - now) / 1000);
             return res.status(429).json({
                 success: false,
                 message: "Please wait before requesting another OTP.",
@@ -33,12 +26,11 @@ export const resendOTP = async (req, res) => {
             });
         }
 
-        // ── Generate new OTP ──
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-        user.otp = otp;
-        user.otpExpire = now + 5 * 60 * 1000;
-        user.resendAvailableAt = now + 60 * 1000;
+        user.resetOtp = otp;
+        user.resetOtpExpire = now + 5 * 60 * 1000;
+        user.resetResendAvailableAt = now + 60 * 1000;
 
         await user.save();
 
@@ -50,8 +42,8 @@ export const resendOTP = async (req, res) => {
             remainingTime: 60
         });
 
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        console.error("Resend reset OTP error:", err);
         return res.json({
             success: false,
             message: "Failed to resend OTP"

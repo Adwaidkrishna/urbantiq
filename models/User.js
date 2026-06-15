@@ -39,6 +39,22 @@ const userSchema = new mongoose.Schema({
     type: Date
   },
 
+  resendAvailableAt: {
+    type: Date
+  },
+
+  resetOtp: {
+    type: String
+  },
+
+  resetOtpExpire: {
+    type: Date
+  },
+
+  resetResendAvailableAt: {
+    type: Date
+  },
+
   isVerified: {
     type: Boolean,
     default: false

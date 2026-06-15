@@ -145,6 +145,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+    /* ---------------- RESEND COOLDOWN TIMER ---------------- */
+
+    const COOLDOWN_KEY = "otpResendCooldownEnd";
+    let cooldownInterval = null;
+
+    function startCooldown(seconds) {
+        const endTime = Date.now() + (seconds * 1000);
+        localStorage.setItem(COOLDOWN_KEY, endTime.toString());
+
+        if (resendBtn) resendBtn.disabled = true;
+
+        // Clear any existing interval
+        if (cooldownInterval) clearInterval(cooldownInterval);
+
+        cooldownInterval = setInterval(() => {
+            const remaining = Math.ceil((endTime - Date.now()) / 1000);
+
+            if (remaining <= 0) {
+                clearInterval(cooldownInterval);
+                cooldownInterval = null;
+                localStorage.removeItem(COOLDOWN_KEY);
+                if (resendBtn) {
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = "Resend OTP";
+                }
+            } else {
+                const mins = String(Math.floor(remaining / 60)).padStart(2, "0");
+                const secs = String(remaining % 60).padStart(2, "0");
+                if (resendBtn) {
+                    resendBtn.textContent = `Resend OTP in ${mins}:${secs}`;
+                }
+            }
+        }, 1000);
+    }
+
+    // Restore cooldown on page load
+    (function restoreCooldown() {
+        const savedEnd = localStorage.getItem(COOLDOWN_KEY);
+        if (savedEnd) {
+            const remaining = Math.ceil((parseInt(savedEnd, 10) - Date.now()) / 1000);
+            if (remaining > 0) {
+                startCooldown(remaining);
+            } else {
+                localStorage.removeItem(COOLDOWN_KEY);
+            }
+        }
+    })();
+
+    /* ---------------- RESEND BUTTON CLICK ---------------- */
+
     if (resendBtn) {
 
         resendBtn.addEventListener("click", async function (e) {
@@ -172,9 +222,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
 
                     if (infoBox) {
-                        infoBox.textContent = data.message || "OTP resent successfully";
+                        infoBox.textContent = data.message || "OTP sent successfully.";
                         infoBox.classList.remove("d-none");
                     }
+                    if (errorBox) errorBox.classList.add("d-none");
+
+                    // Start cooldown timer
+                    startCooldown(data.remainingTime || 60);
+
+                } else if (res.status === 429) {
+
+                    // Rate limited — use server's remaining time
+                    if (errorBox) {
+                        errorBox.textContent = data.message;
+                        errorBox.classList.remove("d-none");
+                    }
+
+                    startCooldown(data.remainingTime || 60);
 
                 } else {
 

@@ -29,6 +29,7 @@ export const verifyOTP = async (req, res) => {
     user.isVerified = true;
     user.otp = undefined;
     user.otpExpire = undefined;
+    user.resendAvailableAt = undefined;
 
     await user.save();
 

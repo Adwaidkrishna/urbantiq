@@ -14,10 +14,11 @@ export const forgotPassword = async (req, res) => {
             });
         }
 
-        const otp = Math.floor(100000 + Math.random() * 900000);
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-        user.otp = otp;
-        user.otpExpire = Date.now() + 5 * 60 * 1000;
+        user.resetOtp = otp;
+        user.resetOtpExpire = Date.now() + 5 * 60 * 1000;
+        user.resetResendAvailableAt = Date.now() + 60 * 1000;
 
         await user.save();
 
