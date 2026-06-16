@@ -26,7 +26,7 @@ function injectSkeletons(containerId, count) {
     let html = '';
     for (let i = 0; i < count; i++) {
         html += `
-            <div class="col-6 col-md-4 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <div class="product-card skeleton-card">
                     <div class="product-img-wrap skeleton-pulse" style="aspect-ratio: 3/4; background: #e5e5e7; opacity: 0.6;"></div>
                     <div class="product-info">
@@ -134,7 +134,7 @@ function createHomeProductCard(product, isNew, isBestSeller = false) {
     }
 
     return `
-        <div class="col-6 col-md-4 col-lg-3">
+        <div class="col-6 col-md-6 col-lg-3">
             <div class="product-card">
                 <div class="product-img-wrap">
                     ${badgeHtml}

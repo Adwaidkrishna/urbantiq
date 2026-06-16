@@ -29,6 +29,26 @@ async function loadHomeCategories() {
 
         });
 
+        // 1. Create and append the mobile-only View All card
+        const viewAllCol = document.createElement("div");
+        viewAllCol.className = "col-6 col-md-4 col-lg-2 d-flex d-md-none";
+        viewAllCol.innerHTML = `
+            <a href="/product" class="category-card view-all-card">
+                <div class="view-all-content">
+                    <div class="view-all-icon">
+                        <i class="bi bi-arrow-right"></i>
+                    </div>
+                    <span>View All</span>
+                </div>
+            </a>
+        `;
+        container.appendChild(viewAllCol);
+
+        // 2. Create and append the Safari-specific scroll-padding anchor spacer
+        const spacer = document.createElement("div");
+        spacer.className = "rail-spacer d-block d-md-none";
+        container.appendChild(spacer);
+
     } catch (error) {
 
         console.error("Error loading categories:", error);
@@ -36,3 +56,4 @@ async function loadHomeCategories() {
     }
 
 }
+

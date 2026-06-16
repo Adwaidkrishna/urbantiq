@@ -98,12 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
        -------------------------------------------------- */
     function attachDynamicListeners() {
         document.querySelectorAll('.wishlist-btn-dynamic').forEach(btn => {
-            btn.addEventListener('click', async function(e) {
+            btn.addEventListener('click', async function (e) {
                 e.preventDefault();
                 e.stopPropagation();
                 const allowed = await window.AuthGuard.requireAuth(window.location.href);
                 if (!allowed) return;
-                
+
                 const productId = this.dataset.id;
                 try {
                     const res = await fetch("/api/wishlist/toggle", {
@@ -112,10 +112,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         body: JSON.stringify({ productId })
                     });
                     const data = await res.json();
-                    if(data.success) {
+                    if (data.success) {
                         window.AuthGuard.updateWishlistBadge();
                         const icon = this.querySelector('i');
-                        if(data.added) {
+                        if (data.added) {
                             icon.classList.replace('bi-heart', 'bi-heart-fill');
                             this.style.color = '#ef4444';
                             window.AuthGuard.showToast("Product added to wishlist!");
@@ -125,12 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             window.AuthGuard.showToast("Removed from wishlist.");
                         }
                     }
-                } catch(err) { }
+                } catch (err) { }
             });
         });
 
         document.querySelectorAll('.cart-btn-dynamic').forEach(btn => {
-            btn.addEventListener('click', async function(e) {
+            btn.addEventListener('click', async function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const pRes = await fetch(`/api/products/${productId}`);
                     const pData = await pRes.json();
-                    
+
                     if (pData.success && pData.product && pData.product.variants) {
                         const p = pData.product;
                         const defaultVariant = p.variants[0];
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                     window.location.href = `/product/${productId}`;
-                } catch(err) {
+                } catch (err) {
                     window.location.href = `/product/${productId}`;
                 }
             });

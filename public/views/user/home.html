@@ -55,7 +55,8 @@
                         <i class="bi bi-person"></i>
                     </a>
                 </div>
-                <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
@@ -64,31 +65,39 @@
 
     <!-- Hero Section -->
     <header class="hero-section">
-        <div class="container text-center">
-            <div class="collection-badge mx-auto">
-                <i class="bi bi-stars" style="color: #0066cc;"></i>
-                Spring Collection 2026
-            </div>
-            <h1 class="hero-title">Redefine Your Style</h1>
-            <p class="hero-subtitle">Discover our curated collection of premium men's fashion.</p>
-            <div class="d-flex justify-content-center gap-3 align-items-center">
-                <a href="/product" class="btn btn-pill btn-black">Shop Now <i class="bi bi-chevron-right"></i></a>
-                <a href="/sale" class="btn fw-600 text-decoration-none text-dark">View Deals</a>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-7 text-center text-lg-start">
+                    <div class="collection-badge">
+                        <i class="bi bi-stars" style="color: #0066cc;"></i>
+                        Spring Collection 2026
+                    </div>
+                    <h1 class="hero-title">Redefine Your Style</h1>
+                    <p class="hero-subtitle">Discover our curated collection of premium men's fashion.</p>
+                    <div class="d-flex justify-content-center justify-content-lg-start gap-3 align-items-center">
+                        <a href="/product" class="btn btn-pill btn-black">Shop Now <i class="bi bi-chevron-right"></i></a>
+                        <a href="/sale" class="btn fw-600 text-decoration-none text-dark">View Deals</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
     <!-- Shop by Category -->
-    <section class="container py-5">
+    <section class="container py-3 py-md-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="section-title mb-0">Shop by Category</h2>
-            <a href="/product" class="text-primary text-decoration-none fw-600">View All <i class="bi bi-chevron-right"></i></a>
+            <a href="/product" class="text-primary text-decoration-none fw-600">View All <i
+                    class="bi bi-chevron-right"></i></a>
         </div>
-        <div class="row g-4" id="homeCategories"></div>
+        <div class="category-rail-wrapper position-relative">
+            <div class="row g-0 g-md-4" id="homeCategories"></div>
+        </div>
     </section>
 
+
     <!-- Best Sellers -->
-    <section class="container py-5">
+    <section class="container py-3 py-md-5">
         <div class="mb-4 d-flex justify-content-between align-items-end">
             <div>
                 <h2 class="section-title mb-1">Top Selling Products</h2>
@@ -117,7 +126,8 @@
                 <h2 class="section-title mb-1">Discover New Arrivals</h2>
                 <p class="text-muted m-0">Handpicked essentials for the modern man</p>
             </div>
-            <a href="/product" class="text-primary text-decoration-none fw-600">View All <i class="bi bi-chevron-right"></i></a>
+            <a href="/product" class="text-primary text-decoration-none fw-600">View All <i
+                    class="bi bi-chevron-right"></i></a>
         </div>
         <div class="row g-3 g-md-4" id="newArrivalsGrid"></div>
     </section>
@@ -126,29 +136,32 @@
     <section class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="section-title mb-0">Featured Collection</h2>
-            <a href="/product" class="text-primary text-decoration-none fw-600">View All <i class="bi bi-chevron-right"></i></a>
+            <a href="/product" class="text-primary text-decoration-none fw-600">View All <i
+                    class="bi bi-chevron-right"></i></a>
         </div>
-        <div class="row g-4">
-            <div class="col-12 col-md-6">
+        <div class="row row-cols-2 g-3">
+            <div class="col">
                 <a href="/product" class="featured-editorial-card">
                     <img src="/images/user/auth-bg.png" alt="The Editorial Look">
                     <div class="featured-overlay"></div>
                     <div class="featured-content">
                         <span class="featured-eyebrow">Editorial Collection</span>
                         <h3 class="featured-title">Modern Tailoring</h3>
-                        <p class="featured-subtitle">A study in minimalism, structural precision, and luxurious comfort.</p>
+                        <p class="featured-subtitle">A study in minimalism, structural precision, and luxurious comfort.
+                        </p>
                         <span class="featured-link">Explore Collection <i class="bi bi-chevron-right"></i></span>
                     </div>
                 </a>
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col">
                 <a href="/product" class="featured-editorial-card">
                     <img src="/images/user/about_story.png" alt="Crafted for Movement">
                     <div class="featured-overlay"></div>
                     <div class="featured-content">
                         <span class="featured-eyebrow">Daily Essentials</span>
                         <h3 class="featured-title">Crafted for Movement</h3>
-                        <p class="featured-subtitle">Lightweight organic textiles engineered for seamless transitions from day to night.</p>
+                        <p class="featured-subtitle">Lightweight organic textiles engineered for seamless transitions
+                            from day to night.</p>
                         <span class="featured-link">Explore Collection <i class="bi bi-chevron-right"></i></span>
                     </div>
                 </a>
@@ -200,7 +213,7 @@
 
 
 
-        <!-- Footer -->
+    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="row g-4">
