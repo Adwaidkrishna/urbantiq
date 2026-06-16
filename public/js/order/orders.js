@@ -59,27 +59,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const card = document.createElement("div");
             card.className = "card shadow-sm border-0 rounded-4 p-4 mb-4 order-card-premium"; // Added premium CSS classes
-            
+
             card.innerHTML = `
                 <div class="d-flex justify-content-between align-items-start border-bottom pb-3 mb-3">
                     <div>
                         <div class="fw-bold mb-1" style="font-size: 1.1rem; color: #111;">#ORD-${order._id.slice(-6).toUpperCase()}</div>
                         <div class="text-secondary d-flex flex-wrap gap-2" style="font-size: 0.85rem;">
                             <span><i class="bi bi-calendar3 me-1"></i> Ordered on ${date}</span>
-                            ${['pending', 'confirmed', 'processing', 'shipped'].includes(order.orderStatus.toLowerCase()) ? 
-                                `<span class="text-success fw-bold"><i class="bi bi-truck me-1"></i> Arriving by ${deliveryDateStr}</span>` : ''}
-                            ${order.orderStatus.toLowerCase() === 'delivered' ? 
-                                `<span class="text-success fw-bold"><i class="bi bi-check-circle me-1"></i> Delivered</span>` : ''}
-                            ${order.orderStatus.toLowerCase() === 'cancelled' ? 
-                                `<span class="text-danger fw-bold"><i class="bi bi-x-circle me-1"></i> Cancelled</span>` : ''}
-                            ${order.orderStatus.toLowerCase() === 'cancellation requested' ? 
-                                `<span class="text-warning fw-bold"><i class="bi bi-clock-history me-1"></i> Cancellation Pending</span>` : ''}
-                            ${order.orderStatus.toLowerCase() === 'return requested' ? 
-                                `<span class="text-warning fw-bold"><i class="bi bi-clock-history me-1"></i> Return Pending</span>` : ''}
-                            ${order.orderStatus.toLowerCase() === 'returned' ? 
-                                `<span class="text-success fw-bold"><i class="bi bi-arrow-return-left me-1"></i> Returned & Refunded</span>` : ''}
-                            ${order.orderStatus.toLowerCase() === 'return rejected' ? 
-                                `<span class="text-danger fw-bold"><i class="bi bi-exclamation-circle me-1"></i> Return Rejected</span>` : ''}
+                            ${['pending', 'confirmed', 'processing', 'shipped'].includes(order.orderStatus.toLowerCase()) ?
+                    `<span class="text-success fw-bold"><i class="bi bi-truck me-1"></i> Arriving by ${deliveryDateStr}</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'delivered' ?
+                    `<span class="text-success fw-bold"><i class="bi bi-check-circle me-1"></i> Delivered</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'cancelled' ?
+                    `<span class="text-danger fw-bold"><i class="bi bi-x-circle me-1"></i> Cancelled</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'cancellation requested' ?
+                    `<span class="text-warning fw-bold"><i class="bi bi-clock-history me-1"></i> Cancellation Pending</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'return requested' ?
+                    `<span class="text-warning fw-bold"><i class="bi bi-clock-history me-1"></i> Return Pending</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'returned' ?
+                    `<span class="text-success fw-bold"><i class="bi bi-arrow-return-left me-1"></i> Returned & Refunded</span>` : ''}
+                            ${order.orderStatus.toLowerCase() === 'return rejected' ?
+                    `<span class="text-danger fw-bold"><i class="bi bi-exclamation-circle me-1"></i> Return Rejected</span>` : ''}
                         </div>
                     </div>
                     <span class="badge rounded-pill ${statusClass}" style="font-size: 0.75rem; padding: 0.5em 1em; letter-spacing: 0.5px; text-transform: uppercase;">
@@ -91,12 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="d-flex align-items-center gap-3">
                         <div class="d-flex position-relative align-items-center">
                             ${order.items.slice(0, 3).map((item, index) => {
-                                const variant = item.product?.variants?.find(v => (v._id || v).toString() === (item.variant || "").toString()) || item.product?.variants?.[0];
-                                const img = variant?.images?.length > 0 ? `/images/products/${variant.images[0]}` : '/images/user/phoodie.jpeg';
-                                // Add negative margin to overlap multiple images nicely
-                                const ml = index > 0 ? '-15px' : '0';
-                                return `<img src="${img}" alt="Item" class="rounded-3 border border-2 border-white shadow-sm" style="width: 65px; height: 65px; object-fit: cover; margin-left: ${ml}; position: relative; z-index: ${3 - index}; background: #fff;">`;
-                            }).join('')}
+                        const variant = item.product?.variants?.find(v => (v._id || v).toString() === (item.variant || "").toString()) || item.product?.variants?.[0];
+                        const img = variant?.images?.length > 0 ? `/images/products/${variant.images[0]}` : '/images/user/phoodie.jpeg';
+                        // Add negative margin to overlap multiple images nicely
+                        const ml = index > 0 ? '-15px' : '0';
+                        return `<img src="${img}" alt="Item" class="rounded-3 border border-2 border-white shadow-sm" style="width: 65px; height: 65px; object-fit: cover; margin-left: ${ml}; position: relative; z-index: ${3 - index}; background: #fff;">`;
+                    }).join('')}
                             ${order.items.length > 3 ? `<div class="rounded-circle bg-light border border-2 border-white d-flex align-items-center justify-content-center shadow-sm text-secondary" style="width: 45px; height: 45px; margin-left: -15px; position: relative; z-index: 0; font-size:12px; font-weight:bold;">+${order.items.length - 3}</div>` : ''}
                         </div>
                         <div class="ms-2">
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
         switch (status.toLowerCase()) {
             case "delivered": return "badge-delivered";
             case "processing":
-            case "pending": 
+            case "pending":
             case "confirmed":
             case "shipped": return "badge-processing";
             case "cancelled": return "badge-cancelled";

@@ -985,6 +985,7 @@ body.account-body {
 .text-debit {
     color: var(--ac-text-main);
 }
+
 /* ══ WALLET TRANSACTIONS UI ════════════════ */
 .transaction-row {
     display: flex;
@@ -1087,7 +1088,7 @@ body.account-body {
     .transaction-row {
         padding: 1rem;
     }
-    
+
     .trans-icon-circle {
         width: 40px;
         height: 40px;
@@ -1153,6 +1154,7 @@ body.account-body {
 .ac-ios-field.is-valid {
     border-color: #34c759;
 }
+
 .ac-ios-field.is-invalid {
     border-color: #ff3b30;
 }
