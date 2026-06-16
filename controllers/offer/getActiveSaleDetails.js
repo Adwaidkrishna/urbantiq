@@ -1,5 +1,5 @@
 import Offer from "../../models/Offer.js";
-import Coupon from "../../models/Coupon.js";
+import { couponService } from "../../services/couponService.js";
 
 /**
  * Controller to fetch active sale details (earliest offer end date and active coupons).
@@ -23,12 +23,8 @@ export const getActiveSaleDetails = async (req, res) => {
       endDate = new Date(Math.min(...endTimes));
     }
 
-    // 2. Fetch active coupons
-    const activeCoupons = await Coupon.find({
-      isActive: true,
-      expiryDate: { $gt: now },
-      $expr: { $lt: ["$usedCount", "$usageLimit"] }
-    });
+    // 2. Fetch active coupons using the Coupon Service
+    const activeCoupons = await couponService.getActiveCoupons();
 
     res.status(200).json({
       success: true,

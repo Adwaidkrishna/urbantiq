@@ -10,7 +10,7 @@ const couponSchema = new mongoose.Schema({
   },
   discountType: {
     type: String,
-    enum: ["Percentage (%)"],
+    enum: ["Percentage (%)", "Flat Amount"],
     default: "Percentage (%)",
     required: true
   },
@@ -26,6 +26,10 @@ const couponSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  startDate: {
+    type: Date,
+    default: Date.now
+  },
   expiryDate: {
     type: Date,
     required: true
@@ -33,6 +37,15 @@ const couponSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
+  },
+  status: {
+    type: String,
+    enum: ["ACTIVE", "INACTIVE"],
+    default: "ACTIVE"
+  },
+  minPurchase: {
+    type: Number,
+    default: 0
   }
 }, { timestamps: true });
 

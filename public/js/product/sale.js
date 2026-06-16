@@ -81,64 +81,44 @@ document.addEventListener("DOMContentLoaded", function () {
         couponGrid.innerHTML = "";
 
         if (coupons.length === 0) {
-            useDefaultCoupons();
+            couponGrid.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <div class="no-coupons-wrap p-4" style="background: #fbfbfd; border-radius: 16px; border: 1px dashed #d2d2d7; max-width: 500px; margin: 0 auto;">
+                        <i class="bi bi-ticket-perforated text-muted mb-3" style="font-size: 2.2rem; display: block;"></i>
+                        <p class="text-muted m-0 fw-600">No active offers available right now. Check back soon.</p>
+                    </div>
+                </div>
+            `;
             return;
         }
 
         coupons.forEach(c => {
-            let description = "";
-            // Custom descriptive styling matching screenshot
-            if (c.code === "SAVE20") {
-                description = "Get extra 20% on orders above ₹1999";
-            } else if (c.code === "FREESHIP") {
-                description = "Free shipping on all sale items";
-            } else if (c.code === "BUY2GET1") {
-                description = "Buy any 2 get 1 free on selected items";
-            } else {
-                if (c.discountType === "Percentage (%)") {
-                    description = `Get extra ${c.value}% off on your purchase`;
-                } else {
-                    description = `Get ₹${c.value} flat discount on your purchase`;
-                }
-            }
+            const formattedDate = new Date(c.expiryDate).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+            
+            const discountInfo = c.discountType === "Percentage (%)" ? `${c.value}% OFF` : `₹${c.value} OFF`;
+            const minPurchaseVal = c.minPurchase || 0;
+            const minPurchaseText = minPurchaseVal > 0 
+                ? `On orders above ₹${minPurchaseVal}`
+                : `No minimum purchase`;
+            const description = c.discountType === "Percentage (%)"
+                ? `Get ${c.value}% off. ${minPurchaseText}.`
+                : `Get flat ₹${c.value} off. ${minPurchaseText}.`;
 
             const col = document.createElement("div");
             col.className = "col-md-4";
             col.innerHTML = `
                 <div class="coupon-card">
                     <div class="coupon-info">
-                        <span class="coupon-code">${c.code}</span>
-                        <p class="coupon-desc">${description}</p>
-                    </div>
-                    <button class="copy-btn" data-coupon-code="${c.code}">Copy</button>
-                </div>
-            `;
-            couponGrid.appendChild(col);
-        });
-
-        bindCopyButtons();
-    }
-
-    // Fallback default coupons if database has none loaded
-    function useDefaultCoupons() {
-        const couponGrid = document.getElementById("couponGrid");
-        if (!couponGrid) return;
-
-        const defaults = [
-            { code: "SAVE20", desc: "Get extra 20% on orders above ₹1999" },
-            { code: "FREESHIP", desc: "Free shipping on all sale items" },
-            { code: "BUY2GET1", desc: "Buy any 2 get 1 free on selected items" }
-        ];
-
-        couponGrid.innerHTML = "";
-        defaults.forEach(c => {
-            const col = document.createElement("div");
-            col.className = "col-md-4";
-            col.innerHTML = `
-                <div class="coupon-card">
-                    <div class="coupon-info">
-                        <span class="coupon-code">${c.code}</span>
-                        <p class="coupon-desc">${c.desc}</p>
+                        <span class="coupon-code text-uppercase">${c.code}</span>
+                        <p class="coupon-desc fw-bold text-dark mb-1">${discountInfo}</p>
+                        <p class="coupon-desc text-muted mb-2">${description}</p>
+                        <p class="coupon-desc text-muted small mb-0" style="font-size: 0.72rem;">
+                            <i class="bi bi-clock me-1"></i>Expires: ${formattedDate}
+                        </p>
                     </div>
                     <button class="copy-btn" data-coupon-code="${c.code}">Copy</button>
                 </div>
