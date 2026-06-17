@@ -21,7 +21,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             document.getElementById("returnsLoading")?.remove();
 
-            if (returnOrders.length === 0) {
+            // Calculate total return items
+            let totalItems = 0;
+            const validOrders = [];
+            returnOrders.forEach(order => {
+                const hasDummyProduct = order.items.some(item => !item.product);
+                if (hasDummyProduct) return;
+                totalItems += order.items.length;
+                validOrders.push(order);
+            });
+
+            if (totalItems === 0) {
                 returnCount.textContent = "0 returns";
                 returnList.innerHTML = `
                     <div class="text-center py-5">
@@ -34,8 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
             }
 
-            returnCount.textContent = `${returnOrders.length} return${returnOrders.length > 1 ? 's' : ''}`;
-            renderReturns(returnOrders);
+            returnCount.textContent = `${totalItems} return${totalItems > 1 ? 's' : ''}`;
+            renderReturns(validOrders);
         } catch (error) {
             console.error("Error fetching returns:", error);
             returnList.innerHTML = `<p class="text-danger">Failed to load returns. Please try again later.</p>`;
@@ -46,69 +56,96 @@ document.addEventListener("DOMContentLoaded", async () => {
         returnList.innerHTML = "";
         
         orders.forEach(order => {
-            const hasDummyProduct = order.items.some(item => !item.product);
-            if (hasDummyProduct) return;
+            const reqDateStr = order.returnRequest?.requestedAt
+                ? new Date(order.returnRequest.requestedAt).toLocaleDateString("en-IN", {
+                    day: "numeric", month: "short", year: "numeric"
+                })
+                : new Date(order.updatedAt).toLocaleDateString("en-IN", {
+                    day: "numeric", month: "short", year: "numeric"
+                });
 
-            const date = new Date(order.updatedAt).toLocaleDateString("en-IN", {
-                day: "numeric", month: "short", year: "numeric"
-            });
+            // Split into individual item cards
+            order.items.forEach(item => {
+                const variant = item.product?.variants?.find(v => (v._id || v).toString() === (item.variant || "").toString()) || item.product?.variants?.[0];
+                const img = variant?.images?.length > 0 ? `/images/products/${variant.images[0]}` : '/images/user/phoodie.jpeg';
+                const productName = item.product?.name || "Product Unavailable";
+                const variantText = `Size ${item.size} • Qty ${item.quantity}`;
+                const itemPrice = (item.price * item.quantity).toLocaleString("en-IN");
 
-            // For simplicity, we show the first item of the order as the representative return
-            const item = order.items[0];
-            const variant = item.product?.variants?.find(v => (v._id || v).toString() === (item.variant || "").toString()) || item.product?.variants?.[0];
-            const img = variant?.images?.length > 0 ? `/images/products/${variant.images[0]}` : '/images/user/phoodie.jpeg';
+                // Determine refund method
+                const refundMethod = order.paymentMethod === 'COD' ? 'Wallet' : (order.paymentMethod === 'Wallet' ? 'Wallet' : 'Original Payment Source');
 
-            const card = document.createElement("div");
-            card.className = "ac-section-card mb-4";
-            card.innerHTML = `
-                <div class="order-card-top">
-                    <div class="order-meta">
-                        <span class="order-id">Order #ORD-${order._id.slice(-6).toUpperCase()}</span>
-                        <div class="small mt-1">Requested on ${date}</div>
-                    </div>
-                    <span class="status-badge ${getStatusClass(order.orderStatus)}">${order.orderStatus}</span>
-                </div>
+                // Determine refund outcome details based on status
+                let outcomeTitle = "Refund Initiated";
+                let outcomeDesc = `₹${itemPrice} will be returned to ${refundMethod}.`;
+                let descClass = "refund-pending";
+                let badgeClass = "badge-premium-processing";
+                let badgeIcon = '<i class="bi bi-hourglass-split me-1"></i>';
+                let badgeLabel = "Return Pending";
 
-                <div class="mt-4 pt-3 border-top">
-                    <div class="item-row d-flex align-items-center gap-3">
-                        <img src="${img}" class="item-thumb rounded" style="width: 70px; height: 70px; object-fit: cover;" alt="Product">
-                        <div class="item-details">
-                            <span class="item-name fw-bold d-block">${item.product.name}</span>
-                            <span class="item-meta text-muted small">Qty: ${item.quantity} | Size: ${item.size}</span>
+                if (order.orderStatus === "Returned") {
+                    outcomeTitle = "Refund Processed";
+                    outcomeDesc = `₹${itemPrice} returned to ${refundMethod}.`;
+                    descClass = "refund-credited";
+                    badgeClass = "badge-premium-delivered";
+                    badgeIcon = '<i class="bi bi-arrow-return-left me-1"></i>';
+                    badgeLabel = "Returned";
+                } else if (order.orderStatus === "Return Rejected") {
+                    outcomeTitle = "Refund Declined";
+                    outcomeDesc = "No refund issued.";
+                    descClass = "refund-rejected";
+                    badgeClass = "badge-premium-cancelled";
+                    badgeIcon = '<i class="bi bi-x-circle-fill me-1"></i>';
+                    badgeLabel = "Rejected";
+                }
+
+                const card = document.createElement("div");
+                card.className = "order-card-reassurance";
+                
+                card.innerHTML = `
+                    <div class="reassurance-header">
+                        <div class="reassurance-header-left">
+                            <div class="reassurance-outcome-title">${outcomeTitle}</div>
+                            <div class="reassurance-outcome-desc ${descClass}">${outcomeDesc}</div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-muted small fw-bold text-uppercase">Refund Summary</span>
-                        <span class="status-badge bg-transparent text-muted small" style="padding:0">
-                            ${order.orderStatus === 'Returned' ? 'Refunded' : 'Pending Approval'}
+                        <span class="history-card-badge-pill ${badgeClass}">
+                            ${badgeIcon}${badgeLabel}
                         </span>
                     </div>
-                    <div class="summary-line d-flex justify-content-between mb-1">
-                        <span class="text-muted">Total Amount</span>
-                        <span class="fw-bold">₹${order.finalAmount.toLocaleString("en-IN")}</span>
-                    </div>
-                    <div class="summary-line d-flex justify-content-between">
-                        <span class="text-muted">Refund Method</span>
-                        <span>${order.paymentMethod === 'COD' ? 'URBANTIQ Wallet' : order.paymentMethod}</span>
-                    </div>
-                </div>
 
-                <div class="mt-4 d-grid">
-                    <a href="/order-details?id=${order._id}" class="btn btn-outline-dark rounded-pill py-2">View Details</a>
-                </div>
-            `;
-            returnList.appendChild(card);
+                    <div class="history-card-product-section">
+                        <img src="${img}" alt="${productName}" class="history-product-image">
+                        <div class="history-product-details">
+                            <div class="history-product-info">
+                                <h3 class="history-product-name">${productName}</h3>
+                                <span class="history-product-variant">${variantText}</span>
+                            </div>
+                            <div class="history-product-price">₹${itemPrice}</div>
+                        </div>
+                    </div>
+
+                    <div class="reassurance-info-grid">
+                        <div class="history-info-block">
+                            <span class="history-info-label">Return Timeline</span>
+                            <span class="history-info-value">Requested: ${reqDateStr}</span>
+                        </div>
+                        <div class="history-info-block">
+                            <span class="history-info-label">Order Reference</span>
+                            <span class="history-info-value">#ORD-${order._id.slice(-6).toUpperCase()}</span>
+                        </div>
+                        <div class="history-info-block">
+                            <span class="history-info-label">Payment Source</span>
+                            <span class="history-info-value">${order.paymentMethod}</span>
+                        </div>
+                    </div>
+
+                    <div class="history-card-action">
+                        <a href="/order-details?id=${order._id}" class="btn-history-outline">View Details</a>
+                    </div>
+                `;
+                returnList.appendChild(card);
+            });
         });
-    }
-
-    function getStatusClass(status) {
-        if (status === "Return Requested") return "badge-processing";
-        if (status === "Returned") return "badge-delivered";
-        if (status === "Return Rejected") return "badge-cancelled";
-        return "badge-processing";
     }
 
     fetchReturns();

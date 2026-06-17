@@ -1246,3 +1246,1150 @@ body.account-body {
     cursor: not-allowed;
     opacity: 0.7;
 }
+
+/* ==========================================================================
+   URBANTIQ My Orders Premium Redesign (iOS Inspired)
+   ========================================================================== */
+
+/* Title styling override */
+.my-orders-title {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: #1d1d1f;
+    letter-spacing: -0.03em;
+    margin-bottom: 2rem;
+}
+
+/* Premium Order Card */
+.order-card-premium {
+    background: #ffffff !important;
+    border-radius: 24px !important;
+    padding: 32px !important;
+    margin-bottom: 24px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid #f2f2f2 !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+.order-card-premium:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Card Header: Delivery ETA & Status Pill */
+.card-premium-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f2f2f2;
+    padding-bottom: 16px;
+    width: 100%;
+}
+.card-premium-delivery-eta {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d1d1f;
+    letter-spacing: -0.01em;
+}
+.card-premium-badge-pill {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 14px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Badge pill colors */
+.badge-premium-processing {
+    background: rgba(255, 193, 7, 0.12) !important;
+    color: #B8860B !important;
+}
+.badge-premium-shipped {
+    background: rgba(0, 122, 255, 0.12) !important;
+    color: #007AFF !important;
+}
+.badge-premium-delivered {
+    background: rgba(52, 199, 89, 0.12) !important;
+    color: #34C759 !important;
+}
+.badge-premium-cancelled {
+    background: rgba(255, 59, 48, 0.12) !important;
+    color: #FF3B30 !important;
+}
+.badge-premium-returned {
+    background: rgba(255, 149, 0, 0.12) !important;
+    color: #FF9500 !important;
+}
+
+/* Product Section: Image left, Details right */
+.card-premium-product-section {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    width: 100%;
+}
+.product-premium-image-link {
+    display: block;
+    flex-shrink: 0;
+}
+.product-premium-image {
+    width: 90px;
+    height: 112px;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    background-color: #f5f5f7;
+    display: block;
+}
+.product-premium-details {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+.product-premium-info {
+    display: flex;
+    flex-direction: column;
+}
+.product-premium-name-link {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+.product-premium-name {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    color: #1d1d1f;
+    line-height: 1.3;
+    margin: 0 0 6px 0;
+    transition: opacity 0.2s ease;
+}
+.product-premium-name-link:hover .product-premium-name {
+    opacity: 0.7;
+}
+.product-premium-variant {
+    font-size: 14px;
+    font-weight: 500;
+    color: #86868b;
+}
+.product-premium-price {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    color: #1d1d1f;
+    white-space: nowrap;
+}
+
+/* Active Order Progress Timeline (Horizontal) */
+.card-progress-container {
+    position: relative;
+    margin: 8px 0;
+    padding: 0 8px;
+    width: 100%;
+}
+.card-progress-line-bg {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background: #e5e5ea;
+    z-index: 1;
+}
+.card-progress-line-fill {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    height: 2px;
+    background: #34c759;
+    z-index: 2;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 3;
+    width: 100%;
+}
+.card-progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 65px;
+}
+.card-progress-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid #d1d1d6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: transparent;
+    transition: all 0.3s ease;
+}
+.card-progress-step.completed .card-progress-dot {
+    background: #34c759;
+    border-color: #34c759;
+    color: #ffffff;
+}
+.card-progress-step.active .card-progress-dot {
+    background: #ffffff;
+    border-color: #34c759;
+    color: transparent;
+    position: relative;
+}
+.card-progress-step.active .card-progress-dot::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #34c759;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.card-progress-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #86868b;
+    margin-top: 8px;
+    white-space: nowrap;
+}
+.card-progress-step.active .card-progress-label,
+.card-progress-step.completed .card-progress-label {
+    color: #1d1d1f;
+    font-weight: 600;
+}
+
+/* Static status layouts for Delivered, Returned, Cancelled */
+.card-status-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 4px 0;
+}
+.card-status-note.status-note-delivered {
+    color: #34C759;
+}
+.card-status-note.status-note-returned {
+    color: #FF9500;
+}
+.card-status-note.status-note-cancelled {
+    color: #FF3B30;
+}
+
+/* Metadata and Actions Section */
+.card-premium-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f2f2f2;
+    padding-top: 20px;
+    margin-top: 8px;
+    width: 100%;
+}
+.card-premium-meta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.card-premium-meta-desktop {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.card-premium-meta-mobile {
+    display: none;
+}
+.card-premium-meta-id {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1d1d1f;
+}
+.card-premium-meta-date {
+    font-size: 14px;
+    font-weight: 500;
+    color: #86868b;
+}
+.card-premium-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Buttons style override */
+.btn-premium-primary {
+    background: #1d1d1f !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 16px !important;
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+}
+.btn-premium-primary:hover {
+    background: #000000 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+.btn-premium-primary:active {
+    transform: scale(0.98) !important;
+}
+
+.btn-premium-secondary {
+    background: #ffffff !important;
+    color: #1d1d1f !important;
+    border: 1px solid #d2d2d7 !important;
+    border-radius: 16px !important;
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+}
+.btn-premium-secondary:hover {
+    background: #f5f5f7 !important;
+    border-color: #86868b !important;
+}
+.btn-premium-secondary:active {
+    transform: scale(0.98) !important;
+}
+
+/* Premium Loading State (soft pulsing dot) */
+.premium-loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    text-align: center;
+    width: 100%;
+}
+.premium-loading-pulse {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1d1d1f;
+    animation: premiumPulse 1.5s ease-in-out infinite;
+    margin-bottom: 20px;
+}
+.premium-loading-text {
+    font-size: 15px;
+    color: #86868b;
+    font-weight: 500;
+}
+@keyframes premiumPulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.15;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0.15;
+    }
+}
+
+/* iOS Bottom Toast styling */
+.ios-toast-container {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 90%;
+    max-width: 400px;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.ios-toast {
+    pointer-events: auto;
+    background: rgba(29, 29, 31, 0.96);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    animation: iosToastSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.ios-toast.fade-out {
+    opacity: 0;
+    transform: translateY(20px);
+}
+.ios-toast-message {
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.ios-toast-action {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0a84ff !important;
+    text-decoration: none !important;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0 0 0 16px;
+}
+.ios-toast-action:hover {
+    opacity: 0.8;
+}
+@keyframes iosToastSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Premium Empty State */
+.premium-empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.premium-empty-state svg {
+    width: 120px;
+    height: 120px;
+    color: #1d1d1f;
+    margin-bottom: 32px;
+}
+.premium-empty-state h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+}
+.premium-empty-state p {
+    font-size: 15px;
+    color: #86868b;
+    line-height: 1.5;
+    margin-bottom: 32px;
+}
+.premium-empty-cta {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    background: #1d1d1f !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 14px 32px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    min-height: 48px;
+}
+.premium-empty-cta:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+    background: #000000 !important;
+}
+
+/* Responsive Overrides */
+@media (max-width: 991px) {
+    .order-card-premium {
+        padding: 24px !important;
+    }
+    .product-premium-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .product-premium-price {
+        font-size: 20px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .order-card-premium {
+        border-radius: 24px !important; /* Keep 24px border radius as approved */
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 16px 20px !important; /* Compact padding */
+        gap: 12px !important; /* 12px gap between sections */
+    }
+    .card-premium-header {
+        padding-bottom: 10px !important;
+    }
+    .card-premium-delivery-eta {
+        font-size: 15px !important;
+    }
+    .card-premium-badge-pill {
+        font-size: 11px !important;
+        padding: 4px 10px !important;
+    }
+
+    /* Product Section Stack */
+    .card-premium-product-section {
+        gap: 16px !important;
+    }
+    .product-premium-image {
+        width: 72px !important;
+        height: 72px !important;
+        border-radius: 12px !important;
+    }
+    .product-premium-details {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 2px !important;
+    }
+    .product-premium-name {
+        font-size: 18px !important; /* Product Name: 18px / 600 */
+        font-weight: 600 !important;
+    }
+    .product-premium-price {
+        font-size: 22px !important; /* Price: 22px / 700 */
+        font-weight: 700 !important;
+        margin-top: 2px !important;
+    }
+    .product-premium-variant {
+        font-size: 13px !important; /* Metadata: 13px */
+    }
+
+    /* Compact active order timeline */
+    .card-progress-container {
+        margin: 4px 0 !important;
+    }
+    .card-progress-label {
+        display: none !important; /* Hide standard individual step labels */
+    }
+    .card-progress-current-label-mobile {
+        display: block !important; /* Show single centered active label */
+        font-size: 12px !important; /* Timeline label: 12px / 600 */
+        font-weight: 600 !important;
+        color: #1d1d1f !important;
+        margin-top: 6px !important;
+        text-align: center;
+        width: 100%;
+    }
+    .card-progress-line-bg, .card-progress-line-fill {
+        left: 15px !important;
+        right: 15px !important;
+    }
+
+    /* Single metadata row */
+    .card-premium-meta-desktop {
+        display: none !important;
+    }
+    .card-premium-meta-mobile {
+        display: block !important;
+        font-size: 13px !important; /* Metadata: 13px / 500 */
+        font-weight: 500 !important;
+        color: #86868b !important;
+    }
+
+    /* Footer & actions */
+    .card-premium-footer {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+        padding-top: 10px !important;
+    }
+    .card-premium-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
+    .btn-premium-primary, .btn-premium-secondary {
+        flex: 1 1 0% !important;
+        width: auto !important;
+        min-height: 44px !important;
+        height: 44px !important;
+        padding: 0 8px !important;
+        font-size: 13px !important;
+    }
+}
+
+/* ==========================================================================
+   URBANTIQ Active, Reassuring, and Archival Post-Purchase Cards
+   ========================================================================== */
+
+/* 1. Active Orders Card (.order-card-active) */
+.order-card-active {
+    background: #ffffff !important;
+    border-radius: 24px !important;
+    padding: 28px !important;
+    margin-bottom: 24px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid #f2f2f2 !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+.order-card-active:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Active Card Header: Apple-like State Description */
+.active-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #f2f2f2;
+    padding-bottom: 16px;
+    width: 100%;
+}
+.active-card-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.active-card-eta-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+}
+.active-card-state-desc {
+    font-size: 14px;
+    color: #86868b;
+    font-weight: 500;
+}
+.active-card-status-pill {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 14px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Active Card Product Section (Zara-inspired hierarchy: Name -> Price -> Size/Qty) */
+.active-card-product-section {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+}
+.active-product-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+    background-color: #f5f5f7;
+    display: block;
+    flex-shrink: 0;
+}
+.active-product-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.active-product-name {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #1d1d1f;
+    line-height: 1.3;
+    margin: 0;
+}
+.active-product-price {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #1d1d1f;
+    margin: 0;
+}
+.active-product-variant {
+    font-size: 13px;
+    font-weight: 500;
+    color: #86868b;
+}
+
+/* Active Progress Timeline (Dynamic Dots: ●────○────○────○) */
+.active-progress-container {
+    position: relative;
+    margin: 12px 0 4px;
+    padding: 0 10px;
+    width: 100%;
+}
+.active-progress-line-bg {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    right: 15px;
+    height: 2px;
+    background: #e5e5ea;
+    z-index: 1;
+}
+.active-progress-line-fill {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    height: 2px;
+    background: #34c759;
+    z-index: 2;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.active-progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 3;
+    width: 100%;
+}
+.active-progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid #d1d1d6;
+    transition: all 0.3s ease;
+}
+.active-progress-dot.completed {
+    background: #34c759;
+    border-color: #34c759;
+}
+.active-progress-current-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Active Footer: Metadata & Actions */
+.active-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f2f2f2;
+    padding-top: 20px;
+    width: 100%;
+}
+.active-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.active-card-meta-id {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d1d1f;
+}
+.active-card-meta-date {
+    font-size: 13px;
+    font-weight: 500;
+    color: #86868b;
+}
+.active-card-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+.active-action-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d1d1f;
+    text-decoration: none !important;
+    transition: opacity 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+.active-action-link:hover {
+    opacity: 0.7;
+}
+
+/* 2. Returns Card (.order-card-reassurance) */
+.order-card-reassurance {
+    background: #ffffff !important;
+    border-radius: 24px !important;
+    padding: 24px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid #edf0f5 !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+.order-card-reassurance:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04) !important;
+}
+.reassurance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #f2f2f2;
+    padding-bottom: 12px;
+    width: 100%;
+}
+.reassurance-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.reassurance-outcome-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1d1d1f;
+    letter-spacing: -0.01em;
+}
+.reassurance-outcome-desc {
+    font-size: 14px;
+    color: #86868b;
+    font-weight: 500;
+}
+.reassurance-outcome-desc.refund-credited {
+    color: #34c759 !important;
+    font-weight: 600;
+}
+.reassurance-outcome-desc.refund-pending {
+    color: #ff9500 !important;
+    font-weight: 600;
+}
+.reassurance-outcome-desc.refund-rejected {
+    color: #ff3b30 !important;
+    font-weight: 600;
+}
+
+/* Returns Card info grid */
+.reassurance-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 12px 0;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+    width: 100%;
+}
+
+/* 3. Cancellations Card (.order-card-archive) */
+.order-card-archive {
+    background: #fcfcfd !important;
+    border-radius: 24px !important;
+    padding: 24px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+    border: 1px solid #e5e5ea !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+.order-card-archive:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* 4. Shared classes for Returns/Cancellations layout */
+.history-card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.history-card-id-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d1d1f;
+}
+.history-card-badge-pill {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 5px 12px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Inner shared layout structures (Zara visual details) */
+.history-card-product-section {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+}
+.history-product-image {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    object-fit: cover;
+    background-color: #f5f5f7;
+    display: block;
+    flex-shrink: 0;
+}
+.history-product-details {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+.history-product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.history-product-name {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #1d1d1f;
+    line-height: 1.3;
+    margin: 0;
+}
+.history-product-variant {
+    font-size: 13px;
+    font-weight: 500;
+    color: #86868b;
+}
+.history-product-price {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #1d1d1f;
+    white-space: nowrap;
+}
+
+.history-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 12px 0;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+    width: 100%;
+}
+.history-info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.history-info-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #86868b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.history-info-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1d1d1f;
+}
+.history-info-value.refund-credited {
+    color: #34c759;
+    font-weight: 600;
+}
+.history-info-value.refund-pending {
+    color: #ff9500;
+    font-weight: 600;
+}
+.history-info-value.refund-rejected {
+    color: #ff3b30;
+    font-weight: 600;
+}
+
+.history-card-action {
+    width: 100%;
+    margin-top: 4px;
+}
+.btn-history-outline {
+    width: 100%;
+    background: #ffffff !important;
+    color: #1d1d1f !important;
+    border: 1px solid #d2d2d7 !important;
+    border-radius: 16px !important;
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+    text-decoration: none !important;
+}
+.btn-history-outline:hover {
+    background: #f5f5f7 !important;
+    border-color: #86868b !important;
+}
+
+/* Mobile Overrides */
+@media (max-width: 768px) {
+    /* Active Card Mobile */
+    .order-card-active {
+        padding: 20px !important;
+        gap: 16px;
+    }
+    .active-card-header {
+        padding-bottom: 12px !important;
+    }
+    .active-card-eta-title {
+        font-size: 16px !important;
+    }
+    .active-product-image {
+        width: 72px !important;
+        height: 72px !important;
+    }
+    .active-product-name {
+        font-size: 16px !important;
+    }
+    .active-progress-container {
+        display: none !important;
+    }
+    .active-card-footer {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 16px !important;
+        padding-top: 16px !important;
+    }
+    .active-card-meta {
+        font-size: 13px !important;
+    }
+    .active-card-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
+    .active-action-btn-mobile {
+        flex: 1 1 0% !important;
+        width: auto !important;
+        height: 44px !important;
+        border-radius: 999px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-decoration: none !important;
+        min-height: 44px !important;
+        cursor: pointer !important;
+    }
+    .active-action-btn-mobile-primary {
+        background: #1d1d1f !important;
+        color: #ffffff !important;
+        border: none !important;
+    }
+    .active-action-btn-mobile-secondary {
+        background: #ffffff !important;
+        color: #1d1d1f !important;
+        border: 1px solid #d2d2d7 !important;
+    }
+
+    /* Reassurance & Archival Card Mobile overrides */
+    .order-card-reassurance, .order-card-archive {
+        padding: 16px !important;
+        gap: 14px;
+    }
+    .reassurance-outcome-title {
+        font-size: 15px !important;
+    }
+    .reassurance-info-grid, .history-info-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 12px 0;
+    }
+
+    /* Mobile Footer Layout for Active Cards */
+    .order-footer-mobile {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding-top: 16px;
+        border-top: 1px solid #f2f2f7;
+        width: 100%;
+    }
+
+    .order-meta-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .order-id {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1d1d1f;
+    }
+
+    .order-date {
+        font-size: 12px;
+        color: #86868b;
+    }
+
+    .order-details-mobile-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        white-space: nowrap;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1d1d1f;
+        text-decoration: none !important;
+        transition: opacity 0.2s ease;
+    }
+
+    .order-details-mobile-link:hover {
+        opacity: 0.7;
+    }
+}
+
+
