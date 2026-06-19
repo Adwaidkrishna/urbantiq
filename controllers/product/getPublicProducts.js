@@ -76,7 +76,7 @@ export const getPublicProducts = async (req, res) => {
         let dbQuery = Product.find(query)
             .populate("category", "name")
             .sort(sortObj);
-            
+
         const pageNum = parseInt(page);
         const limitNum = parseInt(limit);
         let productsCount;
@@ -92,27 +92,27 @@ export const getPublicProducts = async (req, res) => {
         } else if (limit && sort !== "Most Popular") {
             dbQuery = dbQuery.limit(Number(limit));
         }
-            
+
         const products = await dbQuery;
 
         let productsWithSales = await Promise.all(products.map(async (p) => {
-             const orders = await Order.find({ 
-                 "items.product": p._id,
-                 orderStatus: { $nin: ["Cancelled", "Returned", "Return Rejected"] }
-             });
-             
-             let salesCount = 0;
-             orders.forEach(order => {
-                  order.items.forEach(item => {
-                       if (item.product.toString() === p._id.toString()) {
-                            salesCount += item.quantity;
-                       }
-                  });
-             });
+            const orders = await Order.find({
+                "items.product": p._id,
+                orderStatus: { $nin: ["Cancelled", "Returned", "Return Rejected"] }
+            });
 
-             const pObj = p.toObject();
-             pObj.salesCount = salesCount;
-             return pObj;
+            let salesCount = 0;
+            orders.forEach(order => {
+                order.items.forEach(item => {
+                    if (item.product.toString() === p._id.toString()) {
+                        salesCount += item.quantity;
+                    }
+                });
+            });
+
+            const pObj = p.toObject();
+            pObj.salesCount = salesCount;
+            return pObj;
         }));
 
         if (sort === "Most Popular") {
@@ -126,7 +126,7 @@ export const getPublicProducts = async (req, res) => {
                 productsWithSales = productsWithSales.slice(0, Number(limit));
             }
         }
-            
+
         res.json({
             success: true,
             products: productsWithSales,

@@ -67,12 +67,28 @@
             </div>
             <div class="sort-row">
                 <span class="sort-label">Sort:</span>
-                <select class="sort-select" id="sortSelect">
-                    <option>Most Popular</option>
-                    <option>Newest First</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Top Rated</option>
+                <!-- Custom Dropdown Wrapper -->
+                <div class="custom-sort-dropdown" id="customSortDropdown">
+                    <div class="custom-sort-selected" tabindex="0">
+                        <span id="customSortLabel">Most Popular</span>
+                        <svg class="custom-sort-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </div>
+                    <ul class="custom-sort-options">
+                        <li class="custom-sort-option active" data-value="Most Popular">Most Popular</li>
+                        <li class="custom-sort-option" data-value="Newest First">Newest First</li>
+                        <li class="custom-sort-option" data-value="Price: Low to High">Price: Low to High</li>
+                        <li class="custom-sort-option" data-value="Price: High to Low">Price: High to Low</li>
+                        <li class="custom-sort-option" data-value="Top Rated">Top Rated</li>
+                    </ul>
+                </div>
+
+                <!-- Hidden Native Select (Used by existing JS logic) -->
+                <select class="sort-select" id="sortSelect" style="display: none;">
+                    <option value="Most Popular">Most Popular</option>
+                    <option value="Newest First">Newest First</option>
+                    <option value="Price: Low to High">Price: Low to High</option>
+                    <option value="Price: High to Low">Price: High to Low</option>
+                    <option value="Top Rated">Top Rated</option>
                 </select>
             </div>
         </div>
@@ -370,5 +386,64 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/common/auth-guard.js"></script>
     <script src="/js/product/products.js"></script>
+    
+    <!-- Custom Dropdown UI Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdown = document.getElementById('customSortDropdown');
+            if(!dropdown) return;
+            const selected = dropdown.querySelector('.custom-sort-selected');
+            const label = document.getElementById('customSortLabel');
+            const options = dropdown.querySelectorAll('.custom-sort-option');
+            const hiddenSelect = document.getElementById('sortSelect');
+
+            // Initialize correct active state based on select
+            const syncUI = () => {
+                const val = hiddenSelect.value;
+                label.textContent = val;
+                options.forEach(o => {
+                    o.classList.toggle('active', o.getAttribute('data-value') === val);
+                });
+            };
+            syncUI();
+
+            // Toggle Dropdown
+            selected.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('open');
+            });
+
+            // Keyboard Accessibility
+            selected.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    dropdown.classList.toggle('open');
+                } else if (e.key === 'Escape') {
+                    dropdown.classList.remove('open');
+                }
+            });
+
+            // Option selection
+            options.forEach(opt => {
+                opt.addEventListener('click', () => {
+                    const val = opt.getAttribute('data-value');
+                    
+                    // Update hidden select and manually fire the 'change' event for existing JS to pick it up
+                    hiddenSelect.value = val;
+                    hiddenSelect.dispatchEvent(new Event('change'));
+
+                    syncUI();
+                    dropdown.classList.remove('open');
+                });
+            });
+
+            // Click outside closes dropdown
+            document.addEventListener('click', (e) => {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.classList.remove('open');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -27,6 +27,7 @@ import publicContactRoutes from "./routes/public/contactRoutes.js";
 import adminContactRoutes from "./routes/admin/contactRoutes.js";
 
 const app = express();
+app.set("trust proxy", 1);
 
 connectDB();
 

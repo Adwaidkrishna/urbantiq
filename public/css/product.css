@@ -60,37 +60,138 @@
     margin: 0;
 }
 
-/* Sort row (top-right of header) */
+/* ============================================
+   CUSTOM SORT DROPDOWN (Replacing native select)
+   ============================================ */
 .sort-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding-bottom: 4px;
+    gap: 12px;
 }
 
 .sort-label {
     font-size: 0.85rem;
     font-weight: 600;
     color: #86868b;
+    white-space: nowrap;
 }
 
-.sort-select {
+.custom-sort-dropdown {
+    position: relative;
+    width: 200px; /* Consistent fixed width for premium look */
+    font-family: inherit;
+}
+
+.custom-sort-selected {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 44px; /* Touch-friendly height */
+    padding: 0 16px;
+    background: #fff;
     border: 1.5px solid #e5e5e7;
-    border-radius: 10px;
-    padding: 7px 14px;
+    border-radius: 12px;
     font-size: 0.85rem;
     font-weight: 600;
     color: #1d1d1f;
-    background: #fff;
-    outline: none;
     cursor: pointer;
-    font-family: inherit;
-    transition: border-color 0.2s;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
 }
 
-.sort-select:focus {
-    border-color: #1d1d1f;
+.custom-sort-selected:hover {
+    border-color: #d1d1d6;
 }
+
+.custom-sort-selected:focus-visible {
+    border-color: #007aff;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+.custom-sort-arrow {
+    color: #86868b;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom-sort-dropdown.open .custom-sort-selected {
+    border-color: #1d1d1f;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.custom-sort-dropdown.open .custom-sort-arrow {
+    transform: rotate(180deg);
+}
+
+.custom-sort-options {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 100%;
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #f2f2f2;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.08), 0 2px 10px rgba(0, 0, 0, 0.02);
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+/* Scrollbar styling for options */
+.custom-sort-options::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-sort-options::-webkit-scrollbar-thumb {
+    background: #e5e5e7;
+    border-radius: 4px;
+}
+
+.custom-sort-dropdown.open .custom-sort-options {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.custom-sort-option {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1d1d1f;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    display: flex;
+    align-items: center;
+}
+
+.custom-sort-option:hover {
+    background: #f5f5f7;
+}
+
+.custom-sort-option.active {
+    background: #f5f5f7;
+    font-weight: 700;
+    color: #1d1d1f;
+}
+
+/* Checkmark for selected option */
+.custom-sort-option.active::after {
+    content: '';
+    margin-left: auto;
+    width: 6px;
+    height: 10px;
+    border: solid #1d1d1f;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-right: 4px;
+}
+
 
 /* ============================================
    CONTENT ROW (sidebar + grid)
