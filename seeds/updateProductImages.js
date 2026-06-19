@@ -13,7 +13,7 @@ import Product from "../models/Product.js";
 import Category from "../models/Category.js";
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/urbantiq";
-const BRAIN_DIR = "C:/Users/LENOVO/.gemini/antigravity-ide/brain/37c36865-e88a-4766-a59c-440d35cc0538";
+const BRAIN_DIR = "C:/Users/LENOVO/.gemini/antigravity-ide/brain/059551db-a5f0-4f91-8f4b-fc6150d1c660";
 
 const PRODUCT_BASE_MAP = {
   // SHIRTS
@@ -32,21 +32,26 @@ const PRODUCT_BASE_MAP = {
   "Skinny Fit Black Jeans": "jeans_skinny_base",
   "Vintage Wash Workwear Jeans": "jeans_vintage_base",
   
-  // HOODIES
+  
+  // HOODIES (Excluded from this migration)
+  /*
   "Heavyweight French Terry Hoodie": "hoodies_terry_base",
   "Premium Fleece Pullover": "hoodies_fleece_base",
   "Full-Zip Athletic Hoodie": "hoodies_zip_base",
   "Oversized Streetwear Hoodie": "hoodies_oversized_base",
   "Colorblock Casual Hoodie": "hoodies_colorblock_base",
   "Thermal Lined Winter Hoodie": "hoodies_thermal_base",
+  */
   
-  // FORMALS
+  // FORMALS (Excluded from this migration)
+  /*
   "Tailored Fit Dress Trouser": "formals_trouser_base",
   "Classic Double-Breasted Suit Jacket": "formals_dbjacket_base",
   "Premium Wool Blend Blazer": "formals_blazer_base",
   "Slim Fit Formal Vest": "formals_vest_base",
   "Structured Tuxedo Shirt": "formals_tuxedo_base",
   "Modern Stretch Chino Pants": "formals_chino_base",
+  */
   
   // FIVE SLEEVES
   "Elbow Sleeve Knitted Tee": "five_knitted_base",
@@ -96,9 +101,10 @@ async function run() {
         continue;
       }
 
-      // Find file matching `basePrefix_[digits].png` in the brain directory
+      // Find file matching `basePrefix_[digits].(png|webp|jpg|jpeg)` in the brain directory
       const matchingFile = brainFiles.find(file => {
-        return file.startsWith(basePrefix + "_") && file.endsWith(".png");
+        return file.startsWith(basePrefix + "_") && 
+          (file.endsWith(".png") || file.endsWith(".webp") || file.endsWith(".jpg") || file.endsWith(".jpeg"));
       });
 
       if (!matchingFile) {
@@ -112,17 +118,24 @@ async function run() {
       
       console.log(`📦 [MIGRATING] Found base image "${matchingFile}" for "${product.name}". Copying color variants...`);
 
-      // Update each variant's images array with a single deterministic filename
+      // Get original file extension
+      const fileExt = path.extname(matchingFile);
+
+      // Update each variant's images array with 4 deterministic filenames
       for (const variant of product.variants) {
         const colorName = variant.colorName || "default";
-        const destFilename = `${sanitizeFilename(categoryName)}-${sanitizeFilename(product.name)}-${sanitizeFilename(colorName)}.png`;
-        const destPath = path.join("public/images/products", destFilename);
+        const images = [];
+        for (let i = 1; i <= 4; i++) {
+          const destFilename = `${sanitizeFilename(categoryName)}-${sanitizeFilename(product.name)}-${sanitizeFilename(colorName)}-${i}${fileExt}`;
+          const destPath = path.join("public/images/products", destFilename);
 
-        // Copy file
-        fs.copyFileSync(srcPath, destPath);
+          // Copy file
+          fs.copyFileSync(srcPath, destPath);
+          images.push(destFilename);
+        }
         
-        // Update DB variant images to have ONLY this single file (Option 1 Preferred)
-        variant.images = [destFilename];
+        // Update DB variant images to have these 4 files
+        variant.images = images;
       }
 
       // Save product update
