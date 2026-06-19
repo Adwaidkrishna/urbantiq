@@ -131,6 +131,10 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(product => {
                 // Fill basic form fields
                 document.getElementById("productId").value = product._id;
+                
+                const versionInput = document.getElementById("productVersion");
+                if (versionInput) versionInput.value = product.__v;
+
                 document.querySelector('[name="name"]').value = product.name;
                 document.querySelector('[name="description"]').value = product.description;
                 document.getElementById("productPrice").value = product.price;
@@ -163,6 +167,11 @@ document.addEventListener("DOMContentLoaded", function () {
         formData.append("price", document.getElementById("productPrice").value);
         formData.append("offerPrice", document.getElementById("offerPrice").value);
         formData.append("status", document.getElementById("statusValue").value);
+        
+        const versionInput = document.getElementById("productVersion");
+        if (versionInput && versionInput.value) {
+            formData.append("__v", versionInput.value);
+        }
 
         let hasError = false;
         const variants = [];
@@ -185,18 +194,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            const variantIdInput = card.querySelector(".variant-id-input");
             const vData = {
                 color: card.querySelector(".variant-color-input").value,
                 colorName: card.querySelector(".selected-color-name").textContent.trim(),
                 images: keptImages, // Include existing images to keep
                 sizes: []
             };
+            if (variantIdInput && variantIdInput.value) {
+                vData._id = variantIdInput.value;
+            }
 
             card.querySelectorAll(".size-row").forEach(row => {
-                vData.sizes.push({
+                const sizeIdInput = row.querySelector(".size-id-input");
+                const sData = {
                     size: row.querySelector(".size-name").value,
                     stock: parseInt(row.querySelector(".size-stock").value) || 0
-                });
+                };
+                if (sizeIdInput && sizeIdInput.value) sData._id = sizeIdInput.value;
+                vData.sizes.push(sData);
             });
             variants.push(vData);
 
@@ -261,9 +277,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const colorInput = card.querySelector(".variant-color-input");
         const colorNameSpan = card.querySelector(".selected-color-name");
+        const variantIdInput = card.querySelector(".variant-id-input");
 
         colorInput.value = data ? data.color : "";
         colorNameSpan.textContent = data ? (data.colorName || "Selected") : "No color selected";
+        if (variantIdInput) variantIdInput.value = data && data._id ? data._id : "";
 
         const swatchesGrid = card.querySelector(".color-selector-grid");
         colorPalette.forEach(c => {
@@ -362,9 +380,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const template = document.getElementById("sizeRowTemplate");
         const clone = template.content.cloneNode(true);
         const row = clone.querySelector(".size-row");
+        const sizeIdInput = row.querySelector(".size-id-input");
         if (data) {
             row.querySelector(".size-name").value = data.size;
             row.querySelector(".size-stock").value = data.stock || 0;
+            if (sizeIdInput && data._id) sizeIdInput.value = data._id;
         } else {
             row.querySelector(".size-stock").value = 0; // New sizes default to 0
         }

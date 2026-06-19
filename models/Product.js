@@ -82,7 +82,6 @@ const productSchema = new mongoose.Schema({
     default: 0
   }
 
-}, { timestamps: true });
-
+}, { timestamps: true, optimisticConcurrency: true });
 
 export default mongoose.model("Product", productSchema);

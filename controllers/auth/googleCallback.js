@@ -25,7 +25,7 @@ export const googleCallback = async (req, res) => {
                 client_secret,
                 redirect_uri,
                 grant_type: "authorization_code"
-            }).toString()
+            })
         });
 
         const tokenData = await tokenRes.json();

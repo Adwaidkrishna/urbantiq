@@ -261,6 +261,7 @@
                 <form id="productForm" enctype="multipart/form-data">
                     <!-- Hidden ID input -->
                     <input type="hidden" name="productId" id="productId">
+                    <input type="hidden" name="__v" id="productVersion">
                     
                     <div class="row g-4">
                         <!-- Left Column: Product Info & Pricing -->
@@ -377,6 +378,7 @@
                 <div class="col-md-5">
                     <label class="form-label-admin">Variant Color</label>
                     <input type="hidden" class="variant-color-input" value="" required>
+                    <input type="hidden" class="variant-id-input" value="">
                     <div class="color-selector-grid"></div>
                     <div class="mt-2">
                         <span class="selected-color-name">No color selected</span>
@@ -410,6 +412,7 @@
     <!-- Size Row Template -->
     <template id="sizeRowTemplate">
         <div class="size-row">
+            <input type="hidden" class="size-id-input" value="">
             <input type="text" class="form-control-admin size-input size-name" placeholder="Size" required>
             <input type="number" class="form-control-admin stock-input size-stock text-muted bg-light" placeholder="Stock" readonly>
             <button type="button" class="btn-admin-danger btn-admin-icon remove-size-row">×</button>

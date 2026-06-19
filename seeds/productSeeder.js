@@ -529,11 +529,7 @@ async function runSeeding(productsPerCategory, dryRun) {
 
         // Step 3: Update variant images in Product document
         if (!dryRun) {
-          await Product.updateOne(
-            { _id: product._id },
-            { $set: { variants: product.variants } },
-            { session: productSession }
-          );
+          await product.save({ session: productSession });
         }
 
         // Step 4: Create PurchaseItem (batch) in UNLINKED status
