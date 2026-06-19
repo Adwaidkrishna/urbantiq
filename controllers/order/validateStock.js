@@ -5,7 +5,7 @@ import PurchaseItem from "../../models/PurchaseItem.js";
 export const validateStock = async (req, res) => {
   try {
     if (!req.body) {
-        return res.status(500).json({ message: "Request body is missing on server" });
+      return res.status(500).json({ message: "Request body is missing on server" });
     }
     const { items } = req.body;
     if (!items || items.length === 0) return res.status(400).json({ message: "No items to validate" });
@@ -17,7 +17,7 @@ export const validateStock = async (req, res) => {
       const qty = Number(item.quantity);
 
       if (!productId || !variantId || !sizeStr) {
-          return res.status(400).json({ message: "Invalid product or variant data in cart" });
+        return res.status(400).json({ message: "Invalid product or variant data in cart" });
       }
 
       const product = await Product.findById(productId);

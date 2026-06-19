@@ -199,11 +199,11 @@ export const placeOrder = async (req, res) => {
 
     // Link transaction to order if it was a wallet payment
     if (paymentMethod === "Wallet") {
-        await WalletTransaction.findOneAndUpdate(
-            { user: req.userId, description: "Payment for Order", orderId: { $exists: false } },
-            { orderId: savedOrder._id },
-            { sort: { createdAt: -1 } }
-        );
+      await WalletTransaction.findOneAndUpdate(
+        { user: req.userId, description: "Payment for Order", orderId: { $exists: false } },
+        { orderId: savedOrder._id },
+        { sort: { createdAt: -1 } }
+      );
     }
 
     // Clear user cart
