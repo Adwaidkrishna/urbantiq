@@ -17,6 +17,16 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/home.css">
+
+    <!-- Preload hero banner — triggers fetch before CSS/JS parses,
+         directly improves LCP. imagesrcset lets browser pick the right size. -->
+    <link rel="preload" as="image"
+          href="/images/site/hero-banner.webp"
+          imagesrcset="/images/site/hero-banner-sm.webp 768w,
+                       /images/site/hero-banner-md.webp 1200w,
+                       /images/site/hero-banner.webp    1774w"
+          imagesizes="100vw"
+          type="image/webp">
 </head>
 
 <body>
@@ -65,6 +75,38 @@
 
     <!-- Hero Section -->
     <header class="hero-section">
+
+        <!-- Background image as inline <picture> so the browser's preload
+             scanner discovers and fetches it immediately. Serves AVIF (best
+             compression) → WebP → PNG as progressive fallback. Responsive
+             srcset ensures mobile gets a small file, desktop gets a sharp one.
+             fetchpriority="high" + loading="eager" are the two most critical
+             LCP attributes for above-fold images. -->
+        <picture class="hero-section-bg" aria-hidden="true">
+            <!-- AVIF: best compression, modern browsers -->
+            <source
+                type="image/avif"
+                srcset="/images/site/hero-banner-sm.avif 768w,
+                        /images/site/hero-banner.avif    1774w"
+                sizes="100vw">
+            <!-- WebP: broad browser support, 97% smaller than PNG -->
+            <source
+                type="image/webp"
+                srcset="/images/site/hero-banner-sm.webp  768w,
+                        /images/site/hero-banner-md.webp 1200w,
+                        /images/site/hero-banner.webp    1774w"
+                sizes="100vw">
+            <!-- PNG fallback: original, for legacy browsers only -->
+            <img
+                src="/images/site/hero-banner.webp"
+                alt=""
+                width="1774"
+                height="887"
+                fetchpriority="high"
+                loading="eager"
+                decoding="async">
+        </picture>
+
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-12 col-lg-7 text-center text-lg-start">

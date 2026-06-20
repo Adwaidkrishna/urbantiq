@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     let currentWishlist = [];
     let currentPage = 1;
+    let isLoading = false;
     const urlParams = new URLSearchParams(window.location.search);
 
     // Pre-populate search query from URL parameters if present
@@ -10,7 +11,97 @@ document.addEventListener("DOMContentLoaded", function () {
         searchInput.value = searchParam;
     }
 
-    // ====== DUAL PRICE SLIDER ======
+    // ======================================================
+    // SKELETON UTILITIES
+    // ======================================================
+
+    /**
+     * Build a single skeleton card column — mirrors the real card's DOM
+     * structure and CSS classes exactly so no layout shift occurs.
+     */
+    function buildSkeletonCard() {
+        // col-6 col-md-6 col-lg-3  — same as template
+        const col = document.createElement('div');
+        col.className = 'col-6 col-md-6 col-lg-3';
+        col.setAttribute('aria-hidden', 'true');
+
+        col.innerHTML = `
+            <div class="p-skeleton-card">
+                <div class="p-skel-img"></div>
+                <div class="p-skel-body">
+                    <div class="p-skel-block p-skel-cat"></div>
+                    <div class="p-skel-block p-skel-name"></div>
+                    <div class="p-skel-block p-skel-stars"></div>
+                    <div class="p-skel-block p-skel-price"></div>
+                </div>
+            </div>
+        `;
+        return col;
+    }
+
+    /**
+     * Inject N skeleton cards into the product grid immediately.
+     */
+    function showSkeletons(count = 12) {
+        const grid = document.getElementById('productGrid');
+        if (!grid) return;
+
+        // Use a DocumentFragment — single DOM write, zero reflows during build
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < count; i++) {
+            frag.appendChild(buildSkeletonCard());
+        }
+        grid.innerHTML = ''; // clear any prior state
+        grid.appendChild(frag);
+    }
+
+    /**
+     * Remove skeleton cards from the grid.
+     */
+    function clearSkeletons() {
+        const grid = document.getElementById('productGrid');
+        if (!grid) return;
+        grid.querySelectorAll('.p-skeleton-card, [aria-hidden="true"]').forEach(el => {
+            el.parentElement?.remove();
+        });
+    }
+
+    // ======================================================
+    // EMPTY / ERROR STATES
+    // ======================================================
+
+    function showEmptyState(grid) {
+        grid.innerHTML = `
+            <div class="col-12">
+                <div class="p-empty-state">
+                    <span class="p-empty-icon"><i class="bi bi-bag-x"></i></span>
+                    <p class="p-empty-title">No products found</p>
+                    <p class="p-empty-desc">Try adjusting your filters or search terms to find what you're looking for.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    function showErrorState(grid) {
+        grid.innerHTML = `
+            <div class="col-12">
+                <div class="p-error-state">
+                    <span class="p-error-icon"><i class="bi bi-wifi-off"></i></span>
+                    <p class="p-error-title">Something went wrong</p>
+                    <p class="p-error-desc">We couldn't load the products. Check your connection and try again.</p>
+                    <button class="p-retry-btn" id="retryProductsBtn">
+                        <i class="bi bi-arrow-clockwise"></i> Try Again
+                    </button>
+                </div>
+            </div>
+        `;
+        // Retry button re-triggers the current filter state
+        document.getElementById('retryProductsBtn')?.addEventListener('click', () => loadProducts());
+    }
+
+    // ======================================================
+    // DUAL PRICE SLIDER
+    // ======================================================
     const minInput = document.getElementById('priceSliderMin');
     const maxInput = document.getElementById('priceSliderMax');
     const sliderTrack = document.getElementById('sliderTrack');
@@ -18,11 +109,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateSlider() {
         if (!minInput || !maxInput || !sliderTrack || !priceDisplay) return;
-        
+
         let minVal = parseInt(minInput.value);
         let maxVal = parseInt(maxInput.value);
 
-        // Prevent crossing
         if (minVal > maxVal) {
             if (this === minInput) {
                 minInput.value = maxVal;
@@ -33,10 +123,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // Display selected price
         priceDisplay.textContent = `₹${minVal.toLocaleString('en-IN')} – ₹${maxVal.toLocaleString('en-IN')}`;
 
-        // Color the track
         const minPercent = (minVal / minInput.max) * 100;
         const maxPercent = (maxVal / maxInput.max) * 100;
         sliderTrack.style.background = `linear-gradient(to right, #e5e5e7 ${minPercent}%, #1d1d1f ${minPercent}%, #1d1d1f ${maxPercent}%, #e5e5e7 ${maxPercent}%)`;
@@ -48,7 +136,6 @@ document.addEventListener("DOMContentLoaded", function () {
         minInput.addEventListener('change', () => loadProducts(true));
         maxInput.addEventListener('change', () => loadProducts(true));
 
-        // Adjust z-index dynamically for easier overlapping thumb dragging
         minInput.addEventListener('input', () => {
             minInput.style.zIndex = "5";
             maxInput.style.zIndex = "4";
@@ -61,7 +148,9 @@ document.addEventListener("DOMContentLoaded", function () {
         updateSlider();
     }
 
-    // ====== COLOR SWATCH TOGGLE ======
+    // ======================================================
+    // COLOR SWATCH TOGGLE
+    // ======================================================
     document.querySelectorAll('.color-swatch').forEach(btn => {
         btn.addEventListener('click', () => {
             btn.classList.toggle('active');
@@ -69,7 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ====== SIZE PILL TOGGLE ======
+    // ======================================================
+    // SIZE PILL TOGGLE
+    // ======================================================
     document.querySelectorAll('.size-pill').forEach(btn => {
         btn.addEventListener('click', () => {
             btn.classList.toggle('active');
@@ -77,7 +168,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ====== MOBILE DRAWER ACCORDION / NAVIGATION ======
+    // ======================================================
+    // MOBILE DRAWER
+    // ======================================================
     const filterToggleBtn = document.getElementById('filterToggleBtn');
     const filterSidebar = document.getElementById('filterSidebar');
     const filterOverlay = document.getElementById('filterOverlay');
@@ -96,7 +189,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (filterToggleBtn) filterToggleBtn.addEventListener('click', openFilter);
     if (filterOverlay) filterOverlay.addEventListener('click', closeFilter);
 
-    // Apply Button (Mobile Drawer)
     const btnSidebarApply = document.getElementById('btnSidebarApply');
     if (btnSidebarApply) {
         btnSidebarApply.addEventListener('click', () => {
@@ -105,210 +197,222 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Clear All Buttons / Links
     const btnSidebarClear = document.getElementById('btnSidebarClear');
     if (btnSidebarClear) btnSidebarClear.addEventListener('click', resetAllFilters);
 
     const clearFiltersLink = document.getElementById('clearFiltersLink');
     if (clearFiltersLink) clearFiltersLink.addEventListener('click', resetAllFilters);
 
-    // ====== RESET ALL FILTERS ======
+    // ======================================================
+    // RESET ALL FILTERS
+    // ======================================================
     function resetAllFilters() {
-        // 1. Categories
-        document.querySelectorAll('#categoryFilterList input[type="checkbox"]').forEach(cb => {
-            cb.checked = false;
-        });
+        document.querySelectorAll('#categoryFilterList input[type="checkbox"]').forEach(cb => cb.checked = false);
 
-        // 2. Price Range
         if (minInput && maxInput) {
             minInput.value = 0;
             maxInput.value = 5000;
             updateSlider();
         }
 
-        // 3. Sizes
-        document.querySelectorAll('#sizeFilterList .size-pill').forEach(btn => {
-            btn.classList.remove('active');
-        });
+        document.querySelectorAll('#sizeFilterList .size-pill').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('#colorFilterList .color-swatch').forEach(btn => btn.classList.remove('active'));
 
-        // 4. Colors
-        document.querySelectorAll('#colorFilterList .color-swatch').forEach(btn => {
-            btn.classList.remove('active');
-        });
-
-        // 5. Availability
         const allAvailabilityRadio = document.querySelector('input[name="availabilityFilter"][value="all"]');
-        if (allAvailabilityRadio) {
-            allAvailabilityRadio.checked = true;
-        }
+        if (allAvailabilityRadio) allAvailabilityRadio.checked = true;
 
-        // 6. Customer Ratings
-        document.querySelectorAll('input[name="ratingFilter"]').forEach(radio => {
-            radio.checked = false;
-        });
+        document.querySelectorAll('input[name="ratingFilter"]').forEach(radio => radio.checked = false);
 
-        // 7. Collections
         const newArrivalCb = document.getElementById('filterNewArrival');
         if (newArrivalCb) newArrivalCb.checked = false;
         const bestSellerCb = document.getElementById('filterBestSeller');
         if (bestSellerCb) bestSellerCb.checked = false;
 
-        // 8. Discount
-        document.querySelectorAll('input[name="discountFilter"]').forEach(radio => {
-            radio.checked = false;
-        });
+        document.querySelectorAll('input[name="discountFilter"]').forEach(radio => radio.checked = false);
 
-        // Reload products
         loadProducts(true);
     }
 
-    // ====== PRODUCT LOADER & FILTER SYSTEM ======
+    // ======================================================
+    // PRODUCT LOADER — OPTIMIZED PARALLEL FETCH
+    // ======================================================
     async function loadProducts(resetPage = false) {
-        if (resetPage) {
-            currentPage = 1;
-        }
+        // Debounce: prevent concurrent calls from stacking
+        if (isLoading) return;
+        isLoading = true;
+
+        if (resetPage) currentPage = 1;
 
         const productGrid = document.getElementById("productGrid");
-        if (!productGrid) return;
+        if (!productGrid) { isLoading = false; return; }
 
-        // Build query string for API
+        // Show skeletons immediately — instant perceived performance
+        showSkeletons(12);
+
+        // Build query params
         const params = new URLSearchParams();
-        
-        const searchInput = document.querySelector('.search-input');
-        if (searchInput && searchInput.value) {
-            params.append('search', searchInput.value.trim());
+
+        const searchInputEl = document.querySelector('.search-input');
+        if (searchInputEl && searchInputEl.value) {
+            params.append('search', searchInputEl.value.trim());
         }
 
         const sortSelect = document.getElementById('sortSelect');
-        if (sortSelect) {
-            params.append('sort', sortSelect.value);
-        }
+        if (sortSelect) params.append('sort', sortSelect.value);
 
         const priceSliderMax = document.getElementById('priceSliderMax');
-        if (priceSliderMax) {
-            params.append('maxPrice', priceSliderMax.value);
-        }
+        if (priceSliderMax) params.append('maxPrice', priceSliderMax.value);
 
-        const checkedCategories = Array.from(document.querySelectorAll('#categoryFilterList input[type="checkbox"]:checked')).map(cb => cb.value);
-        if (checkedCategories.length > 0) {
-            params.append('categories', checkedCategories.join(','));
-        }
+        const checkedCategories = Array.from(
+            document.querySelectorAll('#categoryFilterList input[type="checkbox"]:checked')
+        ).map(cb => cb.value);
+        if (checkedCategories.length > 0) params.append('categories', checkedCategories.join(','));
 
-        const activeSizes = Array.from(document.querySelectorAll('#sizeFilterList .size-pill.active')).map(btn => btn.value);
-        if (activeSizes.length > 0) {
-            params.append('sizes', activeSizes.join(','));
-        }
+        const activeSizes = Array.from(
+            document.querySelectorAll('#sizeFilterList .size-pill.active')
+        ).map(btn => btn.value);
+        if (activeSizes.length > 0) params.append('sizes', activeSizes.join(','));
 
-        const activeColors = Array.from(document.querySelectorAll('#colorFilterList .color-swatch.active')).map(btn => btn.value);
-        if (activeColors.length > 0) {
-            params.append('colors', activeColors.join(','));
-        }
+        const activeColors = Array.from(
+            document.querySelectorAll('#colorFilterList .color-swatch.active')
+        ).map(btn => btn.value);
+        if (activeColors.length > 0) params.append('colors', activeColors.join(','));
 
         if (document.getElementById('filterNewArrival')?.checked) {
             params.append('newArrival', 'true');
         }
-        
+
         const ratingFilter = document.querySelector('input[name="ratingFilter"]:checked');
-        if (ratingFilter) {
-            params.append('rating', ratingFilter.value);
-        }
+        if (ratingFilter) params.append('rating', ratingFilter.value);
 
         try {
-            // Load wishlist first if logged in
-            const status = await window.AuthGuard.fetchStatus();
-            if (status.loggedIn) {
-                const wlRes = await fetch("/api/wishlist");
-                const wlData = await wlRes.json();
-                if (wlData.success) currentWishlist = wlData.products.map(p => p._id);
+            // ── KEY OPTIMISATION ─────────────────────────────────────────────────
+            // Fire wishlist and products fetches IN PARALLEL using Promise.all.
+            // Previously these were awaited sequentially, adding a full extra
+            // round-trip before any product could render.
+            // ─────────────────────────────────────────────────────────────────────
+            const authStatus = await window.AuthGuard.fetchStatus();
+
+            const [wlData, productsData] = await Promise.all([
+                // Wishlist: only fetch if logged in, otherwise resolve immediately
+                authStatus.loggedIn
+                    ? fetch("/api/wishlist").then(r => r.json()).catch(() => ({ success: false, products: [] }))
+                    : Promise.resolve({ success: false, products: [] }),
+
+                // Products: main data fetch
+                fetch(`/api/products?${params.toString()}`).then(r => r.json())
+            ]);
+
+            // Update wishlist cache
+            if (wlData.success && Array.isArray(wlData.products)) {
+                currentWishlist = wlData.products.map(p => p._id);
             }
 
-            const res = await fetch(`/api/products?${params.toString()}`);
-            const data = await res.json();
-
-            if (data.success) {
-                let filteredProducts = data.products;
-
-                // 1. Client-side minPrice filter
-                if (minInput) {
-                    const minPrice = parseInt(minInput.value) || 0;
-                    filteredProducts = filteredProducts.filter(p => {
-                        const actualPrice = p.offerPrice || p.price;
-                        return actualPrice >= minPrice;
-                    });
-                }
-
-                // 2. Client-side stock availability filter
-                const availabilityFilter = document.querySelector('input[name="availabilityFilter"]:checked')?.value;
-                if (availabilityFilter === "inStock") {
-                    filteredProducts = filteredProducts.filter(p => {
-                        return p.variants?.some(v => v.sizes?.some(s => s.stock > 0));
-                    });
-                } else if (availabilityFilter === "outOfStock") {
-                    filteredProducts = filteredProducts.filter(p => {
-                        return !p.variants?.some(v => v.sizes?.some(s => s.stock > 0));
-                    });
-                }
-
-                // 3. Client-side Best Sellers filter (within Collections)
-                const filterBestSeller = document.getElementById('filterBestSeller');
-                if (filterBestSeller && filterBestSeller.checked) {
-                    filteredProducts = filteredProducts.filter(p => p.salesCount && p.salesCount > 0);
-                }
-
-                // 4. Client-side Discount filter
-                const discountFilter = document.querySelector('input[name="discountFilter"]:checked')?.value;
-                if (discountFilter) {
-                    const minDiscount = parseInt(discountFilter);
-                    filteredProducts = filteredProducts.filter(p => {
-                        const discountPercent = p.offerPrice && p.offerPrice < p.price 
-                            ? Math.round(((p.price - p.offerPrice) / p.price) * 100) 
-                            : 0;
-                        return discountPercent >= minDiscount;
-                    });
-                }
-
-                // Client-side Pagination logic
-                const itemsPerPage = 16;
-                const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-                
-                if (currentPage > totalPages) {
-                    currentPage = Math.max(1, totalPages);
-                }
-                
-                const startIndex = (currentPage - 1) * itemsPerPage;
-                const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
-
-                renderProducts(paginatedProducts);
-                renderPagination(totalPages, currentPage);
+            if (!productsData.success) {
+                clearSkeletons();
+                showErrorState(productGrid);
+                isLoading = false;
+                return;
             }
+
+            let filteredProducts = productsData.products;
+
+            // Client-side minPrice filter
+            if (minInput) {
+                const minPrice = parseInt(minInput.value) || 0;
+                filteredProducts = filteredProducts.filter(p => {
+                    const actualPrice = p.offerPrice || p.price;
+                    return actualPrice >= minPrice;
+                });
+            }
+
+            // Client-side stock availability filter
+            const availabilityFilter = document.querySelector('input[name="availabilityFilter"]:checked')?.value;
+            if (availabilityFilter === "inStock") {
+                filteredProducts = filteredProducts.filter(p =>
+                    p.variants?.some(v => v.sizes?.some(s => s.stock > 0))
+                );
+            } else if (availabilityFilter === "outOfStock") {
+                filteredProducts = filteredProducts.filter(p =>
+                    !p.variants?.some(v => v.sizes?.some(s => s.stock > 0))
+                );
+            }
+
+            // Client-side Best Sellers filter
+            const filterBestSeller = document.getElementById('filterBestSeller');
+            if (filterBestSeller && filterBestSeller.checked) {
+                filteredProducts = filteredProducts.filter(p => p.salesCount && p.salesCount > 0);
+            }
+
+            // Client-side Discount filter
+            const discountFilter = document.querySelector('input[name="discountFilter"]:checked')?.value;
+            if (discountFilter) {
+                const minDiscount = parseInt(discountFilter);
+                filteredProducts = filteredProducts.filter(p => {
+                    const discountPercent = p.offerPrice && p.offerPrice < p.price
+                        ? Math.round(((p.price - p.offerPrice) / p.price) * 100)
+                        : 0;
+                    return discountPercent >= minDiscount;
+                });
+            }
+
+            // Client-side pagination
+            const itemsPerPage = 16;
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+
+            // Render — skeletons are replaced here
+            renderProducts(paginatedProducts);
+            renderPagination(totalPages, currentPage);
+
         } catch (err) {
             console.error("Error loading products:", err);
+            clearSkeletons();
+            showErrorState(productGrid);
+        } finally {
+            isLoading = false;
         }
     }
 
+    // ======================================================
+    // RENDER PRODUCTS — with staggered fade-in
+    // ======================================================
     function renderProducts(products) {
         const productGrid = document.getElementById("productGrid");
         const template = document.getElementById("userProductTemplate");
         if (!productGrid || !template) return;
 
-        productGrid.innerHTML = products.length ? "" : '<div class="col-12 text-center py-5"><p class="text-muted">No products found matching these filters.</p></div>';
+        // Clear skeletons before rendering real content
+        productGrid.innerHTML = '';
 
-        products.forEach(p => {
+        if (!products.length) {
+            showEmptyState(productGrid);
+            return;
+        }
+
+        // Build all cards in a single DocumentFragment — one DOM write
+        const frag = document.createDocumentFragment();
+
+        products.forEach((p, idx) => {
             const clone = template.content.cloneNode(true);
-            const mainImg = (p.variants?.[0]?.images?.[0]) ? `/images/products/${p.variants[0].images[0]}` : '/images/no-image.png';
+            const mainImg = (p.variants?.[0]?.images?.[0])
+                ? `/images/products/${p.variants[0].images[0]}`
+                : '/images/no-image.png';
 
-            // Set data
             clone.querySelector(".p-card-link").href = `/product/${p._id}`;
             clone.querySelector("img").src = mainImg;
             clone.querySelector("img").alt = p.name;
             clone.querySelector(".p-cat").textContent = p.category?.name || 'Uncategorized';
             clone.querySelector(".p-name").textContent = p.name;
 
-            // Rating rendering
+            // Rating
             const ratingDiv = clone.querySelector(".p-rating");
             if (ratingDiv) {
-                const rating = p.averageRating !== undefined ? p.averageRating : 0;
-                const reviews = p.reviewCount !== undefined ? p.reviewCount : 0;
+                const rating = p.averageRating ?? 0;
+                const reviews = p.reviewCount ?? 0;
                 let starsHtml = '';
                 for (let i = 1; i <= 5; i++) {
                     if (rating > 0 && rating >= i) {
@@ -322,7 +426,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 ratingDiv.innerHTML = `${starsHtml} <span class="ms-1 font-semibold">${rating.toFixed(1)}</span> <span class="p-reviews ms-1">(${reviews})</span>`;
             }
 
-            // Price rendering
+            // Price
             const priceDiv = clone.querySelector(".p-price");
             if (p.offerPrice && p.offerPrice < p.price) {
                 priceDiv.innerHTML = `
@@ -340,7 +444,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 wlBtn.classList.add('active');
             }
 
-            // Optional "New" badge (e.g. products created in last 14 days)
+            // "New" badge
             const isNew = (new Date() - new Date(p.createdAt)) < 14 * 24 * 60 * 60 * 1000;
             if (isNew) {
                 const badge = clone.querySelector(".p-badge");
@@ -350,7 +454,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
 
-            // Wishlist Button Listener
+            // ── Staggered fade-in ────────────────────────────────────────────────
+            // Apply a per-card animation delay via CSS custom property.
+            // Cap at 300ms so late cards don't feel sluggish.
+            const wrap = clone.querySelector('.p-card-anchor-wrap');
+            if (wrap) {
+                const delay = Math.min(idx * 30, 300);
+                wrap.style.setProperty('--p-card-delay', `${delay}ms`);
+            }
+
+            // Wishlist Button
             wlBtn.addEventListener("click", async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -380,7 +493,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 } catch (err) { console.error(err); }
             });
 
-            // Cart Button Listener
+            // Cart Button
             clone.querySelector(".cart-btn").addEventListener("click", async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -419,11 +532,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
-            productGrid.appendChild(clone);
+            frag.appendChild(clone);
         });
+
+        productGrid.appendChild(frag);
     }
 
-    // ====== ATTACH FILTER DELEGATION LISTENERS ======
+    // ======================================================
+    // FILTER DELEGATION LISTENERS
+    // ======================================================
     const sortSelect = document.getElementById('sortSelect');
     if (sortSelect) sortSelect.addEventListener('change', () => loadProducts(true));
 
@@ -450,7 +567,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ====== DYNAMIC PAGINATION RENDERER ======
+    // ======================================================
+    // PAGINATION
+    // ======================================================
     function renderPagination(totalPages, activePage) {
         const container = document.getElementById("productPagination");
         if (!container) return;
@@ -460,16 +579,12 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        let html = "";
-        
-        // Prev button
-        html += `
+        let html = `
             <button class="p-page prev-btn" ${activePage === 1 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
                 <i class="bi bi-chevron-left"></i>
             </button>
         `;
 
-        // Page buttons
         for (let i = 1; i <= totalPages; i++) {
             html += `
                 <button class="p-page page-num-btn ${i === activePage ? 'active' : ''}" data-page="${i}">
@@ -478,7 +593,6 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
         }
 
-        // Next button
         html += `
             <button class="p-page p-page-next next-btn" ${activePage === totalPages ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
                 Next <i class="bi bi-chevron-right ms-1"></i>
@@ -487,7 +601,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         container.innerHTML = html;
 
-        // Add event listeners
         const prevBtn = container.querySelector(".prev-btn");
         if (prevBtn && activePage > 1) {
             prevBtn.addEventListener("click", () => {
@@ -525,7 +638,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // ====== CATEGORY BINDER & FETCH ======
+    // ======================================================
+    // CATEGORY FILTER LOADER
+    // ======================================================
     async function loadFilterCategories() {
         try {
             const categoryId = urlParams.get('category');
@@ -534,7 +649,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const list = document.getElementById("categoryFilterList");
             if (!list) return;
 
-            list.innerHTML = "";
+            const frag = document.createDocumentFragment();
             data.categories.forEach(cat => {
                 const isChecked = categoryId && cat._id.toString() === categoryId.toString();
                 const li = document.createElement("li");
@@ -545,15 +660,25 @@ document.addEventListener("DOMContentLoaded", function () {
                         ${cat.name}
                     </label>
                 `;
-                list.appendChild(li);
+                frag.appendChild(li);
             });
+            list.innerHTML = '';
+            list.appendChild(frag);
         } catch (err) {
             console.error("Category load error:", err);
         }
     }
 
-    // Initial triggers
-    loadFilterCategories().then(() => {
-        loadProducts();
-    });
+    // ======================================================
+    // BOOTSTRAP — Show skeletons immediately, then fire
+    // categories + products CONCURRENTLY (not chained).
+    // ======================================================
+    showSkeletons(12);
+
+    // KEY FIX: was `loadFilterCategories().then(() => loadProducts())`
+    // — that forced products to wait for categories. Now they run in parallel.
+    Promise.all([
+        loadFilterCategories(),
+        loadProducts()
+    ]);
 });
