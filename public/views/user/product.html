@@ -65,13 +65,36 @@
                 </div>
                 <h1 class="collections-title">Collections</h1>
             </div>
-            <div class="sort-row">
-                <span class="sort-label">Sort:</span>
-                <!-- Custom Dropdown Wrapper -->
+        </div>
+
+        <!-- Controls Toolbar: Filter + Sort in one row -->
+        <div class="controls-toolbar">
+
+            <!-- Filter toggle — opens existing sidebar/drawer (JS unchanged) -->
+            <button class="ctrl-filter-btn" id="filterToggleBtn" type="button" aria-label="Open filters">
+                <svg class="ctrl-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true">
+                    <line x1="4" y1="6"  x2="20" y2="6"/>
+                    <line x1="8" y1="12" x2="16" y2="12"/>
+                    <line x1="11" y1="18" x2="13" y2="18"/>
+                </svg>
+                <span>Filters</span>
+            </button>
+
+            <!-- Sort dropdown — all IDs / JS events preserved -->
+            <div class="ctrl-sort-wrap">
                 <div class="custom-sort-dropdown" id="customSortDropdown">
                     <div class="custom-sort-selected" tabindex="0">
-                        <span id="customSortLabel">Most Popular</span>
-                        <svg class="custom-sort-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                        <div class="ctrl-sort-text">
+                            <span class="ctrl-sort-prefix">Sort</span>
+                            <span id="customSortLabel">Most Popular</span>
+                        </div>
+                        <svg class="custom-sort-arrow" width="15" height="15" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2.2"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m6 9 6 6 6-6"/>
+                        </svg>
                     </div>
                     <ul class="custom-sort-options">
                         <li class="custom-sort-option active" data-value="Most Popular">Most Popular</li>
@@ -82,8 +105,8 @@
                     </ul>
                 </div>
 
-                <!-- Hidden Native Select (Used by existing JS logic) -->
-                <select class="sort-select" id="sortSelect" style="display: none;">
+                <!-- Hidden native select (used by existing JS logic — untouched) -->
+                <select class="sort-select" id="sortSelect" style="display:none;">
                     <option value="Most Popular">Most Popular</option>
                     <option value="Newest First">Newest First</option>
                     <option value="Price: Low to High">Price: Low to High</option>
@@ -91,6 +114,7 @@
                     <option value="Top Rated">Top Rated</option>
                 </select>
             </div>
+
         </div>
 
         <!-- Content Row: Sidebar + Grid -->
@@ -287,9 +311,6 @@
 
             <!-- ====== PRODUCT GRID ====== -->
             <div class="product-grid-wrap">
-                <button class="mobile-filter-btn d-md-none" id="filterToggleBtn">
-                    <i class="bi bi-sliders"></i> Filters
-                </button>
                 <div class="row g-3 g-md-4" id="productGrid">
                     <!-- Loaded via JS -->
                 </div>
