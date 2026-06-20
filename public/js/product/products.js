@@ -671,14 +671,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ======================================================
     // BOOTSTRAP — Show skeletons immediately, then fire
-    // categories + products CONCURRENTLY (not chained).
+    // categories, THEN products (must be chained so DOM is ready)
     // ======================================================
     showSkeletons(12);
 
-    // KEY FIX: was `loadFilterCategories().then(() => loadProducts())`
-    // — that forced products to wait for categories. Now they run in parallel.
-    Promise.all([
-        loadFilterCategories(),
-        loadProducts()
-    ]);
+    loadFilterCategories().then(() => {
+        loadProducts();
+    });
 });
