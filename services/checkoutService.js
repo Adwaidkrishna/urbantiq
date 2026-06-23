@@ -28,13 +28,17 @@ export const checkoutService = {
     if (!shippingAddress) throw new Error("Shipping address is required");
 
     // Format items for validation and order
-    const orderItems = items.map(item => ({
-      product: item.product?._id || item.product,
-      variant: item.variant?._id || item.variant,
-      size: item.size,
-      quantity: Number(item.quantity),
-      price: item.price
-    }));
+    const orderItems = items.map(item => {
+      const quantity = Number(item.quantity);
+      return {
+        product: item.product?._id || item.product,
+        variant: item.variant?._id || item.variant,
+        size: item.size,
+        quantity: quantity,
+        price: item.price,
+        lineTotal: item.price * quantity
+      };
+    });
 
     // Validate Stock first (Reads only)
     await inventoryService.validateStock(orderItems);

@@ -31,34 +31,50 @@ export const getSalesReport = async (req, res) => {
     }
 
     const matchCondition = {
-      createdAt: { $gte: start, $lte: end },
-      orderStatus: { $nin: ["Cancelled", "Returned"] }
+      createdAt: { $gte: start, $lte: end }
     };
 
     const overallStatsAgg = await Order.aggregate([
       { $match: matchCondition },
+      { $addFields: { numItems: { $size: "$items" } } },
+      { $unwind: "$items" },
+      { $match: { "items.itemStatus": { $nin: ["Cancelled", "Returned", "Return Rejected", "cancelled", "returned", "return rejected"] } } },
       {
         $group: {
           _id: null,
-          totalSales: { $sum: "$finalAmount" },
-          totalOrders: { $sum: 1 },
-          totalDiscount: { $sum: "$discount" },
-          netProfit: { $sum: { $subtract: ["$finalAmount", "$shippingCharges"] } }
+          totalSales: { $sum: { $multiply: ["$items.price", "$items.quantity"] } },
+          totalOrders: { $addToSet: "$_id" },
+          totalDiscount: { $sum: { $cond: [ { $eq: ["$numItems", 0] }, 0, { $divide: ["$discount", "$numItems"] } ] } }, // Approximate discount distribution
         }
       }
     ]);
 
-    const overallStats = overallStatsAgg[0] || { totalSales: 0, totalOrders: 0, totalDiscount: 0, netProfit: 0 };
+    let overallStats = { totalSales: 0, totalOrders: 0, totalDiscount: 0, netProfit: 0 };
+    if (overallStatsAgg.length > 0) {
+      overallStats.totalSales = overallStatsAgg[0].totalSales;
+      overallStats.totalOrders = overallStatsAgg[0].totalOrders.length;
+      overallStats.totalDiscount = overallStatsAgg[0].totalDiscount;
+      overallStats.netProfit = overallStats.totalSales; // Simplified net profit
+    }
 
     const detailedReport = await Order.aggregate([
       { $match: matchCondition },
+      { $unwind: "$items" },
+      { $match: { "items.itemStatus": { $nin: ["Cancelled", "Returned", "Return Rejected", "cancelled", "returned", "return rejected"] } } },
       {
         $group: {
-          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          _id: { date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, orderId: "$_id" },
+          grossSales: { $sum: { $multiply: ["$items.price", "$items.quantity"] } },
+          discounts: { $first: "$discount" }
+        }
+      },
+      {
+        $group: {
+          _id: "$_id.date",
           orderCount: { $sum: 1 },
-          grossSales: { $sum: "$totalPrice" },
-          discounts: { $sum: "$discount" },
-          netSales: { $sum: "$finalAmount" }
+          grossSales: { $sum: "$grossSales" },
+          discounts: { $sum: "$discounts" },
+          netSales: { $sum: { $subtract: ["$grossSales", "$discounts"] } }
         }
       },
       { $sort: { _id: -1 } }

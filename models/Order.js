@@ -23,9 +23,51 @@ const orderItemSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  lineTotal: {
+    type: Number
+  },
   reviewed: {
     type: Boolean,
     default: false
+  },
+  itemStatus: {
+    type: String,
+    enum: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled", "Cancellation Requested", "Return Requested", "Returned", "Return Rejected"],
+    default: "Pending"
+  },
+  refundedAmount: {
+    type: Number,
+    default: 0
+  },
+  cancellationRequest: {
+    requested: {
+      type: Boolean,
+      default: false
+    },
+    reason: String,
+    status: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: null
+    },
+    requestedAt: Date,
+    reviewedAt: Date,
+    adminComment: String
+  },
+  returnRequest: {
+    requested: {
+      type: Boolean,
+      default: false
+    },
+    reason: String,
+    status: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: null
+    },
+    requestedAt: Date,
+    reviewedAt: Date,
+    adminComment: String
   }
 });
 
@@ -58,7 +100,7 @@ const orderSchema = new mongoose.Schema({
   },
   orderStatus: {
     type: String,
-    enum: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled", "Cancellation Requested", "Return Requested", "Returned", "Return Rejected"],
+    enum: ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled", "Cancellation Requested", "Return Requested", "Returned", "Return Rejected", "Partially Completed", "Mixed"],
     default: "Pending"
   },
   totalPrice: {
@@ -85,37 +127,8 @@ const orderSchema = new mongoose.Schema({
     type: String,
     unique: true,
     sparse: true
-  },
-  cancellationRequest: {
-    requested: {
-      type: Boolean,
-      default: false
-    },
-    reason: String,
-    status: {
-      type: String,
-      enum: ["Pending", "Approved", "Rejected"],
-      default: null
-    },
-    requestedAt: Date,
-    reviewedAt: Date,
-    adminComment: String
-  },
-  returnRequest: {
-    requested: {
-      type: Boolean,
-      default: false
-    },
-    reason: String,
-    status: {
-      type: String,
-      enum: ["Pending", "Approved", "Rejected"],
-      default: null
-    },
-    requestedAt: Date,
-    reviewedAt: Date,
-    adminComment: String
   }
 }, { timestamps: true });
 
 export default mongoose.model("Order", orderSchema);
+

@@ -36,16 +36,24 @@ document.addEventListener("DOMContentLoaded", function () {
         const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
         const selectedStatus = statusFilterSelect ? statusFilterSelect.value : 'all';
 
-        const filtered = allOrders.filter(order => {
+        const filtered = [];
+        allOrders.forEach(order => {
             const shortId = `#ORD-${order._id.slice(-6).toUpperCase()}`;
             const matchesSearch = !query || 
                 shortId.toLowerCase().includes(query) || 
                 order._id.toLowerCase().includes(query) || 
                 (order.user?.name && order.user.name.toLowerCase().includes(query));
 
-            const matchesStatus = selectedStatus === 'all' || order.orderStatus === selectedStatus;
+            if (!matchesSearch) return;
 
-            return matchesSearch && matchesStatus;
+            const matchingItems = order.items.filter(item => {
+                const itemStatus = item.itemStatus || 'Pending';
+                return selectedStatus === 'all' || itemStatus === selectedStatus;
+            });
+
+            if (matchingItems.length > 0) {
+                filtered.push({ ...order, items: matchingItems });
+            }
         });
 
         renderAdminOrders(filtered);
@@ -79,71 +87,75 @@ document.addEventListener("DOMContentLoaded", function () {
                 paymentBadge = `<span class="status-badge" style="background:#f3e8ff; color:#6b21a8; border-radius: 9999px; padding: 4px 10px; font-size: 11px; font-weight: 600;">Wallet</span>`;
             }
 
-            let statusClass = '';
-            switch(order.orderStatus) {
-                case 'Pending': statusClass = 'status-pending'; break;
-                case 'Confirmed': statusClass = 'status-processing'; break;
-                case 'Shipped': statusClass = 'status-shipped'; break;
-                case 'Delivered': statusClass = 'status-delivered'; break;
-                case 'Cancelled': statusClass = 'status-cancelled'; break;
-                case 'Cancellation Requested': statusClass = 'status-pending'; break;
-                case 'Return Requested': statusClass = 'status-returned'; break;
-                case 'Returned': statusClass = 'status-returned'; break;
-                case 'Return Rejected': statusClass = 'status-cancelled'; break;
-                default: statusClass = 'status-pending';
-            }
+            order.items.forEach(item => {
+                const itemStatus = item.itemStatus || 'Pending';
+                let statusClass = '';
+                switch(itemStatus) {
+                    case 'Pending': statusClass = 'status-pending'; break;
+                    case 'Confirmed': statusClass = 'status-processing'; break;
+                    case 'Shipped': statusClass = 'status-shipped'; break;
+                    case 'Delivered': statusClass = 'status-delivered'; break;
+                    case 'Cancelled': statusClass = 'status-cancelled'; break;
+                    case 'Cancellation Requested': statusClass = 'status-pending'; break;
+                    case 'Return Requested': statusClass = 'status-returned'; break;
+                    case 'Returned': statusClass = 'status-returned'; break;
+                    case 'Return Rejected': statusClass = 'status-cancelled'; break;
+                    default: statusClass = 'status-pending';
+                }
 
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>
-                    <span style="background:#f1f5f9; color:#475569; padding:6px 12px; border-radius:8px; font-size:12px; font-weight: 600; border:1px solid #e2e8f0; font-family: monospace;">#ORD-${order._id.slice(-6).toUpperCase()}</span>
-                </td>
-                <td>
-                    <div style="font-weight:600; color:#0f172a;">${order.user?.name || 'Guest'}</div>
-                    <div style="font-size:11px; color:#64748b;">${order.user?.email || 'N/A'}</div>
-                </td>
-                <td>
-                    <div style="display:flex; align-items:center; gap:6px; color:#64748b;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                        <span>${date}</span>
-                    </div>
-                </td>
-                <td>
-                    <select class="status-badge-select status-select ${statusClass}" data-id="${order._id}">
-                        <option value="Pending" ${order.orderStatus === 'Pending' ? 'selected' : ''}>Pending</option>
-                        <option value="Confirmed" ${order.orderStatus === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-                        <option value="Shipped" ${order.orderStatus === 'Shipped' ? 'selected' : ''}>Shipped</option>
-                        <option value="Delivered" ${order.orderStatus === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                        <option value="Cancelled" ${order.orderStatus === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                        <option value="Cancellation Requested" ${order.orderStatus === 'Cancellation Requested' ? 'selected' : ''}>Cancellation Requested</option>
-                        <option value="Return Requested" ${order.orderStatus === 'Return Requested' ? 'selected' : ''}>Return Req</option>
-                        <option value="Returned" ${order.orderStatus === 'Returned' ? 'selected' : ''}>Returned</option>
-                        <option value="Return Rejected" ${order.orderStatus === 'Return Rejected' ? 'selected' : ''}>Return Rej</option>
-                    </select>
-                </td>
-                <td>${paymentBadge}</td>
-                <td>
-                    <span style="font-weight: 700; color: #0f172a;">₹${order.finalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                </td>
-                <td>
-                    <div class="action-btns justify-content-end">
-                        <button class="btn-history" data-order='${JSON.stringify(order).replace(/'/g, "&apos;")}' data-bs-toggle="modal" data-bs-target="#orderHistoryModal" title="View Timeline">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        </button>
-                        <button class="btn-update-pill update-status-btn" data-id="${order._id}">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                            Update
-                        </button>
-                    </div>
-                </td>
-            `;
-            ordersTableBody.appendChild(tr);
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>
+                        <span style="background:#f1f5f9; color:#475569; padding:6px 12px; border-radius:8px; font-size:12px; font-weight: 600; border:1px solid #e2e8f0; font-family: monospace;">#ORD-${order._id.slice(-6).toUpperCase()}</span>
+                        <div style="margin-top: 4px; font-size: 11px; font-weight: 600; color: #64748b;">
+                            ${item.product?.name || 'Unknown Item'} (x${item.quantity})
+                        </div>
+                    </td>
+                    <td>
+                        <div style="font-weight:600; color:#0f172a;">${order.user?.name || 'Guest'}</div>
+                        <div style="font-size:11px; color:#64748b;">${order.user?.email || 'N/A'}</div>
+                    </td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:6px; color:#64748b;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            <span>${date}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <select class="status-badge-select status-select ${statusClass}" data-id="${order._id}" data-item-id="${item._id}">
+                            <option value="Pending" ${itemStatus === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="Confirmed" ${itemStatus === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                            <option value="Shipped" ${itemStatus === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                            <option value="Delivered" ${itemStatus === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                            <option value="Cancelled" ${itemStatus === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            <option value="Cancellation Requested" ${itemStatus === 'Cancellation Requested' ? 'selected' : ''}>Cancellation Requested</option>
+                            <option value="Return Requested" ${itemStatus === 'Return Requested' ? 'selected' : ''}>Return Req</option>
+                            <option value="Returned" ${itemStatus === 'Returned' ? 'selected' : ''}>Returned</option>
+                            <option value="Return Rejected" ${itemStatus === 'Return Rejected' ? 'selected' : ''}>Return Rej</option>
+                        </select>
+                    </td>
+                    <td>${paymentBadge}</td>
+                    <td>
+                        <span style="font-weight: 700; color: #0f172a;">₹${((item.price || 0) * item.quantity).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </td>
+                    <td>
+                        <div class="action-btns justify-content-end">
+                            <button class="btn-update-pill update-status-btn" data-id="${order._id}" data-item-id="${item._id}">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                Update
+                            </button>
+                        </div>
+                    </td>
+                `;
+                ordersTableBody.appendChild(tr);
+            });
         });
 
         // Add event listeners for update buttons
         document.querySelectorAll('.update-status-btn').forEach(btn => {
             btn.addEventListener('click', async function () {
                 const id = this.getAttribute('data-id');
+                const itemId = this.getAttribute('data-item-id');
                 const row = this.closest('tr');
                 const selectEl = row.querySelector('.status-select');
                 const status = selectEl.value;
@@ -154,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.disabled = true;
                 if (selectEl) selectEl.disabled = true;
 
-                const success = await updateStatus(id, status);
+                const success = await updateStatus(id, itemId, status);
 
                 // Restore status
                 this.innerHTML = originalHTML;
@@ -261,12 +273,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    async function updateStatus(id, status) {
+    async function updateStatus(id, itemId, status) {
         try {
             const res = await fetch(`/api/orders/admin/${id}/status`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status })
+                body: JSON.stringify({ status, itemId })
             });
             return res.ok;
         } catch (err) {
@@ -280,19 +292,22 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!tbody) return;
         tbody.innerHTML = "";
 
-        const pendingCancellations = allOrders.filter(order => 
-            order.cancellationRequest && 
-            order.cancellationRequest.requested && 
-            order.cancellationRequest.status === "Pending"
-        );
+        const pendingCancellations = [];
+        allOrders.forEach(order => {
+            order.items.forEach(item => {
+                if (item.cancellationRequest && item.cancellationRequest.requested && item.cancellationRequest.status === "Pending") {
+                    pendingCancellations.push({ order, item });
+                }
+            });
+        });
 
         if (pendingCancellations.length === 0) {
             tbody.innerHTML = '<tr><td colspan="6" class="text-center p-5 text-muted">No pending cancellation requests.</td></tr>';
             return;
         }
 
-        pendingCancellations.forEach(order => {
-            const date = new Date(order.cancellationRequest.requestedAt || order.updatedAt).toLocaleDateString(undefined, {
+        pendingCancellations.forEach(({ order, item }) => {
+            const date = new Date(item.cancellationRequest.requestedAt || order.updatedAt).toLocaleDateString(undefined, {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
@@ -302,13 +317,16 @@ document.addEventListener("DOMContentLoaded", function () {
             tr.innerHTML = `
                 <td>
                     <span style="background:#f1f5f9; color:#475569; padding:6px 12px; border-radius:8px; font-size:12px; font-weight: 600; border:1px solid #e2e8f0; font-family: monospace;">#ORD-${order._id.slice(-6).toUpperCase()}</span>
+                    <div style="margin-top: 4px; font-size: 11px; font-weight: 600; color: #64748b;">
+                        ${item.product?.name || 'Unknown Item'} (x${item.quantity})
+                    </div>
                 </td>
                 <td>
                     <div style="font-weight:600; color:#0f172a;">${order.user?.name || 'Guest'}</div>
                     <div style="font-size:11px; color:#64748b;">${order.user?.email || 'N/A'}</div>
                 </td>
                 <td>
-                    <div style="font-weight:500; color:#334155; max-width: 250px; white-space: normal; word-break: break-word;">${order.cancellationRequest.reason}</div>
+                    <div style="font-weight:500; color:#334155; max-width: 250px; white-space: normal; word-break: break-word;">${item.cancellationRequest.reason}</div>
                 </td>
                 <td>
                     <div style="display:flex; align-items:center; gap:6px; color:#64748b;">
@@ -321,8 +339,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 </td>
                 <td>
                     <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-sm btn-success px-3 btn-approve-cancel" data-id="${order._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #10B981; border: none; color: white; padding: 6px 12px;">Approve</button>
-                        <button class="btn btn-sm btn-danger px-3 btn-reject-cancel" data-id="${order._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #EF4444; border: none; color: white; padding: 6px 12px;">Reject</button>
+                        <button class="btn btn-sm btn-success px-3 btn-approve-cancel" data-id="${order._id}" data-item-id="${item._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #10B981; border: none; color: white; padding: 6px 12px;">Approve</button>
+                        <button class="btn btn-sm btn-danger px-3 btn-reject-cancel" data-id="${order._id}" data-item-id="${item._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #EF4444; border: none; color: white; padding: 6px 12px;">Reject</button>
                     </div>
                 </td>
             `;
@@ -330,10 +348,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         tbody.querySelectorAll('.btn-approve-cancel').forEach(btn => {
-            btn.addEventListener('click', () => reviewCancellation(btn.getAttribute('data-id'), 'Approved'));
+            btn.addEventListener('click', () => reviewCancellation(btn.getAttribute('data-id'), btn.getAttribute('data-item-id'), 'Approved'));
         });
         tbody.querySelectorAll('.btn-reject-cancel').forEach(btn => {
-            btn.addEventListener('click', () => reviewCancellation(btn.getAttribute('data-id'), 'Rejected'));
+            btn.addEventListener('click', () => reviewCancellation(btn.getAttribute('data-id'), btn.getAttribute('data-item-id'), 'Rejected'));
         });
     }
 
@@ -342,19 +360,22 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!tbody) return;
         tbody.innerHTML = "";
 
-        const pendingReturns = allOrders.filter(order => 
-            order.returnRequest && 
-            order.returnRequest.requested && 
-            order.returnRequest.status === "Pending"
-        );
+        const pendingReturns = [];
+        allOrders.forEach(order => {
+            order.items.forEach(item => {
+                if (item.returnRequest && item.returnRequest.requested && item.returnRequest.status === "Pending") {
+                    pendingReturns.push({ order, item });
+                }
+            });
+        });
 
         if (pendingReturns.length === 0) {
             tbody.innerHTML = '<tr><td colspan="6" class="text-center p-5 text-muted">No pending return requests.</td></tr>';
             return;
         }
 
-        pendingReturns.forEach(order => {
-            const date = new Date(order.returnRequest.requestedAt || order.updatedAt).toLocaleDateString(undefined, {
+        pendingReturns.forEach(({ order, item }) => {
+            const date = new Date(item.returnRequest.requestedAt || order.updatedAt).toLocaleDateString(undefined, {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
@@ -364,13 +385,16 @@ document.addEventListener("DOMContentLoaded", function () {
             tr.innerHTML = `
                 <td>
                     <span style="background:#f1f5f9; color:#475569; padding:6px 12px; border-radius:8px; font-size:12px; font-weight: 600; border:1px solid #e2e8f0; font-family: monospace;">#ORD-${order._id.slice(-6).toUpperCase()}</span>
+                    <div style="margin-top: 4px; font-size: 11px; font-weight: 600; color: #64748b;">
+                        ${item.product?.name || 'Unknown Item'} (x${item.quantity})
+                    </div>
                 </td>
                 <td>
                     <div style="font-weight:600; color:#0f172a;">${order.user?.name || 'Guest'}</div>
                     <div style="font-size:11px; color:#64748b;">${order.user?.email || 'N/A'}</div>
                 </td>
                 <td>
-                    <div style="font-weight:500; color:#334155; max-width: 250px; white-space: normal; word-break: break-word;">${order.returnRequest.reason}</div>
+                    <div style="font-weight:500; color:#334155; max-width: 250px; white-space: normal; word-break: break-word;">${item.returnRequest.reason}</div>
                 </td>
                 <td>
                     <div style="display:flex; align-items:center; gap:6px; color:#64748b;">
@@ -383,8 +407,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 </td>
                 <td>
                     <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-sm btn-success px-3 btn-approve-return" data-id="${order._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #10B981; border: none; color: white; padding: 6px 12px;">Approve</button>
-                        <button class="btn btn-sm btn-danger px-3 btn-reject-return" data-id="${order._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #EF4444; border: none; color: white; padding: 6px 12px;">Reject</button>
+                        <button class="btn btn-sm btn-success px-3 btn-approve-return" data-id="${order._id}" data-item-id="${item._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #10B981; border: none; color: white; padding: 6px 12px;">Approve</button>
+                        <button class="btn btn-sm btn-danger px-3 btn-reject-return" data-id="${order._id}" data-item-id="${item._id}" style="border-radius: 6px; font-size: 12px; font-weight: 600; background-color: #EF4444; border: none; color: white; padding: 6px 12px;">Reject</button>
                     </div>
                 </td>
             `;
@@ -392,14 +416,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         tbody.querySelectorAll('.btn-approve-return').forEach(btn => {
-            btn.addEventListener('click', () => reviewReturn(btn.getAttribute('data-id'), 'Approved'));
+            btn.addEventListener('click', () => reviewReturn(btn.getAttribute('data-id'), btn.getAttribute('data-item-id'), 'Approved'));
         });
         tbody.querySelectorAll('.btn-reject-return').forEach(btn => {
-            btn.addEventListener('click', () => reviewReturn(btn.getAttribute('data-id'), 'Rejected'));
+            btn.addEventListener('click', () => reviewReturn(btn.getAttribute('data-id'), btn.getAttribute('data-item-id'), 'Rejected'));
         });
     }
 
-    async function reviewCancellation(orderId, decision) {
+    async function reviewCancellation(orderId, itemId, decision) {
         const actionText = decision === "Approved" ? "approve" : "reject";
         const { value: comment } = await Swal.fire({
             title: 'Are you sure?',
@@ -418,7 +442,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const res = await fetch(`/api/admin/orders/${orderId}/cancel-review`, {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ decision, comment })
+                    body: JSON.stringify({ decision, comment, itemId })
                 });
                 const data = await res.json();
                 if (data.success) {
@@ -434,7 +458,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    async function reviewReturn(orderId, decision) {
+    async function reviewReturn(orderId, itemId, decision) {
         const actionText = decision === "Approved" ? "approve" : "reject";
         const { value: comment } = await Swal.fire({
             title: 'Are you sure?',
@@ -453,7 +477,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const res = await fetch(`/api/admin/orders/${orderId}/return-review`, {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ decision, comment })
+                    body: JSON.stringify({ decision, comment, itemId })
                 });
                 const data = await res.json();
                 if (data.success) {

@@ -20,13 +20,13 @@ export const createReview = async (req, res) => {
       return res.status(404).json({ success: false, message: "Order not found or access denied." });
     }
 
-    if (order.orderStatus !== "Delivered") {
-      return res.status(400).json({ success: false, message: "Reviews can only be written for delivered orders." });
-    }
-
     const item = order.items.id(orderItemId);
     if (!item) {
       return res.status(404).json({ success: false, message: "Specific product item not found in this order." });
+    }
+
+    if (item.itemStatus !== "Delivered") {
+      return res.status(400).json({ success: false, message: "Reviews can only be written for delivered items." });
     }
 
     if (item.reviewed) {

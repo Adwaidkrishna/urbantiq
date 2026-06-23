@@ -52,8 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
         statusEl.textContent = order.orderStatus;
         statusEl.className = `status-badge ${getStatusClass(order.orderStatus)}`;
 
+        const focusItemId = new URLSearchParams(window.location.search).get('itemId');
+
         // Generate Flipkart-Style Tracking Timeline
-        generateTrackingTimeline(order, expectedDateStr);
+        generateTrackingTimeline(order, expectedDateStr, focusItemId);
 
         // Shipping
         document.getElementById('displayShipName').textContent = order.shippingAddress.fullName;
@@ -65,24 +67,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Items
         const itemsContainer = document.getElementById('displayOrderItems');
-        const isDelivered = order.orderStatus.toLowerCase() === 'delivered';
-        
-        itemsContainer.innerHTML = order.items.map((item, index) => {
-            const variant = item.product?.variants?.find(v => (v._id || v).toString() === (item.variant || "").toString()) || item.product?.variants?.[0];
+        if (itemsContainer) {
+            let itemsToRender = order.items;
+            if (focusItemId) {
+                const specificItem = order.items.find(i => i._id === focusItemId);
+                if (specificItem) {
+                    itemsToRender = [specificItem];
+                }
+            }
+
+            itemsContainer.innerHTML = itemsToRender.map((item, index) => {
+                const variant = item.product?.variants?.find(v => (v._id || v).toString() === (item.variant || "").toString()) || item.product?.variants?.[0];
             const img = variant?.images?.length > 0 ? `/images/products/${variant.images[0]}` : '/images/user/phoodie.jpeg';
             
+            const itemLowerStatus = (item.itemStatus || "pending").toLowerCase();
+            const isDelivered = itemLowerStatus === 'delivered';
+            
+            let actionBtnHtml = '';
+            const cancellableStatuses = ['pending', 'confirmed', 'processing'];
+            
+            if (cancellableStatuses.includes(itemLowerStatus)) {
+                actionBtnHtml = `<button class="btn btn-sm btn-outline-danger px-3 py-1 mt-2 cancel-item-btn" data-item-id="${item._id}" style="font-size: 0.75rem;">Cancel Item</button>`;
+            } else if (itemLowerStatus === 'cancellation requested') {
+                actionBtnHtml = `<span class="badge bg-warning text-dark mt-2"><i class="bi bi-clock"></i> Cancellation Requested</span>`;
+            } else if (itemLowerStatus === 'delivered') {
+                actionBtnHtml = `<button class="btn btn-sm btn-outline-dark px-3 py-1 mt-2 return-item-btn" data-item-id="${item._id}" style="font-size: 0.75rem;">Return Item</button>`;
+            } else if (itemLowerStatus === 'return requested') {
+                actionBtnHtml = `<span class="badge bg-primary mt-2"><i class="bi bi-clock"></i> Return Requested</span>`;
+            } else if (itemLowerStatus === 'returned') {
+                actionBtnHtml = `<span class="badge bg-success mt-2">Returned</span>`;
+            } else if (itemLowerStatus === 'cancelled') {
+                actionBtnHtml = `<span class="badge bg-danger mt-2">Cancelled</span>`;
+            } else if (itemLowerStatus === 'return rejected') {
+                actionBtnHtml = `<span class="badge bg-secondary mt-2">Return Rejected</span>`;
+            }
+
             return `
                 <div class="item-row d-flex align-items-center py-3 border-bottom">
                     <img src="${img}" class="item-thumb me-3" alt="Product" style="width: 80px; height: 80px; object-fit: cover; border-radius: 12px;">
                     <div class="item-details flex-grow-1">
                         <span class="item-name fw-bold d-block mb-1">${item.product?.name || '<span class="text-danger" style="font-style:italic; font-weight:normal;">Product Unavailable</span>'}</span>
-                        <span class="item-meta text-muted small">
+                        <span class="item-meta text-muted small d-block">
                             Size: ${item.size} &nbsp;&middot;&nbsp; Qty: ${item.quantity}
                             ${variant?.color ? `
                             &nbsp;&middot;&nbsp;
                             <span class="ck-color-circle" title="${variant.colorName || 'Color'}" style="background-color: ${variant.color}; display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 1px solid #ccc; margin-left: 2px; vertical-align: middle;"></span>
                             ` : ''}
                         </span>
+                        <div class="mt-1">
+                            <span class="badge ${getStatusClass(item.itemStatus || 'Pending')} me-2">${item.itemStatus || 'Pending'}</span>
+                        </div>
+                        ${actionBtnHtml}
                     </div>
                     <div class="d-flex flex-column align-items-end gap-2">
                         <span class="item-price fw-bold">₹${(item.price * item.quantity).toLocaleString("en-IN")}</span>
@@ -95,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
         }).join('');
+        }
 
         // Attach event listeners for Write Review buttons
         document.querySelectorAll('.write-review-btn').forEach(btn => {
@@ -102,6 +138,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 const productId = btn.dataset.productId;
                 const orderItemId = btn.dataset.itemId;
                 openReviewModal(productId, order._id, orderItemId);
+            });
+        });
+
+        // Attach event listeners for Cancel Item buttons
+        document.querySelectorAll('.cancel-item-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const orderItemId = btn.dataset.itemId;
+                openCancelModal(order._id, orderItemId);
+            });
+        });
+
+        // Attach event listeners for Return Item buttons
+        document.querySelectorAll('.return-item-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const orderItemId = btn.dataset.itemId;
+                openReturnModal(order._id, orderItemId);
             });
         });
 
@@ -122,32 +174,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Actions (iOS Style Layout)
+        // Actions (iOS Style Layout) - Kept mostly empty as items handle their own actions now
         const actionsEl = document.getElementById('orderActions');
+        actionsEl.innerHTML = '';
         const lowerStatus = order.orderStatus.toLowerCase();
-        const cancellableStatuses = ['pending', 'confirmed', 'processing'];
-        
-        if (cancellableStatuses.includes(lowerStatus)) {
-            actionsEl.innerHTML = `<button class="btn-outline-red px-5" id="cancelOrderBtn">Cancel Order</button>`;
-            document.getElementById('cancelOrderBtn').addEventListener('click', () => openCancelModal(order._id));
-        } else if (lowerStatus === 'cancellation requested') {
-            actionsEl.innerHTML = `<button class="btn-outline-red px-5" disabled><i class="bi bi-clock-history me-2"></i> Cancellation Under Review</button>`;
-        } else if (lowerStatus === 'shipped') {
-            actionsEl.innerHTML = `
-                <div class="d-flex flex-column align-items-center">
-                    <p class="text-secondary small mb-3">Your order is in transit and arriving soon.</p>
-                    <button class="btn-outline-black px-5" disabled><i class="bi bi-truck me-2"></i> In Transit</button>
-                </div>`;
-        } else if (lowerStatus === 'delivered') {
+        if (lowerStatus === 'delivered') {
             document.getElementById('invoiceSection').style.display = 'block';
-            actionsEl.innerHTML = `<button class="btn-outline-black px-5" id="returnOrderBtn">Request Return</button>`;
-            document.getElementById('returnOrderBtn').addEventListener('click', () => openReturnModal(order._id));
-        } else if (lowerStatus === 'return requested') {
-            actionsEl.innerHTML = `<button class="btn-outline-black px-5" disabled><i class="bi bi-clock-history me-2"></i> Return Under Review</button>`;
-        } else if (lowerStatus === 'return rejected') {
-            actionsEl.innerHTML = `<div class="text-danger small mb-2"><i class="bi bi-exclamation-triangle-fill me-1"></i> Return request was rejected.</div><button class="btn-outline-black px-5" disabled>Return Rejected</button>`;
-        } else {
-            actionsEl.innerHTML = '';
         }
     }
 
@@ -233,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    function openCancelModal(id) {
+    function openCancelModal(id, itemId) {
         const modalEl = document.getElementById('cancelReasonModal');
         const modal = new bootstrap.Modal(modalEl);
         modal.show();
@@ -266,7 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const res = await fetch(`/api/orders/${id}/cancel`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ reason: reasonVal })
+                    body: JSON.stringify({ reason: reasonVal, itemId })
                 });
                 const data = await res.json();
                 modal.hide();
@@ -274,17 +306,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     showAlertModal("Success", data.message || "Cancellation request submitted.", true);
                     setTimeout(() => window.location.reload(), 1500);
                 } else {
-                    showAlertModal("Cancellation Failed", data.message || "Failed to cancel order.", false);
+                    showAlertModal("Cancellation Failed", data.message || "Failed to cancel item.", false);
                 }
             } catch (err) {
-                console.error("Error cancelling order:", err);
+                console.error("Error cancelling item:", err);
                 modal.hide();
-                showAlertModal("Error", "Failed to cancel order due to a network error.", false);
+                showAlertModal("Error", "Failed to cancel item due to a network error.", false);
             }
         };
     }
 
-    function openReturnModal(id) {
+    function openReturnModal(id, itemId) {
         const modalEl = document.getElementById('returnReasonModal');
         const modal = new bootstrap.Modal(modalEl);
         modal.show();
@@ -317,7 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const res = await fetch(`/api/orders/${id}/return`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ reason: reasonVal })
+                    body: JSON.stringify({ reason: reasonVal, itemId })
                 });
                 const data = await res.json();
                 modal.hide();
@@ -410,11 +442,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function generateTrackingTimeline(order, expectedDelivery) {
+    function generateTrackingTimeline(order, expectedDelivery, focusItemId) {
         const headerSection = document.getElementById('orderHeader').parentNode; // The card wrapping the header
         
         let timelineHtml = '';
-        const lowerState = order.orderStatus.toLowerCase();
+        
+        let specificItem = null;
+        if (focusItemId) {
+            specificItem = order.items.find(i => i._id === focusItemId);
+        }
+        
+        let statusToUse = specificItem && specificItem.itemStatus ? specificItem.itemStatus : order.orderStatus;
+        const lowerState = statusToUse.toLowerCase();
 
         // Calculate progress percentage mapping to nodes (Placed=0%, Confirmed=33%, Shipped=66%, Delivered=100%)
         let progress = 0;
@@ -422,9 +461,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (lowerState === 'confirmed' || lowerState === 'processing') progress = 33.33;
         if (lowerState === 'shipped') progress = 66.66;
         if (lowerState === 'delivered') progress = 100;
+        // fallback for partially completed
+        if (lowerState === 'partially completed') progress = 100;
 
         if (lowerState === 'cancelled') {
-            const adminComment = order.cancellationRequest?.adminComment ? `<div class="text-secondary small mt-1">Admin note: "${order.cancellationRequest.adminComment}"</div>` : '';
+            const reqItem = specificItem || order.items.find(i => i.cancellationRequest && i.cancellationRequest.requested) || {};
+            const adminComment = reqItem.cancellationRequest?.adminComment ? `<div class="text-secondary small mt-1">Admin note: "${reqItem.cancellationRequest.adminComment}"</div>` : '';
             timelineHtml = `
             <div class="mt-4 pt-4 border-top">
                 <div class="d-flex align-items-center gap-3 text-danger px-1">
@@ -432,13 +474,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         <i class="bi bi-x-lg fs-5"></i>
                     </div>
                     <div>
-                        <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Order Cancelled</div>
-                        <div class="text-secondary small">This order has been successfully cancelled.</div>
+                        <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Item Cancelled</div>
+                        <div class="text-secondary small">This item has been successfully cancelled.</div>
                         ${adminComment}
                     </div>
                 </div>
             </div>`;
         } else if (lowerState === 'cancellation requested') {
+            const reqItem = specificItem || order.items.find(i => i.cancellationRequest && i.cancellationRequest.requested) || {};
             timelineHtml = `
             <div class="mt-4 pt-4 border-top">
                 <div class="d-flex align-items-center gap-3 text-warning px-1">
@@ -447,12 +490,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <div>
                         <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Cancellation Under Review</div>
-                        <div class="text-secondary small">Your cancellation request is under review. Reason: "${order.cancellationRequest?.reason || 'N/A'}"</div>
+                        <div class="text-secondary small">Your cancellation request is under review. Reason: "${reqItem.cancellationRequest?.reason || 'N/A'}"</div>
                     </div>
                 </div>
             </div>`;
         } else if (lowerState === 'returned') {
-            const adminComment = order.returnRequest?.adminComment ? `<div class="text-secondary small mt-1">Admin note: "${order.returnRequest.adminComment}"</div>` : '';
+            const reqItem = specificItem || order.items.find(i => i.returnRequest && i.returnRequest.requested) || {};
+            const adminComment = reqItem.returnRequest?.adminComment ? `<div class="text-secondary small mt-1">Admin note: "${reqItem.returnRequest.adminComment}"</div>` : '';
             timelineHtml = `
             <div class="mt-4 pt-4 border-top">
                 <div class="d-flex align-items-center gap-3 text-warning px-1">
@@ -460,13 +504,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         <i class="bi bi-arrow-return-left fs-5"></i>
                     </div>
                     <div>
-                        <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Order Returned</div>
+                        <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Item Returned</div>
                         <div class="text-secondary small">Your return request has been processed and amount credited to your wallet.</div>
                         ${adminComment}
                     </div>
                 </div>
             </div>`;
         } else if (lowerState === 'return requested') {
+            const reqItem = specificItem || order.items.find(i => i.returnRequest && i.returnRequest.requested) || {};
             timelineHtml = `
             <div class="mt-4 pt-4 border-top">
                 <div class="d-flex align-items-center gap-3 text-primary px-1">
@@ -475,12 +520,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <div>
                         <div class="fw-bold" style="font-size: 1.05rem; color: #1d1d1f;">Return Under Review</div>
-                        <div class="text-secondary small">Your request is being reviewed by our quality team. Reason: "${order.returnRequest?.reason || 'N/A'}"</div>
+                        <div class="text-secondary small">Your request is being reviewed by our quality team. Reason: "${reqItem.returnRequest?.reason || 'N/A'}"</div>
                     </div>
                 </div>
             </div>`;
         } else if (lowerState === 'return rejected') {
-            const adminComment = order.returnRequest?.adminComment ? `<div class="text-secondary small mt-1">Reason: "${order.returnRequest.adminComment}"</div>` : '';
+            const reqItem = specificItem || order.items.find(i => i.returnRequest && i.returnRequest.requested) || {};
+            const adminComment = reqItem.returnRequest?.adminComment ? `<div class="text-secondary small mt-1">Reason: "${reqItem.returnRequest.adminComment}"</div>` : '';
             timelineHtml = `
             <div class="mt-4 pt-4 border-top">
                 <div class="d-flex align-items-center gap-3 text-secondary px-1">
@@ -521,7 +567,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div>
                         <div class="text-muted small fw-bold text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Order Status</div>
                         <div class="fw-bold fs-5" style="color: #1d1d1f; letter-spacing: -0.02em;">
-                            ${lowerState === 'delivered' ? 'Delivered' : 'In Transit'}
+                            ${lowerState === 'delivered' ? 'Delivered' : (lowerState === 'partially completed' ? 'Partially Completed' : 'In Transit')}
                         </div>
                     </div>
                     <div class="text-end">

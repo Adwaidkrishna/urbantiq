@@ -17,14 +17,16 @@ export const getProductDetails = async (req, res) => {
         }
 
         const orders = await Order.find({ 
-            "items.product": product._id,
-            orderStatus: { $nin: ["Cancelled", "Returned", "Return Rejected"] }
+            "items.product": product._id
         });
         
         let salesCount = 0;
         orders.forEach(order => {
              order.items.forEach(item => {
-                  if (item.product.toString() === product._id.toString()) {
+                  if (
+                      item.product.toString() === product._id.toString() &&
+                      !["Cancelled", "Returned", "Return Rejected"].includes(item.itemStatus)
+                  ) {
                        salesCount += item.quantity;
                   }
              });

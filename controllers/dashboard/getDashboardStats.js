@@ -10,18 +10,23 @@ export const getDashboardStats = async (req, res) => {
     const endOfLastMonth   = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
 
     const revenueAgg = await Order.aggregate([
-      { $match: { orderStatus: { $nin: ["Cancelled", "Returned"] } } },
-      { $group: { _id: null, total: { $sum: "$finalAmount" } } }
+      { $unwind: "$items" },
+      { $match: { "items.itemStatus": { $nin: ["Cancelled", "Returned", "Return Rejected"] } } },
+      { $group: { _id: null, total: { $sum: { $multiply: ["$items.price", "$items.quantity"] } } } }
     ]);
     const totalRevenue = revenueAgg[0]?.total || 0;
 
     const thisMonthRevenueAgg = await Order.aggregate([
-      { $match: { orderStatus: { $nin: ["Cancelled", "Returned"] }, createdAt: { $gte: startOfThisMonth } } },
-      { $group: { _id: null, total: { $sum: "$finalAmount" } } }
+      { $match: { createdAt: { $gte: startOfThisMonth } } },
+      { $unwind: "$items" },
+      { $match: { "items.itemStatus": { $nin: ["Cancelled", "Returned", "Return Rejected"] } } },
+      { $group: { _id: null, total: { $sum: { $multiply: ["$items.price", "$items.quantity"] } } } }
     ]);
     const lastMonthRevenueAgg = await Order.aggregate([
-      { $match: { orderStatus: { $nin: ["Cancelled", "Returned"] }, createdAt: { $gte: startOfLastMonth, $lte: endOfLastMonth } } },
-      { $group: { _id: null, total: { $sum: "$finalAmount" } } }
+      { $match: { createdAt: { $gte: startOfLastMonth, $lte: endOfLastMonth } } },
+      { $unwind: "$items" },
+      { $match: { "items.itemStatus": { $nin: ["Cancelled", "Returned", "Return Rejected"] } } },
+      { $group: { _id: null, total: { $sum: { $multiply: ["$items.price", "$items.quantity"] } } } }
     ]);
     const thisMonthRevenue = thisMonthRevenueAgg[0]?.total || 0;
     const lastMonthRevenue = lastMonthRevenueAgg[0]?.total || 0;
@@ -51,12 +56,20 @@ export const getDashboardStats = async (req, res) => {
 
     const twelveMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 11, 1);
     const monthlySalesAgg = await Order.aggregate([
-      { $match: { orderStatus: { $nin: ["Cancelled", "Returned"] }, createdAt: { $gte: twelveMonthsAgo } } },
+      { $match: { createdAt: { $gte: twelveMonthsAgo } } },
+      { $unwind: "$items" },
+      { $match: { "items.itemStatus": { $nin: ["Cancelled", "Returned", "Return Rejected"] } } },
       {
         $group: {
-          _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
-          revenue: { $sum: "$finalAmount" },
-          orders:  { $sum: 1 }
+          _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" }, orderId: "$_id" },
+          orderRevenue: { $sum: { $multiply: ["$items.price", "$items.quantity"] } }
+        }
+      },
+      {
+        $group: {
+          _id: { year: "$_id.year", month: "$_id.month" },
+          revenue: { $sum: "$orderRevenue" },
+          orders: { $sum: 1 }
         }
       },
       { $sort: { "_id.year": 1, "_id.month": 1 } }
@@ -77,10 +90,14 @@ export const getDashboardStats = async (req, res) => {
     }
 
     const statusAgg = await Order.aggregate([
-      { $group: { _id: "$orderStatus", count: { $sum: 1 } } }
+      { $unwind: "$items" },
+      { $group: { _id: "$items.itemStatus", count: { $sum: 1 } } }
     ]);
     const orderStatusBreakdown = {};
-    statusAgg.forEach(s => { orderStatusBreakdown[s._id] = s.count; });
+    statusAgg.forEach(s => { 
+      const status = s._id || 'Pending';
+      orderStatusBreakdown[status] = (orderStatusBreakdown[status] || 0) + s.count; 
+    });
 
     const recentOrders = await Order.find({})
       .populate("user", "name email")

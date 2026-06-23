@@ -5,9 +5,16 @@ import { inventoryService } from "../../services/InventoryService.js";
  * This is primarily used for order cancellation or failure handling after checkout.
  * (During checkout, the MongoDB transaction automatically rolls back).
  */
-export async function rollbackOrderStock(order) {
+export async function rollbackOrderStock(order, itemId = null) {
   try {
-    await inventoryService.rollbackStock(order.items);
+    let itemsToRollback = order.items;
+    if (itemId) {
+      const targetItem = order.items.id(itemId);
+      if (targetItem) {
+        itemsToRollback = [targetItem];
+      }
+    }
+    await inventoryService.rollbackStock(itemsToRollback);
   } catch (error) {
     console.error("Error during stock rollback:", error);
     throw error;

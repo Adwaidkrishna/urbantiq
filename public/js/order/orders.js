@@ -72,10 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const variantText = `Size ${item.size} • Qty ${item.quantity}`;
                 const itemPrice = (item.price * item.quantity).toLocaleString("en-IN");
                 
-                const lowerStatus = order.orderStatus.toLowerCase();
+                const itemStatus = item.itemStatus || "Pending";
+                const lowerStatus = itemStatus.toLowerCase();
 
                 // 1. Get Apple-like state info (ETA, status text description, pill styling)
-                const stateInfo = getAppleStateInfo(order.orderStatus, deliveryDateStr, shortDateStr);
+                const stateInfo = getAppleStateInfo(itemStatus, deliveryDateStr, shortDateStr);
 
                 let cardHeaderHtml = `
                     <div class="active-card-header">
@@ -104,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
 
                 // 3. Dynamic Timeline progress
-                let progressHtml = getProgressTimelineHtml(order.orderStatus);
+                let progressHtml = getProgressTimelineHtml(itemStatus);
 
                 // 4. Footer Section: Metadata and Actions
                 let primaryBtnText = "Track Order";
@@ -112,8 +113,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 let secondaryBtnText = "View Details";
                 let secondaryBtnMobileText = "Details";
                 
-                let primaryBtnUrl = `/order-details?id=${order._id}#trackingTimelineWrap`;
-                let secondaryBtnUrl = `/order-details?id=${order._id}`;
+                let primaryBtnUrl = `/order-details?id=${order._id}&itemId=${item._id}#trackingTimelineWrap`;
+                let secondaryBtnUrl = `/order-details?id=${order._id}&itemId=${item._id}`;
                 let isBuyAgain = false;
 
                 if (["delivered", "cancelled", "returned", "return rejected", "return requested"].includes(lowerStatus)) {
@@ -188,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="order-id">Order #ORD-${order._id.slice(-6).toUpperCase()}</span>
                             <span class="order-date">Ordered ${shortDateStr}</span>
                         </div>
-                        <a href="/order-details?id=${order._id}" class="order-details-mobile-link">
+                        <a href="/order-details?id=${order._id}&itemId=${item._id}" class="order-details-mobile-link">
                             View Details →
                         </a>
                     </div>

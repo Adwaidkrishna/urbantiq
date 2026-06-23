@@ -14,9 +14,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             const response = await fetch("/api/orders/my-orders");
             const orders = await response.json();
 
-            // Filter for return-related statuses
+            // Filter for return-related statuses at the item level
             const returnOrders = orders.filter(order => 
-                ["Return Requested", "Returned", "Return Rejected"].includes(order.orderStatus)
+                order.items.some(item => ["Return Requested", "Returned", "Return Rejected"].includes(item.itemStatus))
             );
 
             document.getElementById("returnsLoading")?.remove();
@@ -27,8 +27,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             returnOrders.forEach(order => {
                 const hasDummyProduct = order.items.some(item => !item.product);
                 if (hasDummyProduct) return;
-                totalItems += order.items.length;
-                validOrders.push(order);
+
+                const returnItems = order.items.filter(item => ["Return Requested", "Returned", "Return Rejected"].includes(item.itemStatus));
+                if (returnItems.length > 0) {
+                    totalItems += returnItems.length;
+                    validOrders.push(order);
+                }
             });
 
             if (totalItems === 0) {
@@ -56,16 +60,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         returnList.innerHTML = "";
         
         orders.forEach(order => {
-            const reqDateStr = order.returnRequest?.requestedAt
-                ? new Date(order.returnRequest.requestedAt).toLocaleDateString("en-IN", {
-                    day: "numeric", month: "short", year: "numeric"
-                })
-                : new Date(order.updatedAt).toLocaleDateString("en-IN", {
-                    day: "numeric", month: "short", year: "numeric"
-                });
-
-            // Split into individual item cards
+            // Split into individual item cards, filter out items that aren't returns
             order.items.forEach(item => {
+                if (!["Return Requested", "Returned", "Return Rejected"].includes(item.itemStatus)) return;
+
+                const reqDateStr = item.returnRequest?.requestedAt
+                    ? new Date(item.returnRequest.requestedAt).toLocaleDateString("en-IN", {
+                        day: "numeric", month: "short", year: "numeric"
+                    })
+                    : new Date(order.updatedAt).toLocaleDateString("en-IN", {
+                        day: "numeric", month: "short", year: "numeric"
+                    });
                 const variant = item.product?.variants?.find(v => (v._id || v).toString() === (item.variant || "").toString()) || item.product?.variants?.[0];
                 const img = variant?.images?.length > 0 ? `/images/products/${variant.images[0]}` : '/images/user/phoodie.jpeg';
                 const productName = item.product?.name || "Product Unavailable";
@@ -83,14 +88,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 let badgeIcon = '<i class="bi bi-hourglass-split me-1"></i>';
                 let badgeLabel = "Return Pending";
 
-                if (order.orderStatus === "Returned") {
+                if (item.itemStatus === "Returned") {
                     outcomeTitle = "Refund Processed";
                     outcomeDesc = `₹${itemPrice} returned to ${refundMethod}.`;
                     descClass = "refund-credited";
                     badgeClass = "badge-premium-delivered";
                     badgeIcon = '<i class="bi bi-arrow-return-left me-1"></i>';
                     badgeLabel = "Returned";
-                } else if (order.orderStatus === "Return Rejected") {
+                } else if (item.itemStatus === "Return Rejected") {
                     outcomeTitle = "Refund Declined";
                     outcomeDesc = "No refund issued.";
                     descClass = "refund-rejected";

@@ -97,14 +97,16 @@ export const getPublicProducts = async (req, res) => {
 
         let productsWithSales = await Promise.all(products.map(async (p) => {
             const orders = await Order.find({
-                "items.product": p._id,
-                orderStatus: { $nin: ["Cancelled", "Returned", "Return Rejected"] }
+                "items.product": p._id
             });
 
             let salesCount = 0;
             orders.forEach(order => {
                 order.items.forEach(item => {
-                    if (item.product.toString() === p._id.toString()) {
+                    if (
+                        item.product.toString() === p._id.toString() &&
+                        !["Cancelled", "Returned", "Return Rejected"].includes(item.itemStatus)
+                    ) {
                         salesCount += item.quantity;
                     }
                 });

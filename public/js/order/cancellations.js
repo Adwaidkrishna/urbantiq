@@ -14,9 +14,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             const response = await fetch("/api/orders/my-orders");
             const orders = await response.json();
 
-            // Filter for cancelled or cancellation pending orders
+            // Filter for cancelled or cancellation pending items
             const cancelledOrders = orders.filter(order => 
-                ["Cancelled", "Cancellation Requested"].includes(order.orderStatus)
+                order.items.some(item => ["Cancelled", "Cancellation Requested"].includes(item.itemStatus))
             );
 
             document.getElementById("cancellationLoading")?.remove();
@@ -27,8 +27,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             cancelledOrders.forEach(order => {
                 const hasDummyProduct = order.items.some(item => !item.product);
                 if (hasDummyProduct) return;
-                totalItems += order.items.length;
-                validOrders.push(order);
+
+                const cancelledItems = order.items.filter(item => ["Cancelled", "Cancellation Requested"].includes(item.itemStatus));
+                if (cancelledItems.length > 0) {
+                    totalItems += cancelledItems.length;
+                    validOrders.push(order);
+                }
             });
 
             if (totalItems === 0) {
@@ -59,34 +63,37 @@ document.addEventListener("DOMContentLoaded", async () => {
             const orderDate = new Date(order.createdAt).toLocaleDateString("en-IN", {
                 day: "numeric", month: "short", year: "numeric"
             });
-            const cancelDate = order.cancellationRequest?.requestedAt
-                ? new Date(order.cancellationRequest.requestedAt).toLocaleDateString("en-IN", {
-                    day: "numeric", month: "short", year: "numeric"
-                })
-                : new Date(order.updatedAt).toLocaleDateString("en-IN", {
-                    day: "numeric", month: "short", year: "numeric"
-                });
 
-            const reason = order.cancellationRequest?.reason || "Customer Request";
-
-            // Determine refund status
-            let refundText = "Not Applicable";
-            let refundClass = "text-muted";
-            if (order.paymentMethod === "Wallet" || order.paymentMethod === "Online") {
-                if (order.paymentStatus === "Refunded") {
-                    refundText = order.paymentMethod === "Wallet" ? "Refunded to Wallet" : "Refunded to Source";
-                    refundClass = "refund-credited";
-                } else if (order.paymentStatus === "Paid") {
-                    refundText = "Refund Pending";
-                    refundClass = "refund-pending";
-                } else {
-                    refundText = "No Refund Applicable";
-                    refundClass = "text-muted";
-                }
-            }
-
-            // Split into individual item cards
+            // Split into individual item cards, filter out items that aren't cancelled
             order.items.forEach(item => {
+                if (!["Cancelled", "Cancellation Requested"].includes(item.itemStatus)) return;
+
+                const cancelDate = item.cancellationRequest?.requestedAt
+                    ? new Date(item.cancellationRequest.requestedAt).toLocaleDateString("en-IN", {
+                        day: "numeric", month: "short", year: "numeric"
+                    })
+                    : new Date(order.updatedAt).toLocaleDateString("en-IN", {
+                        day: "numeric", month: "short", year: "numeric"
+                    });
+
+                const reason = item.cancellationRequest?.reason || "Customer Request";
+
+                // Determine refund status
+                let refundText = "Not Applicable";
+                let refundClass = "text-muted";
+                if (order.paymentMethod === "Wallet" || order.paymentMethod === "Online") {
+                    if (order.paymentStatus === "Refunded") {
+                        refundText = order.paymentMethod === "Wallet" ? "Refunded to Wallet" : "Refunded to Source";
+                        refundClass = "refund-credited";
+                    } else if (order.paymentStatus === "Paid") {
+                        refundText = "Refund Pending";
+                        refundClass = "refund-pending";
+                    } else {
+                        refundText = "No Refund Applicable";
+                        refundClass = "text-muted";
+                    }
+                }
+
                 const variant = item.product?.variants?.find(v => (v._id || v).toString() === (item.variant || "").toString()) || item.product?.variants?.[0];
                 const img = variant?.images?.length > 0 ? `/images/products/${variant.images[0]}` : '/images/user/phoodie.jpeg';
                 const productName = item.product?.name || "Product Unavailable";
@@ -94,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const itemPrice = (item.price * item.quantity).toLocaleString("en-IN");
 
                 // Badge styling
-                const isPending = order.orderStatus === "Cancellation Requested";
+                const isPending = item.itemStatus === "Cancellation Requested";
                 const badgeLabel = isPending ? "Pending" : "Cancelled";
                 const badgeIcon = isPending ? '<i class="bi bi-hourglass-split me-1"></i>' : '<i class="bi bi-x-circle-fill me-1"></i>';
                 const badgeClass = isPending ? "badge-premium-processing" : "badge-premium-cancelled";
