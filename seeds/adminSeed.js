@@ -9,16 +9,10 @@ import Admin from "../models/Admin.js";
 dotenv.config({ path: "./.env" });
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/urbantiq";
-const ADMIN_EMAIL = process.argv[2] || "admin@urbantiq.com";
-const ADMIN_PASSWORD = process.argv[3] || "Admin@123";
+const ADMIN_EMAIL = process.argv[2] || "";
+const ADMIN_PASSWORD = process.argv[3] || "";
 
-/**
- * URBANTIQ ADMIN SEED SCRIPT
- * This script will create a new admin or update the existing one's password.
- * 
- * Usage:
- * node utils/adminSeed.js [email] [password]
- */
+
 async function seedAdmin() {
     try {
         console.log("🚀 Starting Admin Seeding process...");
@@ -64,7 +58,7 @@ async function seedAdmin() {
     }
 }
 
-// Check for missing environment variables
+
 if (!process.env.MONGO_URI && !MONGO_URI) {
     console.error("❌ Error: MONGO_URI is missing in .env file");
     process.exit(1);
