@@ -47,12 +47,7 @@ export const getPublicProducts = async (req, res) => {
             query["variants.colorName"] = { $in: colorArr.map(c => new RegExp(`^${c}$`, "i")) };
         }
 
-        // 7. New Arrivals (Last 7 days)
-        if (newArrival === "true") {
-            const sevenDaysAgo = new Date();
-            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-            query.createdAt = { $gte: sevenDaysAgo };
-        }
+        // 7. New Arrivals (Date range filter removed so we can fetch the latest products)
 
         // 8. Ratings
         if (rating) {
@@ -71,6 +66,11 @@ export const getPublicProducts = async (req, res) => {
             sortObj = { averageRating: -1, createdAt: -1 };
         } else if (sort === "Most Popular") {
             sortObj = { reviewCount: -1, createdAt: -1 };
+        }
+
+        // Override/ensure newest first sort if newArrival is true
+        if (newArrival === "true") {
+            sortObj = { createdAt: -1 };
         }
 
         let dbQuery = Product.find(query)
